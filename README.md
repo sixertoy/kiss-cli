@@ -29,7 +29,7 @@ kiss <path/to/filename/wo_extension> <filetype>
 - [Angular module](#angular)
 - [HTML page](#html)
 - [Mocha spec file](#test)
-- [Gruntfile (load-grunt-config)](#gruntfile)
+- [Gruntfile](#gruntfile)
 - [Grunt's task](#task)
 - [Gulpfile](#gulp)
 - [JS Module](#js)
@@ -124,7 +124,7 @@ kiss <path/to/filename/wo_extension> mocha
 ```
 
 <a name="gruntfile"><a>
-#### Gruntfile (load-grunt-config)
+#### Gruntfile ([load-grunt-config](https://www.npmjs.com/package/load-grunt-config))
 
 ```bash
 kiss <path/to/filename/wo_extension> grunt
