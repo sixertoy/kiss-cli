@@ -149,7 +149,7 @@ module.exports = function (grunt) {
 };
 ```
 
-<a name="gulpfile"><a>
+<a name="gulp"><a>
 #### Gulpfile
 
 ```bash
