@@ -21,14 +21,14 @@ npm install -g kiss-cli
 ## Usage
 
 ```bash
-kiss <path.to.filename.wo_extension> <filetype>
+kiss <path/to/filename/wo_extension> <filetype>
 ```
 
 ## Available Templates
 
 - [Angular module](#angular)
 - [HTML page](#html)
-- [Mocha/Jasmine spec file](#test)
+- [Mocha spec file](#test)
 - [Gruntfile (load-grunt-config)](#gruntfile)
 - [Grunt's task](#task)
 - [Gulpfile](#gulp)
@@ -38,7 +38,7 @@ kiss <path.to.filename.wo_extension> <filetype>
 #### Angular Module
 
 ```bash
-kiss <path.to.filename.wo_extension> angular
+kiss <path/to/filename/wo_extension> angular
 ```
 
 ###### Output
@@ -58,7 +58,7 @@ kiss <path.to.filename.wo_extension> angular
 #### Simple HTML page
 
 ```bash
-kiss <path.to.filename.wo_extension> html
+kiss <path/to/filename/wo_extension> html
 ```
 
 ###### Output
@@ -93,7 +93,7 @@ kiss <path.to.filename.wo_extension> html
 #### Mocha spec file
 
 ```bash
-kiss <path.to.filename.wo_extension> mocha
+kiss <path/to/filename/wo_extension> mocha
 ```
 
 ###### Output
@@ -127,7 +127,7 @@ kiss <path.to.filename.wo_extension> mocha
 #### Gruntfile (load-grunt-config)
 
 ```bash
-kiss <path.to.filename.wo_extension> grunt
+kiss <path/to/filename/wo_extension> grunt
 ```
 
 ###### Output
@@ -153,7 +153,7 @@ module.exports = function (grunt) {
 #### Gulpfile
 
 ```bash
-kiss <path.to.filename.wo_extension> gulp
+kiss <path/to/filename/wo_extension> gulp
 ```
 
 ###### Output
@@ -189,7 +189,7 @@ kiss <path.to.filename.wo_extension> gulp
 #### Grunt's task (load-grunt-config)
 
 ```bash
-kiss <path.to.filename.wo_extension> task
+kiss <path/to/filename/wo_extension> task
 ```
 
 ###### Output
@@ -210,7 +210,7 @@ module.exports = function (grunt, opts) {
 #### JS script
 
 ```bash
-kiss <path.to.filename.wo_extension> js
+kiss <path/to/filename/wo_extension> js
 ```
 
 ###### Output
@@ -227,7 +227,7 @@ kiss <path.to.filename.wo_extension> js
 #### very very simple PHP...
 
 ```bash
-kiss <path.to.filename.wo_extension> php
+kiss <path/to/filename/wo_extension> php
 ```
 
 ###### Output
