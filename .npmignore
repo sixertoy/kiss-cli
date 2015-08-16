@@ -5,3 +5,4 @@ spec/
 .gitignore
 .jshintrc
 gulpfile.js
+tasks.json
