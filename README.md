@@ -21,7 +21,7 @@ npm install -g kiss-cli
 ## Usage
 
 ```bash
-kiss <filetype> <path.to.filename.wo_extension>
+kiss <path.to.filename.wo_extension> <filetype>
 ```
 
 ## Available Templates
