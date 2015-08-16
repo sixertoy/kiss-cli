@@ -207,7 +207,7 @@ module.exports = function (grunt, opts) {
 ```
 
 <a name="js"><a>
-#### JS script
+#### JS Module
 
 ```bash
 kiss <path/to/filename/wo_extension> js
