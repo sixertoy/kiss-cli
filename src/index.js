@@ -19,9 +19,8 @@
             js: '_index.js.tpl',
             grunt: '_gruntfile.js.tpl',
             gulp: '_gulpfile.js.tpl',
-            grunttask: '_task.js.tpl',
+            task: '_task.js.tpl',
             html: '_index.html.tpl',
-            jasmine: '_jasmine.spec.js.tpl',
             json: '_index.json.tpl',
             mocha: '_mocha.spec.js.tpl',
             php: '_index.php.tpl'

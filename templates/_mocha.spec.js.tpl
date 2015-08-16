@@ -21,7 +21,7 @@
             it('Expect something', function () {
                 expect(function () {
                     result = helper.render();
-                }).toThrow();
+                }).to.throw();
             });
 
         });

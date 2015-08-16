@@ -36,6 +36,13 @@ kiss <path.to.filename.wo_extension> <filetype>
 
 <a name="angular"><a>
 #### Angular Module
+
+```bash
+kiss <path.to.filename.wo_extension> angular
+```
+
+###### Output
+
 ```javascript
 /*jslint indent:4 */
 /*globals angular */
@@ -49,6 +56,13 @@ kiss <path.to.filename.wo_extension> <filetype>
 
 <a name="html"><a>
 #### Simple HTML page
+
+```bash
+kiss <path.to.filename.wo_extension> html
+```
+
+###### Output
+
 ```html
 <!DOCTYPE html>
 <html lang="fr">
@@ -76,7 +90,14 @@ kiss <path.to.filename.wo_extension> <filetype>
 ```
 
 <a name="test"><a>
-#### Mocha/Jasmine spec
+#### Mocha spec file
+
+```bash
+kiss <path.to.filename.wo_extension> mocha
+```
+
+###### Output
+
 ```javascript
 /*jshint unused: false */
 /*jslint indent: 4, nomen: true */
@@ -104,6 +125,13 @@ kiss <path.to.filename.wo_extension> <filetype>
 
 <a name="gruntfile"><a>
 #### Gruntfile (load-grunt-config)
+
+```bash
+kiss <path.to.filename.wo_extension> grunt
+```
+
+###### Output
+
 ```javascript
 /**
  * <project_name>
@@ -123,6 +151,13 @@ module.exports = function (grunt) {
 
 <a name="gulpfile"><a>
 #### Gulpfile
+
+```bash
+kiss <path.to.filename.wo_extension> gulp
+```
+
+###### Output
+
 ```javascript
 /**
  *
@@ -152,6 +187,13 @@ module.exports = function (grunt) {
 
 <a name="task"><a>
 #### Grunt's task (load-grunt-config)
+
+```bash
+kiss <path.to.filename.wo_extension> task
+```
+
+###### Output
+
 ```javascript
 /*jslint indent: 4 */
 /*global module */
@@ -166,6 +208,13 @@ module.exports = function (grunt, opts) {
 
 <a name="js"><a>
 #### JS script
+
+```bash
+kiss <path.to.filename.wo_extension> js
+```
+
+###### Output
+
 ```javascript
 /*jslint indent: 4, nomen: true, plusplus: true */
 /*globals require, module */
@@ -176,6 +225,13 @@ module.exports = function (grunt, opts) {
 ```
 
 #### very very simple PHP...
+
+```bash
+kiss <path.to.filename.wo_extension> php
+```
+
+###### Output
+
 ```php
 <?php
 ```
