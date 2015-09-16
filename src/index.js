@@ -24,7 +24,7 @@
             json: '_index.json.tpl',
             mocha: '_mocha.spec.js.tpl',
             php: '_index.php.tpl',
-            require: '_require.js.tpl'
+            requirejs: '_require.js.tpl'
         },
         // requires
         path = require('path'),
