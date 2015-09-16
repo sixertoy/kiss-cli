@@ -35,7 +35,7 @@
         gulp.watch(path.join(src, 'index.js'), ['build']);
     });
 
-    gulp.task('default', ['watch']);
+    gulp.task('default', ['build', 'watch']);
 
 
 

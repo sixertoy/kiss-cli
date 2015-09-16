@@ -33,6 +33,7 @@
     "mocha",
     "simple",
     "gulpfile",
+    "requirejs",
     "commonjs",
     "Gruntfile",
     "templates",
