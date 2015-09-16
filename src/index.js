@@ -5,7 +5,7 @@
 
     'use strict';
 
-    var semver = '0.1.18',
+    var semver = '0.1.29',
         keys,
         ext,
         yofile,
