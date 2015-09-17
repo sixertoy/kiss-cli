@@ -19,7 +19,7 @@
             grunt: '_gruntfile.js.tpl',
             gulp: '_gulpfile.js.tpl',
             html: '_index.html.tpl',
-            handlebars: '_handlebars.html.tpl',
+            hbs: '_handlebars.hbs.tpl',
             js: '_common.js.tpl',
             json: '_index.json.tpl',
             mocha: '_mocha.spec.js.tpl',

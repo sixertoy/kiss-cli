@@ -1,6 +1,6 @@
 {
   "name": "kiss-cli",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "description": "Command line to create files based on templates",
   "preferGlobal": true,
   "bin": {
