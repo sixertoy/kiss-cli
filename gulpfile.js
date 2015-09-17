@@ -12,31 +12,21 @@
         gulp = require('gulp'),
         path = require('path'),
         bump = require('gulp-bump'),
-        wrap = require('gulp-wrap'),
-        rename = require('gulp-rename'),
-        jshint = require('gulp-jshint');
+        jshint = require('gulp-jshint'),
+        stylish = require('jshint-stylish');
 
     gulp.task('bump', function () {
-        gulp.src('./package.json')
+        return gulp.src('./package.json')
             .pipe(bump())
             .pipe(gulp.dest('./'));
     });
 
-    gulp.task('build', function () {
-        gulp.src(path.join(src, 'index.js'))
+    gulp.task('lint', function(){
+        return gulp.src(path.join(src, '*.js'))
             .pipe(jshint('.jshintrc'))
-            .pipe(jshint.reporter('jshint-stylish'))
-            .pipe(wrap('#!/usr/bin/env node\n\n<%= contents %>'))
-            .pipe(rename(name))
-            .pipe(gulp.dest(dist));
+            .pipe(jshint.reporter('jshint-stylish'));
     });
 
-    gulp.task('watch', function () {
-        gulp.watch(path.join(src, 'index.js'), ['build']);
-    });
-
-    gulp.task('default', ['build', 'watch']);
-
-
+    gulp.task('default', ['lint']);
 
 }());
