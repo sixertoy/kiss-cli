@@ -5,7 +5,7 @@
 
     'use strict';
 
-    var semver = '0.1.29',
+    var semver = '0.1.31',
         keys,
         ext,
         yofile,
@@ -16,15 +16,16 @@
         cwd = process.cwd(),
         allowedTypes = {
             angular: '_angular.js.tpl',
-            js: '_index.js.tpl',
             grunt: '_gruntfile.js.tpl',
             gulp: '_gulpfile.js.tpl',
-            task: '_task.js.tpl',
             html: '_index.html.tpl',
+            handlebars: '_handlebars.html.tpl',
+            js: '_common.js.tpl',
             json: '_index.json.tpl',
             mocha: '_mocha.spec.js.tpl',
             php: '_index.php.tpl',
-            requirejs: '_require.js.tpl'
+            requirejs: '_require.js.tpl',
+            task: '_task.js.tpl'
         },
         // requires
         path = require('path'),
