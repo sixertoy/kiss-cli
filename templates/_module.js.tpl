@@ -5,8 +5,11 @@ define('name', [], function () {
     'use strict';
 
     var // variables
-        Module;
+        Module = {
 
+            onDomReady: function(){}
+
+        };
 
     return Module;
 

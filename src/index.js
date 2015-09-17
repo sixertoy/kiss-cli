@@ -24,7 +24,8 @@
             json: '_index.json.tpl',
             mocha: '_mocha.spec.js.tpl',
             php: '_index.php.tpl',
-            requirejs: '_require.js.tpl',
+            module: '_module.js.tpl',
+            amd: '_exports.js.tpl',
             task: '_task.js.tpl'
         },
         // requires
