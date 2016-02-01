@@ -1,14 +1,14 @@
 {
-    "angular": "_angular.js.tpl",
-    "grunt": "_gruntfile.js.tpl",
-    "gulp": "_gulpfile.js.tpl",
-    "html": "_index.html.tpl",
-    "hbs": "_handlebars.hbs.tpl",
-    "js": "_common.js.tpl",
-    "json": "_index.json.tpl",
-    "mocha": "_mocha.spec.js.tpl",
-    "php": "_index.php.tpl",
-    "module": "_module.js.tpl",
-    "amd": "_exports.js.tpl",
-    "task": "_task.js.tpl"
+    "angular": "./template/_angular.js.tpl",
+    "grunt": "./template/_gruntfile.js.tpl",
+    "gulp": "./template/_gulpfile.js.tpl",
+    "html": "./template/_index.html.tpl",
+    "hbs": "./template/_handlebars.hbs.tpl",
+    "js": "./template/_common.js.tpl",
+    "json": "./template/_index.json.tpl",
+    "mocha": "./template/_mocha.spec.js.tpl",
+    "php": "./template/_index.php.tpl",
+    "module": "./template/_module.js.tpl",
+    "amd": "./template/_exports.js.tpl",
+    "task": "./template/_task.js.tpl"
 }

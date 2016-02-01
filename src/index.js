@@ -14,6 +14,7 @@
         chalk = require('chalk'),
         fse = require('fs-extra'),
         program = require('commander'),
+        deepAssign = require('deep-assign'),
         allowedTypes = require('./../kiss.json');
 
     /**
@@ -24,7 +25,7 @@
     function kissOut(file, filetype) {
         try {
             extension = path.basename(allowedTypes[filetype], '.tpl').split('.').slice(1).join('.');
-            input = path.join(__dirname, '..', 'templates', allowedTypes[filetype]);
+            input = path.join(__dirname, '..', allowedTypes[filetype]);
             rstream = fse.createReadStream(input);
             output = path.join(cwd, (file + '.' + extension));
             fse.ensureFileSync(output);
