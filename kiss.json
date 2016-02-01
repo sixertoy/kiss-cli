@@ -1,0 +1,14 @@
+{
+    "angular": "_angular.js.tpl",
+    "grunt": "_gruntfile.js.tpl",
+    "gulp": "_gulpfile.js.tpl",
+    "html": "_index.html.tpl",
+    "hbs": "_handlebars.hbs.tpl",
+    "js": "_common.js.tpl",
+    "json": "_index.json.tpl",
+    "mocha": "_mocha.spec.js.tpl",
+    "php": "_index.php.tpl",
+    "module": "_module.js.tpl",
+    "amd": "_exports.js.tpl",
+    "task": "_task.js.tpl"
+}

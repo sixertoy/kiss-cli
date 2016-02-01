@@ -6,33 +6,15 @@
     'use strict';
 
     var semver = '0.1.31',
-        keys,
-        ext,
-        yofile,
-        heyfile,
-        rstream,
-        wstream,
+        keys, extension, output, input, rstream, wstream,
         description = '',
         cwd = process.cwd(),
-        allowedTypes = {
-            angular: '_angular.js.tpl',
-            grunt: '_gruntfile.js.tpl',
-            gulp: '_gulpfile.js.tpl',
-            html: '_index.html.tpl',
-            hbs: '_handlebars.hbs.tpl',
-            js: '_common.js.tpl',
-            json: '_index.json.tpl',
-            mocha: '_mocha.spec.js.tpl',
-            php: '_index.php.tpl',
-            module: '_module.js.tpl',
-            amd: '_exports.js.tpl',
-            task: '_task.js.tpl'
-        },
         // requires
         path = require('path'),
         chalk = require('chalk'),
         fse = require('fs-extra'),
-        program = require('commander');
+        program = require('commander'),
+        allowedTypes = require('./../kiss.json');
 
     /**
      *
@@ -41,12 +23,12 @@
      */
     function kissOut(file, filetype) {
         try {
-            ext = path.basename(allowedTypes[filetype], '.tpl').split('.').slice(1).join('.');
-            heyfile = path.join(__dirname, '..', 'templates', allowedTypes[filetype]);
-            rstream = fse.createReadStream(heyfile);
-            yofile = path.join(cwd, (file + '.' + ext));
-            fse.ensureFileSync(yofile);
-            wstream = fse.createWriteStream(yofile);
+            extension = path.basename(allowedTypes[filetype], '.tpl').split('.').slice(1).join('.');
+            input = path.join(__dirname, '..', 'templates', allowedTypes[filetype]);
+            rstream = fse.createReadStream(input);
+            output = path.join(cwd, (file + '.' + extension));
+            fse.ensureFileSync(output);
+            wstream = fse.createWriteStream(output);
             rstream.on('end', function () {
                 process.exit(0);
             });
@@ -67,7 +49,7 @@
 
     program
         .version(semver)
-        .usage('[filetype] [path/fo/file/wo_extension]')
+        .usage('[path/fo/file/wo_extension] [filetype]')
         .description(description)
         .parse(process.argv);
 
