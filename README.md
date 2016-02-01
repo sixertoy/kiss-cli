@@ -26,33 +26,11 @@ kiss <path/to/filename/wo_extension> <filetype>
 
 ## Available Templates
 
-- [Angular module](#angular)
 - [HTML page](#html)
-- [Mocha spec file](#test)
-- [Gruntfile](#gruntfile)
-- [Grunt's task](#task)
-- [Gulpfile](#gulp)
 - [JS Module](#js)
-
-<a name="angular"><a>
-#### Angular Module
-
-```bash
-kiss <path/to/filename/wo_extension> angular
-```
-
-###### Output
-
-```javascript
-/*jslint indent:4 */
-/*globals angular */
-(function(){
-    'use strict';
-    angular.module('moduleApp', [])
-        .controller('AppController', ['$scope', function ($scope) {
-        }]);
-}());
-```
+- [Mocha spec file](#test)
+- [Gulpfile](#gulp)
+- [Grunt's task](#task)
 
 <a name="html"><a>
 #### Simple HTML page
@@ -223,20 +201,6 @@ kiss <path/to/filename/wo_extension> js
     module.exports = {};
 }());
 ```
-
-#### very very simple PHP...
-
-```bash
-kiss <path/to/filename/wo_extension> php
-```
-
-###### Output
-
-```php
-<?php
-```
-
-> see temlates directory
 
 ## Issues
 

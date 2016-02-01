@@ -1,14 +1,8 @@
 {
-    "angular": "./template/_angular.js.tpl",
-    "grunt": "./template/_gruntfile.js.tpl",
-    "gulp": "./template/_gulpfile.js.tpl",
     "html": "./template/_index.html.tpl",
-    "hbs": "./template/_handlebars.hbs.tpl",
     "js": "./template/_common.js.tpl",
-    "json": "./template/_index.json.tpl",
+    "amd": "./template/_amd.js.tpl",
     "mocha": "./template/_mocha.spec.js.tpl",
-    "php": "./template/_index.php.tpl",
-    "module": "./template/_module.js.tpl",
-    "amd": "./template/_exports.js.tpl",
-    "task": "./template/_task.js.tpl"
+    "gulp": "./template/_gulpfile.js.tpl",
+    "grunt": "./template/_task.js.tpl"
 }
