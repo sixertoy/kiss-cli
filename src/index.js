@@ -30,6 +30,10 @@
         // kiss-cli absolute path
         mcwd = module.id.split(path.sep).slice(0, -2).join(path.sep);
 
+    function _getUserHome() {
+        return process.env.HOME || process.env.USERPROFILE;
+    }
+
     /**
      *
      * Stop process if an error
@@ -86,7 +90,7 @@
         var value,
             results = {},
             copy = [].concat(files);
-        while(copy.length) {
+        while (copy.length) {
             value = copy.splice(0, 1)[0];
             results[value.split('.')[0]] = path.join(filepath, value);
         }
@@ -112,6 +116,19 @@
             _throwAbortedError('unable to scan dir: ' + currentpath);
         }
         results = assign(results, files);
+
+        // iterates through user home directory
+        currentpath = _getUserHome();
+        currentpath = path.join(currentpath, dir);
+        try {
+            files = fs.readdirSync(currentpath);
+            files = _removeExcluded(files);
+            files = _populatedWithPath(files, currentpath);
+        } catch (e) {
+            files = {};
+        }
+        results = assign(results, files);
+
         // iterates trough current working directory templates
         currentpath = path.join(cwd, dir);
         try {
@@ -175,7 +192,7 @@
     Object.keys(allowedTypes).forEach(function (key) {
         description += newline + '\t' + key;
         if (usedebug) {
-            description += chalk.green( ' ' + allowedTypes[key]);
+            description += chalk.green(' ' + allowedTypes[key]);
         }
     });
     // setup help logs
