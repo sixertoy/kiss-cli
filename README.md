@@ -20,241 +20,64 @@ npm install -g kiss-cli
 
 > **must be installed globally**
 
+## Customs Templates
+
+If you want to use your own templates for a single project:
+- Create a .kiss folder at the root directory of your project
+- Then add your own templates files
+
 ## Usage
 
 ```bash
-kiss <path/to/filename/wo_extension> <filetype>
+kiss <filetype> <relative/path/to/output/file>
 ```
 
-## Available Templates
-
-- [Angular module](#angular)
-- [HTML page](#html)
-- [Mocha spec file](#test)
-- [Gruntfile](#gruntfile)
-- [Grunt's task](#task)
-- [Gulpfile](#gulp)
-- [JS Module](#js)
-
-<a name="angular"><a>
-#### Angular Module
+## Options
 
 ```bash
-kiss <path/to/filename/wo_extension> angular
+# Show help with list of available tempates
+kiss -h
+kiss --help
+# Show help with templates paths
+kiss -d
+kiss --debug
+# Show available templates and theirs paths
+kiss -s
+kiss --show
+# Show template content
+kiss -s amd
+kiss --show amd
 ```
 
-###### Output
+## Defaults Templates Types
 
-```javascript
-/*jslint indent:4 */
-/*globals angular */
-(function(){
-    'use strict';
-    angular.module('moduleApp', [])
-        .controller('AppController', ['$scope', function ($scope) {
-        }]);
-}());
-```
+- **amd**
+> an AMD module
+- **angular-module**
+> a Angular module
+- **grunt-task**
+> a simple Grunt's task
+- **gruntfile**
+> base for a Gruntfile
+- **gulpfile**
+> base for a Gulpfile
+- **html**
+> a simple HTML page
+- **js**
+> a simple CommonJS module
+- **mocha**
+> base for Mocha test file
 
-<a name="html"><a>
-#### Simple HTML page
-
-```bash
-kiss <path/to/filename/wo_extension> html
-```
-
-###### Output
-
-```html
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <title></title>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
-    <!-- styles -->
-</head>
-<body>
-    <div class="before-body">
-        <!--[if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    </div>
-    <div class="">
-        <!-- content -->
-    </div>
-    <div class="after-body">
-        <!-- scripts -->
-    </div>
-</body>
-</html>
-```
-
-<a name="test"><a>
-#### Mocha spec file
-
-```bash
-kiss <path/to/filename/wo_extension> mocha
-```
-
-###### Output
-
-```javascript
-/*jshint unused: false */
-/*jslint indent: 4, nomen: true */
-/*global __dirname, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */
-(function () {
-    'use strict';
-    var result, helper,
-        cwd = process.cwd(),
-        path = require('path'),
-        expect = require('chai').expect,
-        helper = require(path.join(cwd));
-    describe('helper', function () {
-        beforeEach(function(){});
-        afterEach(function(){});
-        describe('Method', function () {
-            it('Expect something', function(){
-                expect(function(){
-                    result = helper.render();
-                }).toThrow();
-            });
-        });
-    });
-}());
-```
-
-<a name="gruntfile"><a>
-#### Gruntfile ([load-grunt-config](https://www.npmjs.com/package/load-grunt-config))
-
-```bash
-kiss <path/to/filename/wo_extension> grunt
-```
-
-###### Output
-
-```javascript
-/**
- * <project_name>
- * <project_repo>
- *
- * Copyright (c) <year> <username>
- * Licensed under the MIT license.
- *
- */
-/*jslint indent: 4 */
-/*global module, require */
-module.exports = function (grunt) {
-    'use strict';
-    require('load-grunt-config')(grunt);
-};
-```
-
-<a name="gulp"><a>
-#### Gulpfile
-
-```bash
-kiss <path/to/filename/wo_extension> gulp
-```
-
-###### Output
-
-```javascript
-/**
- *
- * Install Locals Dev
- * npm install gulp gulp-jshint jshint-stylish --save-dev
- *
- */
-/*jslint indent: 4, nomen: true, plusplus: true */
-/*globals require, module */
-(function () {
-    'use strict';
-    var // variables
-        src = './src',
-        dest = './build',
-        // requires
-        gulp = require('gulp'),
-        path = require('path'),
-        jshint = require('gulp-jshint');
-    gulp.task('default', function(){
-        gulp.src(path.join(src))
-            .pipe(jshint('.jshintrc'))
-            .pipe(jshint.reporter('jshint-stylish'))
-            .pipe(gulp.dest(dest))
-    });
-}());
-```
-
-<a name="task"><a>
-#### Grunt's task (load-grunt-config)
-
-```bash
-kiss <path/to/filename/wo_extension> task
-```
-
-###### Output
-
-```javascript
-/*jslint indent: 4 */
-/*global module */
-module.exports = function (grunt, opts) {
-    'use strict';
-    return {
-        options: {},
-        all:{}
-    };
-};
-```
-
-<a name="js"><a>
-#### JS Module
-
-```bash
-kiss <path/to/filename/wo_extension> js
-```
-
-###### Output
-
-```javascript
-/*jslint indent: 4, nomen: true, plusplus: true */
-/*globals require, module */
-(function(){
-    'use strict';
-    module.exports = {};
-}());
-```
-
-#### very very simple PHP...
-
-```bash
-kiss <path/to/filename/wo_extension> php
-```
-
-###### Output
-
-```php
-<?php
-```
-
-> see temlates directory
+**See content of ```.kiss``` directory to learn more**
 
 ## Issues
 
 - Overwrite existing file by default
-- Not tested under UNIX
 - No Mocha tests
-
-## Contributing
-
-- Add file template inside ./templates
-- Your template must be name <name>.<extension>.tpl
-- Update README.md
-- Make an individual pull request for each suggestion
 
 ## History
 
+- v0.1.34 a directory ```.kiss``` in cwd can now be used to override defaults templates
 - v0.1.24 Fix install 'npm install -g kiss-cli'
 - v0.1.22 Add gulpfile template
 - v0.1.16 Fix NPM install...
