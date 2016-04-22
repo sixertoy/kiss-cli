@@ -4,7 +4,7 @@
   "description": "Command line to create files based on templates",
   "preferGlobal": true,
   "bin": {
-    "kiss": "./bin/_kiss"
+    "kiss": "./bin/kiss"
   },
   "license": "MIT",
   "repository": "sixertoy/kiss-cli",

@@ -50,15 +50,16 @@
 
     program
         .version(semver)
-        .usage('[path/fo/file/wo_extension] [filetype]')
+        .usage('[path/to/output/file] [filetype]')
         .description(description)
         .parse(process.argv);
 
+    // if no args will output an error
     if (program.args.length < 1) {
+        // error
         process.stderr.write(chalk.bold.red('Error: ') + chalk.red('missing arguments\n'));
         program.outputHelp();
         process.exit(1);
-        // error
     }
 
     // si le file type n'est pas present
@@ -70,10 +71,10 @@
     */
 
     if (Object.keys(allowedTypes).indexOf(program.args[1]) < 0) {
+        // error
         process.stderr.write(chalk.bold.red('Error: ') + chalk.red('invalid file type'));
         program.outputHelp();
         process.exit(1);
-        // error
     }
 
     kissOut(program.args[0], program.args[1]);
