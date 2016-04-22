@@ -1,9 +1,4 @@
-/**
- *
- * Install Locals Dev
- * npm install grunt load-grunt-config --save-dev
- *
- */
+/* global module, require */
 /**
  * <project_name>
  * <project_repo>
@@ -12,9 +7,11 @@
  * Licensed under the MIT license.
  *
  */
-/*jslint indent: 4 */
-/*global module, require */
 module.exports = function (grunt) {
+
     'use strict';
+
+    // npm install grunt load-grunt-config --save-dev
     require('load-grunt-config')(grunt);
+
 };

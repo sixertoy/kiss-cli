@@ -14,7 +14,6 @@
         chalk = require('chalk'),
         fse = require('fs-extra'),
         program = require('commander'),
-        deepAssign = require('deep-assign'),
         allowedTypes = require('./../kiss.json');
 
     /**

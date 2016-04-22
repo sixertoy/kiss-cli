@@ -1,5 +1,4 @@
-/*jslint indent:4 */
-/*globals angular */
+/* global angular */
 (function () {
 
     'use strict';

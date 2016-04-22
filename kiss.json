@@ -1,8 +1,10 @@
 {
-    "html": "./template/_index.html.tpl",
-    "js": "./template/_common.js.tpl",
-    "amd": "./template/_amd.js.tpl",
-    "mocha": "./template/_mocha.spec.js.tpl",
-    "gulp": "./template/_gulpfile.js.tpl",
-    "grunt": "./template/_task.js.tpl"
+    "amd": "./.kiss/_amd.js",
+    "angular": "./.kiss/_angular-module.js",
+    "grunt-task": "./.kiss/_grunt-task.js",
+    "gruntfile": "./.kiss/_gruntfile.js",
+    "gulp": "./.kiss/_gulpfile.js",
+    "html": "./.kiss/_html.html",
+    "js": "./.kiss/_commonjs.js",
+    "mocha": "./.kiss/_mocha.spec.js"
 }
