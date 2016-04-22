@@ -1,18 +1,23 @@
-/* globals process, require */
+/*globals process, require */
 (function () {
 
     'use strict';
 
-    var semver = '0.1.31',
+    // kiss-cli absolute path
+    var path = require('path'),
+        mcwd = module.id.split(path.sep).slice(0, -2).join(path.sep),
+        //
+        pkg = require(path.join(mcwd, 'package.json')),
+        semver = pkg.version,
         // requires
         fs = require('fs'),
-        path = require('path'),
         chalk = require('chalk'),
         fse = require('fs-extra'),
         program = require('commander'),
         assign = require('deep-assign'),
         // variables
         valid = false,
+        useshow = false,
         usedebug = false,
         // file and type defined by cli arguments
         argFile = false,
@@ -24,9 +29,7 @@
         // current working dir
         cwd = process.cwd(),
         // description to show on kiss --help
-        description = 'Filetypes:',
-        // kiss-cli absolute path
-        mcwd = module.id.split(path.sep).slice(0, -2).join(path.sep);
+        description = 'Filetypes:';
 
     function _getUserHome() {
         return process.env.HOME || process.env.USERPROFILE;
@@ -42,7 +45,6 @@
     function _throwAbortedError(msg) {
         process.stderr.write(chalk.bold.red('Error: ') + chalk.red(msg + '\n'));
         program.outputHelp();
-        process.exit(1);
     }
 
     /**
@@ -112,6 +114,7 @@
             files = _populatedWithPath(files, currentpath);
         } catch (e) {
             _throwAbortedError('unable to scan dir: ' + currentpath);
+            process.exit(1);
         }
         results = assign(results, files);
 
@@ -175,11 +178,13 @@
     // setup help and options
     program
         .version(semver)
-        .option('-d, --debug', 'Show files paths')
+        .option('-S, --show', 'Show availables templates')
+        .option('-D, --debug', 'Full debug')
         .usage('[filetype] [path/to/output/file]')
         .parse(process.argv);
 
     // setup debug
+    useshow = program.show || false;
     usedebug = program.debug || false;
 
     // will iterates trough directories
@@ -189,25 +194,57 @@
     // populate description for help log
     Object.keys(allowedTypes).forEach(function (key) {
         description += newline + '\t' + key;
-        if (usedebug) {
+        if (usedebug || useshow) {
             description += chalk.green(' ' + allowedTypes[key]);
         }
     });
     // setup help logs
     program.description(description);
 
+    // show availables templates
+    valid = useshow;
+    valid = valid && !program.args.length;
+    if (valid) {
+        console.log(description);
+        process.exit(0);
+    }
+
+    // debug
+    valid = usedebug;
+    valid = valid && !program.args.length;
+    if (valid) {
+        program.outputHelp();
+        process.exit(0);
+    }
+
     // if no args will output an error
-    valid = (program.args.length > 1);
+    valid = (program.args.length >= 1);
     if (!valid) {
         _throwAbortedError('missing arguments');
+        process.exit(1);
     }
 
     argType = program.args[0];
-    argFile = program.args[1];
-    // if argument is not a allowed file type
+    // show tempate content
+    valid = (program.args.length > 0 && useshow);
     valid = (Object.keys(allowedTypes).indexOf(argType) >= 0);
+    if (valid) {
+        console.log('argType', argType);
+        process.exit(0);
+    }
+
+    // if argument is not a allowed file type
+    valid = (program.args.length > 1);
     if (!valid) {
         _throwAbortedError('invalid file type');
+        process.exit(1);
+    }
+
+    argFile = program.args[1];
+    valid = valid && (Object.keys(allowedTypes).indexOf(argType) >= 0);
+    if (!valid) {
+        _throwAbortedError('invalid file type');
+        process.exit(1);
     }
 
     _kissOut(argFile, argType);

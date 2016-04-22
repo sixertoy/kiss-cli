@@ -38,19 +38,6 @@ If you want to use your own templates for a single project:
 kiss <filetype> <relative/path/to/output/file>
 ```
 
-### Options
-
-```bash
-# Show help with list of available tempates
-kiss --help
-# Show help with templates paths
-kiss --debug
-# Show available templates and theirs paths
-kiss --show
-# Show template content
-kiss --show amd
-```
-
 ## Defaults Templates Types
 
 - **amd**
@@ -70,7 +57,18 @@ kiss --show amd
 - **mocha**
 > base for Mocha test file
 
-**See content of ```.kiss``` directory to learn more**
+## Options
+
+```bash
+# Show help with templates paths
+kiss -S
+kiss --debug
+# Show available templates and theirs paths
+kiss -S
+kiss --show
+# Show template content
+kiss -S amd
+```
 
 ## Issues
 
