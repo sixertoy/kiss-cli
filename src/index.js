@@ -145,6 +145,26 @@
 
     /**
      *
+     *
+     *
+     */
+    function _kissOutContent(filetype) {
+        var input, output;
+        try {
+            // get template filename
+            input = allowedTypes[filetype];
+            // get template content
+            output = fs.readFileSync(input, 'utf8');
+            // output file content to console
+            console.log(chalk.gray(output));
+        } catch (e) {
+            _throwAbortedError('unable to write file');
+            process.exit(1);
+        }
+    }
+
+    /**
+     *
      * Write File
      *
      */
@@ -172,6 +192,7 @@
             rstream.pipe(wstream);
         } catch (e) {
             _throwAbortedError('unable to write file');
+            process.exit(1);
         }
     }
 
@@ -227,9 +248,9 @@
     argType = program.args[0];
     // show tempate content
     valid = (program.args.length > 0 && useshow);
-    valid = (Object.keys(allowedTypes).indexOf(argType) >= 0);
+    valid = valid && (Object.keys(allowedTypes).indexOf(argType) >= 0);
     if (valid) {
-        console.log('argType', argType);
+        _kissOutContent(argType);
         process.exit(0);
     }
 
