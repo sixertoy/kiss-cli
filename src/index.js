@@ -1,6 +1,4 @@
-/*jslint indent: 4, nomen: true */
-/*globals process, require, __dirname */
-
+/* globals process, require */
 (function () {
 
     'use strict';

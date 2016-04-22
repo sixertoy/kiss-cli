@@ -22,9 +22,15 @@ npm install -g kiss-cli
 
 ## Customs Templates
 
+### All Projects of an user
+If you want to use your own templates for all of your projects:
+- Create a ```.kiss``` folder in your home directory
+- Then add your own templates files inside it
+
+### Single Project
 If you want to use your own templates for a single project:
-- Create a .kiss folder at the root directory of your project
-- Then add your own templates files
+- Create a ```.kiss``` folder in the root directory of your project
+- Then add your own templates files inside it
 
 ## Usage
 
@@ -32,20 +38,16 @@ If you want to use your own templates for a single project:
 kiss <filetype> <relative/path/to/output/file>
 ```
 
-## Options
+### Options
 
 ```bash
 # Show help with list of available tempates
-kiss -h
 kiss --help
 # Show help with templates paths
-kiss -d
 kiss --debug
 # Show available templates and theirs paths
-kiss -s
 kiss --show
 # Show template content
-kiss -s amd
 kiss --show amd
 ```
 
