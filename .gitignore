@@ -206,4 +206,4 @@ bower_components/
 #
 # #########################
 temp/
-/bin/kiss
+!/bin/kiss
