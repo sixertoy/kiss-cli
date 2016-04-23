@@ -1,6 +1,6 @@
 {
   "name": "kiss-cli",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "description": "Command line to create files based on templates",
   "preferGlobal": true,
   "bin": {
@@ -44,7 +44,6 @@
     "tests"
   ],
   "dependencies": {
-    "chalk": "^1.1.0",
     "commander": "^2.8.1",
     "deep-assign": "^2.0.0",
     "fs-extra": "^0.23.1"

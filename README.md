@@ -28,6 +28,8 @@ kiss <template_file> <relative/path/to/output/file>
 
 ## Customs Templates
 
+:warning: **All custom snippets in a .kiss folder must have executable rights**
+
 ### All Projects of an user
 If you want to use your own templates for all of your projects:
 - Create a ```.kiss``` folder in your home directory
@@ -57,6 +59,10 @@ If you want to use your own templates for a single project:
 - **mocha**
 > base for Mocha test file
 
+### Priorities
+
+Project Templates > User Templates > .kiss templates
+
 ## Options
 
 ```bash
@@ -72,12 +78,13 @@ kiss -S amd
 
 ## Issues
 
-- Overwrite existing file by default
 - No Mocha tests
+- Overwrite existing file by default without prompts
 
 ## History
 
-- v0.1.34 a directory ```.kiss``` in cwd can now be used to override defaults templates
+- v0.1.36 remove chalk module
+- v0.1.34 a directory ```.kiss``` in project or home folder can now be used to override defaults templates - :warning: chmod -R 0755
 - v0.1.24 Fix install 'npm install -g kiss-cli'
 - v0.1.22 Add gulpfile template
 - v0.1.16 Fix NPM install...

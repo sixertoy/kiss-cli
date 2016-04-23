@@ -9,9 +9,10 @@
         //
         pkg = require(path.join(mcwd, 'package.json')),
         semver = pkg.version,
+        //
+        colors = require('./colors'),
         // requires
         fs = require('fs'),
-        chalk = require('chalk'),
         fse = require('fs-extra'),
         program = require('commander'),
         assign = require('deep-assign'),
@@ -43,7 +44,8 @@
      *
      */
     function _throwAbortedError(msg) {
-        process.stderr.write(chalk.bold.red('Error: ') + chalk.red(msg + '\n'));
+        var value = colors.red('Error: ') + colors.red(msg + '\n');
+        process.stderr.write(value);
         program.outputHelp();
     }
 
@@ -156,7 +158,7 @@
             // get template content
             output = fs.readFileSync(input, 'utf8');
             // output file content to console
-            console.log(chalk.gray(output));
+            console.log(colors.gray(output));
         } catch (e) {
             _throwAbortedError('unable to write file');
             process.exit(1);
@@ -184,7 +186,7 @@
             // on stream end output debug
             rstream.on('end', function () {
                 if (usedebug) {
-                    console.log(chalk.green('file: ' + output + ' has been written'));
+                    console.log(colors.green('file: ' + output + ' has been written'));
                 }
                 process.exit(0);
             });
@@ -216,7 +218,7 @@
     Object.keys(allowedTypes).forEach(function (key) {
         description += newline + '\t' + key;
         if (usedebug || useshow) {
-            description += chalk.green(' ' + allowedTypes[key]);
+            description += colors.green(' ' + allowedTypes[key]);
         }
     });
     // setup help logs
