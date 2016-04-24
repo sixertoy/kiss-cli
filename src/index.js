@@ -1,11 +1,11 @@
-/*globals process, require */
+/*globals process, require, __dirname */
 (function () {
 
     'use strict';
 
     // kiss-cli absolute path
     var path = require('path'),
-        mcwd = module.id.split(path.sep).slice(0, -2).join(path.sep),
+        mcwd = path.join(__dirname, '..'),
         //
         pkg = require(path.join(mcwd, 'package.json')),
         semver = pkg.version,
