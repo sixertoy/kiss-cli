@@ -19,8 +19,6 @@
         assign = require('deep-assign'),
         // variables
         valid = false,
-        useshow = false,
-        usedebug = false,
         // file and type defined by cli arguments
         argFile = false,
         argType = false,
@@ -46,8 +44,8 @@
      */
     function _throwAbortedError(msg) {
         var value = colors.red('Error: ') + colors.red(msg + '\n');
-        process.stderr.write(value);
         program.outputHelp();
+        process.stderr.write(value);
     }
 
     /**
@@ -116,7 +114,7 @@
             files = _removeExcluded(files);
             files = _populatedWithPath(files, currentpath);
         } catch (e) {
-            _throwAbortedError('unable to scan dir: ' + currentpath);
+            _throwAbortedError('Unable to scan dir: ' + currentpath);
             process.exit(1);
         }
         results = assign(results, files);
@@ -150,7 +148,7 @@
      *
      *
      */
-    function _kissOutContent(filetype) {
+    function _print(filetype) {
         var input, output;
         try {
             // get template filename
@@ -170,7 +168,7 @@
      * Write File
      *
      */
-    function _kissOut(file, filetype) {
+    function _write(file, filetype) {
         var input, output, rstream, wstream;
         try {
             // get template filename
@@ -182,34 +180,21 @@
             // check if file can be writtent
             fse.ensureFileSync(output);
             // write template content into output
+            input = '.' + path.sep + path.relative(cwd, output);
+            console.log(colors.gray('Written: ' + input));
             wstream = fse.createWriteStream(output);
             // on stream end output debug
             rstream.on('end', function () {
-                if (usedebug) {
-                    console.log(colors.green('file: ' + output + ' has been written'));
-                }
+                console.log(colors.green('Success!'));
                 process.exit(0);
             });
             // write stream
             rstream.pipe(wstream);
         } catch (e) {
-            _throwAbortedError('unable to write file');
+            _throwAbortedError('Unable to write file');
             process.exit(1);
         }
     }
-
-    // setup help and options
-    program
-        .version(semver)
-        .option('-S, --show', 'Show availables templates')
-        .option('-D, --debug', 'Full debug')
-        .usage('[filetype] [path/to/output/file]')
-        .parse(process.argv);
-
-    // setup debug
-    useshow = program.show || false;
-    usedebug = program.debug || false;
-
     // will iterates trough directories
     // to get templates files
     allowedTypes = _getAllowedTypes();
@@ -217,59 +202,58 @@
     // populate description for help log
     Object.keys(allowedTypes).forEach(function (key) {
         description += newline + '\t' + key;
-        if (usedebug || useshow) {
-            description += colors.green(' ' + allowedTypes[key]);
-        }
+        description += colors.green(' ' + allowedTypes[key]);
     });
-    // setup help logs
-    program.description(description);
 
-    // show availables templates
-    valid = useshow;
-    valid = valid && !program.args.length;
+    // setup help and options
+    program
+        .version(semver)
+        .option('-S, --show', 'Show availables templates')
+        .description(description)
+        .usage('[path/to/output/file] [filetype]')
+        .parse(process.argv);
+
+    // options -S or --show
+    valid = program.show;
     if (valid) {
-        console.log(description);
-        process.exit(0);
-    }
-
-    // debug
-    valid = usedebug;
-    valid = valid && !program.args.length;
-    if (valid) {
-        program.outputHelp();
-        process.exit(0);
-    }
-
-    // if no args will output an error
-    valid = (program.args.length >= 1);
-    if (!valid) {
-        _throwAbortedError('missing arguments');
+        // if no arguments
+        // show availables templates
+        if (!program.args.length) {
+            console.log(description);
+            process.exit(0);
+        }
+        // if arguments and first arguments is a valid type
+        // show content of a template type
+        valid = program.args.length >= 1;
+        valid = valid && allowedTypes.hasOwnProperty(program.args[0]);
+        if (valid) {
+            _print(program.args[0]);
+            process.exit(0);
+        }
+        // more than 1 arguments with command --show or -S
+        // will throw an error
+        _throwAbortedError('Wrong arguments');
         process.exit(1);
     }
 
-    argType = program.args[1];
-    // show tempate content
-    valid = (program.args.length > 0 && useshow);
-    valid = valid && (Object.keys(allowedTypes).indexOf(argType) >= 0);
-    if (valid) {
-        _kissOutContent(argType);
-        process.exit(0);
-    }
-
-    // if argument is not a allowed file type
-    valid = (program.args.length > 1);
+    // if no arguments
+    valid = program.args.length >= 2;
     if (!valid) {
-        _throwAbortedError('invalid file type');
+        _throwAbortedError('Missing arguments');
         process.exit(1);
     }
 
     argFile = program.args[0];
-    valid = valid && (Object.keys(allowedTypes).indexOf(argType) >= 0);
+    argType = program.args[1];
+
+    // if type is not a valid template type
+    valid = allowedTypes.hasOwnProperty(argType);
     if (!valid) {
-        _throwAbortedError('invalid file type');
+        _throwAbortedError('Invalid template file');
         process.exit(1);
     }
 
-    _kissOut(argFile, argType);
+    // write file
+    _write(argFile, argType);
 
 }());

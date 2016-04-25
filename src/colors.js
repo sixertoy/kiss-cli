@@ -10,11 +10,11 @@
         red: function (msg) {
             return colors.__getColor(msg, 31);
         },
-        grey: function (msg) {
-            return this.gray(msg);
-        },
         gray: function (msg) {
             return colors.__getColor(msg, 90);
+        },
+        grey: function (msg) {
+            return this.gray(msg);
         },
         blue: function (msg) {
             return colors.__getColor(msg, 34);
