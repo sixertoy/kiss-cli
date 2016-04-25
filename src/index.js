@@ -136,11 +136,12 @@
         // iterates trough current working directory templates
         currentpath = lookup('.kiss');
         if (currentpath) {
+            files = fs.readdirSync(currentpath);
             files = _removeExcluded(files);
             files = _populatedWithPath(files, currentpath);
+            results = assign(results, files);
         }
 
-        results = assign(results, files);
         return results;
     }
 
