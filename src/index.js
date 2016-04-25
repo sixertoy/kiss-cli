@@ -247,7 +247,7 @@
         process.exit(1);
     }
 
-    argType = program.args[0];
+    argType = program.args[1];
     // show tempate content
     valid = (program.args.length > 0 && useshow);
     valid = valid && (Object.keys(allowedTypes).indexOf(argType) >= 0);
@@ -263,7 +263,7 @@
         process.exit(1);
     }
 
-    argFile = program.args[1];
+    argFile = program.args[0];
     valid = valid && (Object.keys(allowedTypes).indexOf(argType) >= 0);
     if (!valid) {
         _throwAbortedError('invalid file type');

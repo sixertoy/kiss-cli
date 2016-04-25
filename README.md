@@ -23,7 +23,7 @@ npm install -g kiss-cli
 ## Usage
 
 ```bash
-kiss <template_file> <relative/path/to/output/file>
+kiss <relative/path/to/output/file> <type> 
 ```
 
 ## Customs Templates
