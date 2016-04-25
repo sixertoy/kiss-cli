@@ -28,7 +28,7 @@ kiss <relative/path/to/output/file> <type>
 
 ## Customs Templates
 
-:warning: **All custom snippets in a .kiss folder must have executable rights**
+:warning: **Check files permissions**
 
 ### All Projects of an user
 If you want to use your own templates for all of your projects:
@@ -66,12 +66,8 @@ Project Templates > User Templates > .kiss templates
 ## Options
 
 ```bash
-# Show help with templates paths
-kiss -S
-kiss --debug
 # Show available templates and theirs paths
 kiss -S
-kiss --show
 # Show template content
 kiss -S amd
 ```
@@ -83,6 +79,7 @@ kiss -S amd
 
 ## History
 
+- v0.1.39 fix project root + invert type and file arguments
 - v0.1.36 remove chalk module
 - v0.1.34 a directory ```.kiss``` in project or home folder can now be used to override defaults templates - :warning: chmod -R 0755
 - v0.1.24 Fix install 'npm install -g kiss-cli'
