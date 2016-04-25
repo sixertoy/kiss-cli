@@ -10,6 +10,7 @@
         pkg = require(path.join(mcwd, 'package.json')),
         semver = pkg.version,
         //
+        lookup = require('./lookup'),
         colors = require('./colors'),
         // requires
         fs = require('fs'),
@@ -72,7 +73,7 @@
             ],
             results = [].concat(files);
         while (excludes.length) {
-            value = excludes.splice(0, 1)[0];
+            value = excludes.pop();
             indexof = results.indexOf(value);
             if (indexof >= 0) {
                 results.splice(indexof, 1);
@@ -93,7 +94,7 @@
             results = {},
             copy = [].concat(files);
         while (copy.length) {
-            value = copy.splice(0, 1)[0];
+            value = copy.pop();
             results[value.split('.')[0]] = path.join(filepath, value);
         }
         return results;
@@ -133,14 +134,12 @@
         results = assign(results, files);
 
         // iterates trough current working directory templates
-        currentpath = path.join(cwd, dir);
-        try {
-            files = fs.readdirSync(currentpath);
+        currentpath = lookup('.kiss');
+        if (currentpath) {
             files = _removeExcluded(files);
             files = _populatedWithPath(files, currentpath);
-        } catch (e) {
-            files = {};
         }
+
         results = assign(results, files);
         return results;
     }
