@@ -81,7 +81,7 @@ kiss -S amd
 
 - v0.1.39 fix project root + invert type and file arguments
 - v0.1.36 remove chalk module
-- v0.1.34 a directory ```.kiss``` in project or home folder can now be used to override defaults templates - :warning: chmod -R 0755
+- v0.1.34 a directory ```.kiss``` in project or home folder can now be used to override defaults templates
 - v0.1.24 Fix install 'npm install -g kiss-cli'
 - v0.1.22 Add gulpfile template
 - v0.1.16 Fix NPM install...
