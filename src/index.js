@@ -3,11 +3,15 @@
 
     'use strict';
 
-    // kiss-cli absolute path
-    var path = require('path'),
-        mcwd = path.join(__dirname, '..'),
+    // unix end line to show in console
+    var NEW_LINE = '\n',
+        // current working dir
+        CURRENT_WD = process.cwd(),
+        // kiss-cli absolute path
+        path = require('path'),
+        modulepath = path.join(__dirname, '..'),
         //
-        pkg = require(path.join(mcwd, 'package.json')),
+        pkg = require(path.join(modulepath, 'package.json')),
         semver = pkg.version,
         //
         lookup = require('./lookup'),
@@ -23,15 +27,11 @@
         argFile = false,
         argType = false,
         // array containing templates names and tamplates paths
-        allowedTypes = false,
-        // unix end line to show in console
-        newline = '\n',
-        // current working dir
-        cwd = process.cwd(),
+        types = false,
         // description to show on kiss --help
         description = 'Filetypes:';
 
-    function _getUserHome() {
+    function homeuser() {
         return process.env.HOME || process.env.USERPROFILE;
     }
 
@@ -43,7 +43,7 @@
      *
      */
     function _throwAbortedError(msg) {
-        var value = colors.red('Error: ') + colors.red(msg + '\n');
+        var value = colors.red('Error: ') + colors.red(msg + NEW_LINE);
         program.outputHelp();
         process.stderr.write(value);
     }
@@ -103,12 +103,12 @@
      * Return allowed types for help logs
      *
      */
-    function _getAllowedTypes() {
+    function _getSnippetTypes(shorten) {
         var files, currentpath,
             results = {},
             dir = '.kiss';
         // iterates trough kiss module templates
-        currentpath = path.join(mcwd, dir);
+        currentpath = path.join(modulepath, dir);
         try {
             files = fs.readdirSync(currentpath);
             files = _removeExcluded(files);
@@ -120,7 +120,7 @@
         results = assign(results, files);
 
         // iterates through user home directory
-        currentpath = _getUserHome();
+        currentpath = homeuser();
         currentpath = path.join(currentpath, dir);
         try {
             files = fs.readdirSync(currentpath);
@@ -148,11 +148,11 @@
      *
      *
      */
-    function _print(filetype) {
+    function _print(filetype, types) {
         var input, output;
         try {
             // get template filename
-            input = allowedTypes[filetype];
+            input = types[filetype];
             // get template content
             output = fs.readFileSync(input, 'utf8');
             // output file content to console
@@ -163,24 +163,38 @@
         }
     }
 
+    function _describe(types) {
+        // populate description for help log
+        var key,
+            desc = '',
+            home = homeuser(),
+            keys = Object.keys(types).sort();
+        while (keys.length) {
+            key = keys.shift();
+            desc += NEW_LINE + '\t' + key;
+            desc += colors.green(' ' + types[key].replace(home, '~'));
+        }
+        return desc;
+    }
+
     /**
      *
      * Write File
      *
      */
-    function _write(file, filetype) {
+    function _write(file, filetype, types) {
         var input, output, rstream, wstream;
         try {
             // get template filename
-            input = allowedTypes[filetype];
+            input = types[filetype];
             // get template content
             rstream = fse.createReadStream(input);
             // get output filepath
-            output = path.join(cwd, file);
+            output = path.join(CURRENT_WD, file);
             // check if file can be writtent
             fse.ensureFileSync(output);
             // write template content into output
-            input = '.' + path.sep + path.relative(cwd, output);
+            input = '.' + path.sep + path.relative(CURRENT_WD, output);
             console.log(colors.gray('Written: ' + input));
             wstream = fse.createWriteStream(output);
             // on stream end output debug
@@ -197,23 +211,19 @@
     }
     // will iterates trough directories
     // to get templates files
-    allowedTypes = _getAllowedTypes();
+    types = _getSnippetTypes();
 
-    // populate description for help log
-    Object.keys(allowedTypes).forEach(function (key) {
-        description += newline + '\t' + key;
-        description += colors.green(' ' + allowedTypes[key]);
-    });
+    description += _describe(types);
 
     // setup help and options
     program
         .version(semver)
-        .option('-S, --show', 'Show availables templates')
+        .option('-D, --debug', 'Show availables templates')
         .description(description)
         .usage('[path/to/output/file] [filetype]')
         .parse(process.argv);
 
-    // options -S or --show
+    // options -D or --debug
     valid = program.show;
     if (valid) {
         // if no arguments
@@ -225,12 +235,12 @@
         // if arguments and first arguments is a valid type
         // show content of a template type
         valid = program.args.length >= 1;
-        valid = valid && allowedTypes.hasOwnProperty(program.args[0]);
+        valid = valid && types.hasOwnProperty(program.args[0]);
         if (valid) {
-            _print(program.args[0]);
+            _print(program.args[0], types);
             process.exit(0);
         }
-        // more than 1 arguments with command --show or -S
+        // more than 1 arguments with command --debug or -D
         // will throw an error
         _throwAbortedError('Wrong arguments');
         process.exit(1);
@@ -247,13 +257,13 @@
     argType = program.args[1];
 
     // if type is not a valid template type
-    valid = allowedTypes.hasOwnProperty(argType);
+    valid = types.hasOwnProperty(argType);
     if (!valid) {
         _throwAbortedError('Invalid template file');
         process.exit(1);
     }
 
     // write file
-    _write(argFile, argType);
+    _write(argFile, argType, types);
 
 }());
