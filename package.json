@@ -7,19 +7,22 @@
     "kiss": "./bin/kiss"
   },
   "license": "MIT",
+  "homepage": "https://github.com/sixertoy/kiss-cli",
   "repository": "sixertoy/kiss-cli",
   "author": {
     "name": "Matthieu Lassalvy",
     "email": "sixertoy.github@gmail.com",
-    "url": "https://github.com/kiss-cli"
+    "url": "https://github.com/sixertoy"
   },
   "scripts": {
     "test": "mocha spec/**/*.spec.js"
   },
+  "main": "./index.js",
   "files": [
     "bin/",
     "src/",
-    ".kiss/"
+    ".kiss/",
+    "./index.js"
   ],
   "keywords": [
     "cli",
