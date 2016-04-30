@@ -2,7 +2,7 @@
 
 > Keep It Stupid Simple file template
 
-[![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url]
+[![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
 
 ##### **Kiss** is a command line tool for creating templated files, written in JavaScript/NodeJS
@@ -92,6 +92,12 @@ kiss -S amd
 
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE-MIT
+
+[coverall-url]: https://coveralls.io/r/sixertoy/kiss-cli
+[coverall-img]: https://img.shields.io/coveralls/sixertoy/kiss-cli.svg?style=flat-square
+
+[travis-url]: https://travis-ci.org/sixertoy/kiss-cli
+[travis-img]: http://img.shields.io/travis/sixertoy/kiss-cli.svg?style=flat-square
 
 [npm-url]: https://npmjs.org/package/kiss-cli
 [npm-version-img]: http://img.shields.io/npm/v/kiss-cli.svg?style=flat-square
