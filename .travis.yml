@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "4.4.2"
+before_install:
+  - npm install -g gulp gulp-cli istanbul coveralls
+script:
+  - npm test --verbose
+after_success:
+  - cat ./coverage/lcov.info | coveralls && rm -rf ./coverage

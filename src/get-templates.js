@@ -65,8 +65,7 @@
                     files = Templates._mapFilesToType(files, currentpath);
                 } catch (e) {
                     if (exitonerror) {
-                        utils.log('Unable to scan dir: ' + currentpath);
-                        process.exit(1);
+                        utils.error('Unable to scan dir: ' + currentpath);
                     }
                     files = {};
                 }

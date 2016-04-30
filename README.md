@@ -23,7 +23,7 @@ npm install -g kiss-cli
 ## Usage
 
 ```bash
-kiss <relative/path/to/output/file> <type> 
+kiss <relative/path/to/output/file> <type>
 ```
 
 ## Customs Templates
@@ -79,12 +79,16 @@ kiss -S amd
 
 ## History
 
-- v0.1.39 fix project root + invert type and file arguments
-- v0.1.36 remove chalk module
-- v0.1.34 a directory ```.kiss``` in project or home folder can now be used to override defaults templates
-- v0.1.24 Fix install 'npm install -g kiss-cli'
-- v0.1.22 Add gulpfile template
-- v0.1.16 Fix NPM install...
+- v0.1.40
+    - Manage dotfiles
+    - Custom templates extensions
+    - And no extension files
+- v0.1.34
+    - Support customs templates
+    - Templates in a project overrides home folder templates
+    - Home folder templates overrides kiss globals templates
+- v0.1.24
+    - Fix install 'npm install -g kiss-cli'
 
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE-MIT

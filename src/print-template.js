@@ -1,11 +1,10 @@
-/* global require, module, process */
+/* global require, module */
 (function () {
 
     'use strict';
 
     var fs = require('fs'),
         utils = require('./core/utils'),
-        colors = require('./core/colors'),
 
         /**
          *
@@ -20,10 +19,9 @@
                 // get template content
                 output = fs.readFileSync(input, 'utf8');
                 // output file content to console
-                console.log(colors.gray(output));
+                utils.debug(output);
             } catch (e) {
-                utils.log('unable to write file');
-                process.exit(1);
+                utils.error('unable to write file');
             }
         };
 
