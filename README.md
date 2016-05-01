@@ -11,6 +11,7 @@ Generator of files which was motivated by the one and only, Bonaldi's Effect:<br
 *It's totally unnecessary and therefore strictly indispensable!*<br>
 This great concept was first designed by the play [La Cantatrice chauve](https://fr.wikipedia.org/wiki/La_Cantatrice_chauve) by Eugène Ionesco.
 
+<img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/v0.1.40/img/kiss-cli.gif" width="577" height="479" />
 
 ## Install
 

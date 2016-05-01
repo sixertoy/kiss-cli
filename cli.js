@@ -109,6 +109,7 @@ console.time(timecolor);
         // if no arguments
         valid = program.args.length < 2;
         if (valid) {
+            program.outputHelp();
             utils.error('Missing arguments');
         }
 

@@ -21,3 +21,6 @@
 *.PDF       diff=astextplain
 *.rtf       diff=astextplain
 *.RTF       diff=astextplain
+
+# Do not change eol for gif files
+*.gif   binary
