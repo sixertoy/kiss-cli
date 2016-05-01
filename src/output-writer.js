@@ -7,7 +7,6 @@
         fse = require('fs-extra'),
         // requires
         utils = require('./core/utils'),
-        colors = require('./core/colors'),
         constants = require('./core/constants'),
 
         /**
@@ -15,17 +14,7 @@
          * Write Destination File
          *
          */
-        FileWriter = {
-
-            _getExtension: function (input) {
-                var dest = input,
-                    obj = path.parse(dest),
-                    index = dest.indexOf('.');
-                if (index <= 0) {
-                    return '';
-                }
-                return obj.base.substring(index);
-            },
+        OutputWriter = {
 
             /**
              *
@@ -50,7 +39,7 @@
                 if (!valid) {
                     return dest;
                 }
-                return dest.substring(0, dest.length -1);
+                return dest.substring(0, dest.length - 1);
             },
 
             /**
@@ -71,60 +60,90 @@
              * If it is a trailing dot, remove this dot and do not add extension
              *
              */
-           _isTrailingDot: function (input) {
-               var base = path.basename(input),
-                   result = (base.charAt(base.length - 1) === constants.DOT);
-               return result;
-           },
+            _isTrailingDot: function (input) {
+                var base = path.basename(input),
+                    result = (base.charAt(base.length - 1) === constants.DOT);
+                return result;
+            },
 
-            write: function (destinationFile, filetype, types) {
-                var input, output, rstream, wstream,
-                    istrailingdot, isdotfile, hasextension,
-                    extension = '',
-                    dest = destinationFile;
+            _getTemplateExtension: function (input) {
+                var dest = input,
+                    obj = path.parse(dest),
+                    index = obj.base.indexOf('.');
+                if (index <= 0) {
+                    return '';
+                }
+                return obj.base.substring(index);
+            },
+
+            /**
+             *
+             * Returns full filepath for output file
+             * With extension from user selected tempates
+             *
+             */
+            _getOutputFile: function (destination, ext) {
+                var obj,
+                    dest = destination,
+                    isdotfile = OutputWriter._isDotFile(dest),
+                    hasextension = OutputWriter._hasExtension(dest),
+                    istrailingdot = OutputWriter._isTrailingDot(dest);
+                //
+                // add extension to output file name
+                // for user selected template
+                if (!isdotfile && !istrailingdot && !hasextension) {
+                    dest = (dest + ext);
+                } else if (istrailingdot) {
+                    obj = path.parse(destination);
+                    dest = OutputWriter._removeTrailingDot(obj.base);
+                    dest = path.join(obj.dir, dest);
+                }
+                return dest;
+            },
+
+            _write: function (destinationfile, extension, rstream) {
+                // get absolute fullpath to output file from current dir
+                var wstream,
+                    dest = OutputWriter._getOutputFile(destinationfile, extension),
+                    outputpath = path.relative(constants.CURRENT_WD, dest);
+
+                process.stdout.cursorTo(0);
+                utils.debug('Write: ' + outputpath + constants.NEW_LINE);
+                process.stdout.clearLine(1);
+                // check if path exists and file can be written
+                fse.ensureFileSync(outputpath);
+                // write template content into output
+                wstream = fse.createWriteStream(outputpath);
+                // stream template content to outputfile
+                rstream.pipe(wstream);
+            },
+
+            write: function (outputfiles, templatefile, callback) {
+                var rstream, extension,
+                    files = [].concat(outputfiles);
                 try {
-                    // get template filename
-                    input = types[filetype];
-                    isdotfile = FileWriter._isDotFile(dest);
-                    hasextension = FileWriter._hasExtension(dest);
-                    istrailingdot = FileWriter._isTrailingDot(dest);
-                    if (!isdotfile && !istrailingdot && !hasextension) {
-                        // add extension to outpur file name
-                        extension = FileWriter._getExtension(input);
-                        dest = (dest + extension);
-                    }
-                    /*
-                    if (!FileWriter._hasExtension(dest)) {
-                        extension = FileWriter._getExtension(input);
-                        dest = (dest + extension);
-
-                    } else if (FileWriter._isDot(dest)) {
-                        dest = FileWriter._removeTrailingDot(dest);
-                    }
-                    */
-                    // get template content
-                    rstream = fse.createReadStream(input);
-                    // get output filepath
-                    output = path.join(constants.CURRENT_WD, dest);
-                    // check if file can be writtent
-                    fse.ensureFileSync(output);
-                    // write template content into output
-                    input = path.relative(constants.CURRENT_WD, output);
-                    input = constants.DOT + path.sep + input;
-                    console.log(colors.gray('Written: ' + input));
-                    wstream = fse.createWriteStream(output);
+                    // utils.progress();
+                    // get template extension
+                    extension = OutputWriter._getTemplateExtension(templatefile);
+                    // open a new stream able to read template file content
+                    rstream = fse.createReadStream(templatefile);
                     // on stream end output debug
                     rstream.on('end', function () {
-                        utils.success(('Success!'));
+                        // process.stdout.cursorTo(0);
+                        // process.stdout.clearLine(1);
+                        if (!files.length) {
+                            callback();
+                        }
                     });
-                    // write stream
-                    rstream.pipe(wstream);
+                    while (files.length) {
+                        OutputWriter._write(files.shift(), extension, rstream);
+                    }
                 } catch (e) {
-                    utils.error('Unable to write file');
+                    utils.error('Unable to write file', e.message);
                 }
             }
         };
 
-    module.exports = FileWriter;
+    module.exports = OutputWriter;
 
 }());

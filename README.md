@@ -14,11 +14,11 @@ This great concept was first designed by the play [La Cantatrice chauve](https:/
 
 ## Install
 
+> **must be installed globally**
+
 ```bash
 npm install -g kiss-cli
 ```
-
-> **must be installed globally**
 
 ## Usage
 
@@ -42,39 +42,26 @@ If you want to use your own templates for a single project:
 
 ## Defaults Templates Types
 
-- **amd**
-> an AMD module
-- **angular-module**
-> a Angular module
+- **amd** naked AMD module
+- **angular-module** a naked and simple Angular module
 - **grunt-task**
-> a simple Grunt's task
 - **gruntfile**
-> base for a Gruntfile
 - **gulpfile**
-> base for a Gulpfile
 - **html**
-> a simple HTML page
-- **js**
-> a simple CommonJS module
-- **mocha**
-> base for Mocha test file
-
-### Priorities
-
-Project Templates > User Templates > .kiss templates
+- **js** naked CommonJS module
+- **mocha** base for Mocha test file
 
 ## Options
 
 ```bash
-# Show available templates and theirs paths
-kiss -S
-# Show template content
-kiss -S amd
+# Show availables templates
+kiss --debug
+# Show a template content in console
+kiss -D amd
 ```
 
 ## Issues
 
-- No Mocha tests
 - Overwrite existing file by default without prompts
 
 ## History

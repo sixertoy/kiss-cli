@@ -31,25 +31,31 @@
         // requires
         utils = require('./src/core/utils'),
         print = require('./src/print-template'),
+        constants = require('./src/core/constants'),
         FileWriter = require('./src/output-writer'),
         getTemplates = require('./src/get-templates'),
         describe = require('./src/do-describe-types'),
+        // debug timer
+        time = utils.time(),
         // variables
         debug = false,
         valid = false,
         // cli version
         semver = false,
         // map object with types attached to a files
+        type = false,
         templates = false,
         // file and type defined by cli arguments
-        templateType = false,
-        destinationFile = false,
+        outputfiles = false,
+        templatefile = false,
         // list of available templates and types to show on kiss --help or kiss --debug
         templatesTypesList = '';
 
     try {
 
         semver = utils.semver();
+        utils.info('Kiss v' + semver + constants.NEW_LINE);
+
         templates = getTemplates();
         templatesTypesList = describe(templates);
 
@@ -101,17 +107,23 @@
             utils.error('Missing arguments');
         }
 
-        templateType = program.args[1];
-        destinationFile = program.args[0];
+        // do not reorder
+        type = program.args.pop();
+        outputfiles = program.args;
 
-        valid = templates.hasOwnProperty(templateType);
+        valid = templates.hasOwnProperty(type);
         // if type is not a valid template type
         if (!valid) {
             utils.error('Invalid template type');
         }
 
         // write output file with template content
-        FileWriter.write(destinationFile, templateType, templates);
+        templatefile = templates[type];
+        FileWriter.write(outputfiles, templatefile, function () {
+            utils.success('Success! ');
+            utils.debug('in ' + utils.time(time) + constants.NEW_LINE);
+            process.exit(0);
+        });
 
     } catch (e) {
         process.exit(1);

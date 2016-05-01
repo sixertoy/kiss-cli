@@ -1,3 +1,4 @@
+/* jshint bitwise: false */
 /* global require, module, process */
 (function () {
 
@@ -16,6 +17,11 @@
          *
          */
         Utils = {
+
+            info: function(msg){
+                var value = colors.magenta(msg);
+                process.stdout.write(value);
+            },
 
             /**
              *
@@ -51,7 +57,6 @@
                 if (process.stderr.isTTY) {
                     var value = colors.red('Error: ');
                     value += colors.red(msg + constants.NEW_LINE);
-                    program.outputHelp();
                     process.stderr.write(value);
                 }
                 throw new Error(msg);
@@ -76,6 +81,18 @@
              */
             homeuser: function () {
                 return process.env.HOME || process.env.USERPROFILE;
+            },
+
+            time: function (time) {
+                var result = Date.now();
+                if (!arguments.length) {
+                    return result;
+                }
+                result = result - time;
+                if (result < 1000) {
+                    return (result + 'ms');
+                }
+                return ((result / 100) + 's');
             }
 
         };
