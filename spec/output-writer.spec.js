@@ -5,7 +5,7 @@
 
     'use strict';
 
-    var file, result, helper, template,
+    var file, result, helper, template, ext,
         cwd = process.cwd(),
         path = require('path'),
         expect = require('chai').expect,
@@ -98,49 +98,49 @@
             });
 
         });
-        describe('_getExtension', function () {
+        describe('_getTemplateExtension', function () {
             it('return .js', function () {
                 file = 'index.js';
-                result = Helper._getExtension(file);
+                result = Helper._getTemplateExtension(file);
                 expect(result).to.equal('.js');
             });
             it('return .spec.js', function () {
                 file = 'index.spec.js';
-                result = Helper._getExtension(file);
+                result = Helper._getTemplateExtension(file);
                 expect(result).to.equal('.spec.js');
             });
             it('return empty string', function () {
                 file = '.gitignore';
-                result = Helper._getExtension(file);
+                result = Helper._getTemplateExtension(file);
                 expect(result).to.equal('');
                 file = 'index';
-                result = Helper._getExtension(file);
+                result = Helper._getTemplateExtension(file);
                 expect(result).to.equal('');
             });
         });
         describe('_getOutputFile', function () {
             it('return src/toto.spec.js - add extension', function () {
+                ext = '.spec.js';
                 file = 'src/toto';
-                template = 'mocha.spec.js';
-                result = Helper._getOutputFile(file, template);
+                result = Helper._getOutputFile(file, ext);
                 expect(result).to.equal('src/toto.spec.js');
             });
             it('return src/.gitignore - dotfile no extension', function () {
+                ext = '.spec.js';
                 file = 'src/.gitignore';
-                template = 'mocha.spec.js';
-                result = Helper._getOutputFile(file, template);
+                result = Helper._getOutputFile(file, ext);
                 expect(result).to.equal('src/.gitignore');
             });
             it('return src/noextension - trailing dot, no extension', function () {
+                ext = '.spec.js';
                 file = 'src/noextension.';
-                template = 'mocha.spec.js';
-                result = Helper._getOutputFile(file, template);
+                result = Helper._getOutputFile(file, ext);
                 expect(result).to.equal('src/noextension');
             });
             it('return src/file.js - extesion already exists', function () {
+                ext = '.spec.js';
                 file = 'src/file.js';
-                template = 'mocha.spec.js';
-                result = Helper._getOutputFile(file, template);
+                result = Helper._getOutputFile(file, ext);
                 expect(result).to.equal('src/file.js');
             });
         });

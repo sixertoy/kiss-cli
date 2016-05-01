@@ -24,9 +24,14 @@
  * -D <type> Shows content of a template
  *
  */
-(function () {
+// log colored execution time
+var timecolor = '\u001b[32mSuccess\u001b[39m';
+console.time(timecolor);
+
+(function (time) {
 
     'use strict';
+
     var program = require('commander'),
         // requires
         utils = require('./src/core/utils'),
@@ -36,7 +41,7 @@
         getTemplates = require('./src/get-templates'),
         describe = require('./src/do-describe-types'),
         // debug timer
-        time = utils.time(),
+
         // variables
         debug = false,
         valid = false,
@@ -120,8 +125,7 @@
         // write output file with template content
         templatefile = templates[type];
         FileWriter.write(outputfiles, templatefile, function () {
-            utils.success('Success! ');
-            utils.debug('in ' + utils.time(time) + constants.NEW_LINE);
+            console.timeEnd(time);
             process.exit(0);
         });
 
@@ -129,4 +133,4 @@
         process.exit(1);
     }
 
-}());
+}(timecolor));

@@ -93,7 +93,7 @@
                 // for user selected template
                 if (!isdotfile && !istrailingdot && !hasextension) {
                     dest = (dest + ext);
-                } else if (istrailingdot) {
+                } else if (istrailingdot && !hasextension) {
                     obj = path.parse(destination);
                     dest = OutputWriter._removeTrailingDot(obj.base);
                     dest = path.join(obj.dir, dest);

@@ -5,7 +5,6 @@
     'use strict';
 
     var path = require('path'),
-        program = require('commander'),
         // requires
         colors = require('./colors'),
         constants = require('./constants'),
@@ -81,18 +80,6 @@
              */
             homeuser: function () {
                 return process.env.HOME || process.env.USERPROFILE;
-            },
-
-            time: function (time) {
-                var result = Date.now();
-                if (!arguments.length) {
-                    return result;
-                }
-                result = result - time;
-                if (result < 1000) {
-                    return (result + 'ms');
-                }
-                return ((result / 100) + 's');
             }
 
         };
