@@ -1,51 +1,71 @@
 {
-    "name": "kiss-cli",
-    "version": "0.1.40",
-    "description": "Command line to create files based on templates",
-    "preferGlobal": true,
-    "bin": {
-        "kiss": "./bin/kiss"
-    },
-    "license": "MIT",
-    "homepage": "https://github.com/sixertoy/kiss-cli",
-    "repository": "sixertoy/kiss-cli",
-    "author": {
-        "name": "Matthieu Lassalvy",
-        "email": "sixertoy.github@gmail.com",
-        "url": "https://github.com/sixertoy"
-    },
-    "engines": {
-        "npm": ">3.5.1",
-        "node": ">4.4.1"
-    },
-    "scripts": {
-        "pretest": "gulp lint",
-        "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/*.spec.js",
-        "prepublish": "npm test"
-    },
-    "main": "./cli.js",
-    "files": [
-        "bin/", "src/", ".kiss/",
-        "./cli.js"
-    ],
-    "keywords": [
-        "cli", "js", "file", "files", "templates", "snippets",
-        "html", "task", "tasks", "mocha", "react", "reactjs", "amd",
-        "commonjs",
-        "angular", "angularjs", "gulpfile", "requirejs", "gruntfile",
-        "javascript", "spec", "test", "tests"
-    ],
-    "dependencies": {
-        "commander": "2.8.1",
-        "deep-assign": "2.0.0",
-        "fs-extra": "0.23.1"
-    },
-    "devDependencies": {
-        "chai": "3.2.0",
-        "gulp": "3.9.0",
-        "gulp-bump": "0.3.1",
-        "gulp-jshint": "1.11.2",
-        "jshint-stylish": "2.0.1",
-        "mocha": "2.2.5"
-    }
+  "name": "kiss-cli",
+  "version": "0.1.41",
+  "description": "Command line to create files based on templates",
+  "preferGlobal": true,
+  "bin": {
+    "kiss": "./bin/kiss"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/sixertoy/kiss-cli",
+  "repository": "sixertoy/kiss-cli",
+  "author": {
+    "name": "Matthieu Lassalvy",
+    "email": "sixertoy.github@gmail.com",
+    "url": "https://github.com/sixertoy"
+  },
+  "engines": {
+    "npm": ">3.5.1",
+    "node": ">4.4.1"
+  },
+  "scripts": {
+    "pretest": "gulp lint",
+    "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/*.spec.js",
+    "prepublish": "npm test"
+  },
+  "main": "./cli.js",
+  "files": [
+    "bin/",
+    "src/",
+    ".kiss/",
+    "./cli.js"
+  ],
+  "keywords": [
+    "cli",
+    "js",
+    "file",
+    "files",
+    "templates",
+    "snippets",
+    "html",
+    "task",
+    "tasks",
+    "mocha",
+    "react",
+    "reactjs",
+    "amd",
+    "commonjs",
+    "angular",
+    "angularjs",
+    "gulpfile",
+    "requirejs",
+    "gruntfile",
+    "javascript",
+    "spec",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "commander": "2.8.1",
+    "deep-assign": "2.0.0",
+    "fs-extra": "0.23.1"
+  },
+  "devDependencies": {
+    "chai": "3.2.0",
+    "gulp": "3.9.0",
+    "gulp-bump": "0.3.1",
+    "gulp-jshint": "1.11.2",
+    "jshint-stylish": "2.0.1",
+    "mocha": "2.2.5"
+  }
 }
