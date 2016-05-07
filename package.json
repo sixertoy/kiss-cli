@@ -19,7 +19,8 @@
     "node": ">4.4.1"
   },
   "scripts": {
-    "pretest": "gulp lint",
+    "lint": "jshint --reporter=node_modules/jshint-stylish ./src/**.js ./cli.js",
+    "pretest": "npm run lint",
     "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/*.spec.js",
     "prepublish": "npm test"
   },
@@ -62,9 +63,6 @@
   },
   "devDependencies": {
     "chai": "3.2.0",
-    "gulp": "3.9.0",
-    "gulp-bump": "0.3.1",
-    "gulp-jshint": "1.11.2",
     "jshint-stylish": "2.0.1",
     "mocha": "2.2.5"
   }
