@@ -1,17 +1,19 @@
 # Kiss!
 
-> Keep It Stupid Simple file template
+> Keep It Stupid Simple templated files generator
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
-
-##### **Kiss** is a command line tool for creating templated files, written in JavaScript/NodeJS
-
-Generator of files which was motivated by the one and only, Bonaldi's Effect:<br>
-*It's totally unnecessary and therefore strictly indispensable!*<br>
-This great concept was first designed by the play [La Cantatrice chauve](https://fr.wikipedia.org/wiki/La_Cantatrice_chauve) by Eugène Ionesco.
+**You will need Kiss:**
+- if you are a developper
+- if you are a team of developpers
+- and... especially, if you are sharing models with all contributors of a project across a lot of and differents IDE *(subl, atom, vim, intllij...)*
 
 <img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/v0.1.40/img/kiss-cli.gif" width="577" height="479" />
+
+This templated files generator was motivated by the famous French Bonaldi's Effect:<br>
+*It's totally unnecessary and therefore strictly indispensable!*<br>
+But it's also a great concept of the play [La Cantatrice chauve](https://fr.wikipedia.org/wiki/La_Cantatrice_chauve) by Eugène Ionesco... in fact.
 
 ## Install
 
@@ -27,21 +29,12 @@ npm install -g kiss-cli
 kiss <relative/path/to/output/file> <type>
 ```
 
-## Customs Templates
+Show a content of a models
+```bash
+kiss <model-name>
+```
 
-:warning: **Check files permissions**
-
-### All Projects of an user
-If you want to use your own templates for all of your projects:
-- Create a ```.kiss``` folder in your home directory
-- Then add your own templates files inside it
-
-### Single Project
-If you want to use your own templates for a single project:
-- Create a ```.kiss``` folder in the root directory of your project
-- Then add your own templates files inside it
-
-## Defaults Templates Types
+## Default available templates
 
 - **amd** naked AMD module
 - **angular-module** a naked and simple Angular module
@@ -50,33 +43,39 @@ If you want to use your own templates for a single project:
 - **gulpfile**
 - **html**
 - **js** naked CommonJS module
-- **mocha** base for Mocha test file
+- **mocha** base for a Mocha test file
 
 ## Options
 
+Show KISS version
 ```bash
-# Show availables templates
-kiss --debug
-# Show a template content in console
-kiss -D amd
+kiss -V
+kiss --version
 ```
 
-## Issues
-
-- Overwrite existing file by default without prompts
+Show KISS help with a list of available templates and their paths
+```bash
+kiss -h
+kiss --help
+```
 
 ## History
 
+- v0.1.41
+    - Remove --debug option
+    - Remove commander as cli parser
 - v0.1.40
     - Manage dotfiles
-    - Custom templates extensions
-    - And no extension files
 - v0.1.34
-    - Support customs templates
-    - Templates in a project overrides home folder templates
-    - Home folder templates overrides kiss globals templates
+    - Custom templates in your home folder
+    - Custom templates in your project folder
+    - ```project folder > home folder > kiss folder```
 - v0.1.24
     - Fix install 'npm install -g kiss-cli'
+
+## Issues
+- Overwrite an existing file without prompts
+- Files permissions
 
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE-MIT
