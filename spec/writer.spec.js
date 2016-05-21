@@ -9,7 +9,7 @@
         cwd = process.cwd(),
         path = require('path'),
         expect = require('chai').expect,
-        Helper = require(path.join(cwd, 'src', 'output-writer'));
+        Helper = require(path.join(cwd, 'src', 'writer-utils'));
 
     describe('output-writer', function () {
         describe('_isDotFile', function () {

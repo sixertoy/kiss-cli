@@ -57,12 +57,12 @@
     "tests"
   ],
   "dependencies": {
-    "commander": "2.8.1",
     "deep-assign": "2.0.0",
     "fs-extra": "0.23.1"
   },
   "devDependencies": {
     "chai": "3.2.0",
+    "eslint": "2.10.2",
     "jshint-stylish": "2.0.1",
     "mocha": "2.2.5"
   }

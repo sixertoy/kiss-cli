@@ -29,7 +29,7 @@
      * @param {string} file/directory name - File to lookup
      *
      */
-    var Lookup = function (name, cwd) {
+    module.exports = function (name, cwd) {
         cwd = cwd || process.cwd();
         name = name || 'package.json';
         var file,
@@ -44,7 +44,5 @@
         }
         return false;
     };
-
-    module.exports = Lookup;
 
 }());

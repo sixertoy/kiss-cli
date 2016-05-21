@@ -1,4 +1,5 @@
 // jshint maxstatements: 40
+/* eslint no-console: 0 */
 /* globals process, require */
 /*
  *  __  __   __   ______   ______
@@ -28,98 +29,60 @@ console.time(timecolor);
 
     'use strict';
 
-    var utils = require('./src/core/utils'),
-        program = require('./src/core/argm'),
-
-        constants = require('./src/core/constants'),
-        FileWriter = require('./src/output-writer'),
-
-        templates = require('./src/get-templates'),
-        describe = require('./src/do-describe-types'),
-
-        // variables
-        files, description;
+    var USE_DEBUG = false,
+        files, desc, template, type, args,
+        // require
+        write = require('./src/writer'),
+        program = require('./src/program'),
+        describe = require('./src/describe'),
+        utils = require('./src/program-utils'),
+        templates = require('./src/templates');
 
     try {
         // validate arguments
         // exit with error if no arguments
         program.parse();
-
         // show version if options -V or --version is used
-        if (program.needversion()) {
-            utils.version();
-            process.exit(0);
-        }
+        program.needversion();
 
         // retrieve templates list in
         // 1/ kiss extension folder
         // 2/ user's home folder
         // 3/ current project folder
         files = templates();
-
         // output help if -h or --help is used
         if (program.needhelp()) {
-            // log version, description and exit
-            description = describe(templates);
-            utils.describe(description);
-            process.exit(0);
+            desc = describe(files);
+            utils.help(desc);
         }
 
-        /*
-
-        // setup help and options
-        program
-            .version(semver)
-            .description(templatesTypesList)
-            .usage('[path/to/output/file] [filetype]')
-            .parse(process.argv);
-
-        validation
-            .setProgram(program)
-            .setTemplates(templates);
-
-        // if no arguments
-        // exit with error
-        validation.hasArguments();
-
-        // if arguments length equal 1
-        // and value at index 0 is a available template type
-        // will show content of this template
-        validation.printTemplate(program, templates);
-        */
-
-        // if no arguments
-        // will show output with an error message
-        /*
-        valid = program.args.length === 1;
-        valid = valid && !templates.hasOwnProperty(program.args[0]);
-        if (valid) {
-            program.outputHelp();
-            utils.error('Missing arguments');
+        // if arguments.length === 1 and argument is a template
+        // if is not a know template file will prompt content and exit
+        program.print(files);
+        // if arguments.length === 1 and is not a file
+        // exit and prompt an error
+        program.isfile();
+        // if arguments.length > 1 and is a know type
+        template = false;
+        args = program.args();
+        type = program.isknowtype(files);
+        if (type) {
+            args.shift();
+            template = files[type];
+        } else {
+            template = files;
         }
 
-        // do not reorder
-        type = program.args.pop();
-        outputfiles = program.args;
-
-        valid = templates.hasOwnProperty(type);
-        // if type is not a valid template type
-        if (!valid) {
-            utils.error('Invalid template type');
-        }
-
-        // write output file with template content
-        templatefile = templates[type];
-        FileWriter.write(outputfiles, templatefile, function () {
+        // write output file with tem
+        write(args, template, function () {
             console.timeEnd(time);
             process.exit(0);
         });
-        */
-        console.timeEnd(time);
-        process.exit(0);
 
     } catch (e) {
-        console.log('error >>> ', e);
+        if (USE_DEBUG) {
+            console.log('error >>> ', e);
+        }
         process.exit(1);
     }
 

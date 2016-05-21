@@ -144,7 +144,7 @@
     "consistent-this": [2,"self"],
     "eol-last": 2,
     "func-style": 0,
-    "id-length": [2,{"min":3,"max":25,"exceptions":["cb","fs","js","v","h"]}],
+    "id-length": [2,{"min":3,"max":25,"exceptions":["cb","fs","js","e","v","h"]}],
     "indent": 2,
     "lines-around-comment": [2,{"beforeBlockComment":true,"allowBlockStart":true}],
     "linebreak-style": [2,"unix"],

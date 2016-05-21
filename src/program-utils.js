@@ -4,10 +4,11 @@
 
     'use strict';
 
-    var path = require('path'),
+    var fs = require('fs'),
+        path = require('path'),
         // requires
-        colors = require('./colors'),
-        consts = require('./constants'),
+        colors = require('./core/colors'),
+        consts = require('./core/constants'),
 
         /**
          *
@@ -21,8 +22,12 @@
             _homeuser: false,
 
             version: function () {
-                var semver = Utils.semver();
-                Utils.info('Kiss v' + semver + consts.NEW_LINE);
+                var semver = Utils.semver(),
+                    msg = 'Kiss v' + semver + consts.NEW_LINE;
+                Utils.info(msg);
+                msg = 'Keep It Stupid Simple templated files generator';
+                msg += consts.NEW_LINE;
+                Utils.debug(msg);
             },
 
             options: function () {
@@ -46,32 +51,55 @@
                 // Usage
                 msg += 'Usage:' + consts.NEW_LINE;
                 msg += consts.INDENT + 'kiss [options]' + consts.NEW_LINE;
+                msg += consts.INDENT + 'kiss <type>' + consts.NEW_LINE;
                 msg += consts.INDENT + 'kiss <filepath> [...]';
-                msg += consts.INDENT + 'kiss <filepath> [...] <type>';
                 msg += consts.NEW_LINE;
                 Utils.log(msg);
             },
 
-            describe: function () {
+            help: function (desc) {
                 Utils.version();
-                var msg = 'Keep It Stupid Simple templated files generator';
-                msg += consts.NEW_LINE;
-                Utils.debug(msg);
                 Utils.usage();
                 Utils.options();
+                Utils.log(desc);
+                // exit
+                process.exit(0);
             },
 
-            print: function () {
-                /*
-                var valid = this._program.args.length === 1;
-                valid = valid && this._templates.hasOwnProperty(this._program.args[0]);
-                if (valid) {
-                    // show content of a template type
-                    print(this._program.args[0], this._templates);
-                    process.exit(0);
+            stop: function (reason) {
+                Utils.version();
+                Utils.usage();
+                Utils.options();
+                Utils.error(reason);
+                // exit
+                process.exit(1);
+            },
+
+            /**
+             *
+             *
+             *
+             */
+            print: function (filetype, types) {
+                var input, output;
+                try {
+                    // get template filename
+                    input = types[filetype];
+
+                    output = consts.NEW_LINE;
+                    output += 'Template content:';
+                    Utils.log(output);
+                    output = consts.NEW_LINE + input;
+                    Utils.success(output);
+                    // get template content
+                    output = consts.NEW_LINE;
+                    output += fs.readFileSync(input, 'utf8');
+                    output += consts.NEW_LINE;
+                    // output file content to console
+                    Utils.debug(output);
+                } catch (e) {
+                    Utils.stop('Unable to print template');
                 }
-                return false;
-                */
             },
 
             /**
@@ -116,14 +144,20 @@
                 }
             },
 
-            error: function (msg) {
-                var value;
+            error: function (msg, throwerror) {
+                var value,
+                    thrw = throwerror;
+                if (arguments.length < 2) {
+                    thrw = true;
+                }
                 if (process.stderr.isTTY) {
                     value = colors.red('Error: ');
                     value += colors.red(msg + consts.NEW_LINE);
                     process.stderr.write(value);
                 }
-                throw new Error(msg);
+                if (thrw) {
+                    throw new Error(msg);
+                }
             },
 
             /**

@@ -24,7 +24,21 @@
             // current working dir
             CURRENT_WD: process.cwd(),
             // kiss-cli absolute path
-            MODULE_PATH: path.join(__dirname, '..', '..')
+            MODULE_PATH: path.join(__dirname, '..', '..'),
+            // exlcudes folders and files
+            EXCLUDES: [
+                // Windows
+                'Thumbs.db',
+                'ehthumbs.db',
+                'Desktop.ini',
+                // OSX
+                '.DS_Store',
+                '.AppleDouble',
+                '.LSOverride',
+                // Externals
+                '.Spotlight-V100',
+                '.Trashes'
+            ]
         };
 
     module.exports = Constants;

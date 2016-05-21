@@ -1,3 +1,4 @@
+/* global require, module */
 (function () {
 
     'use strict';
@@ -6,16 +7,16 @@
         path = require('path'),
         assign = require('deep-assign'),
         // requires
-        utils = require('./core/utils'),
-        constants = require('./core/constants'),
-        lookup = require('./lookup-project-folder'),
+        lookup = require('./lookup'),
+        utils = require('./program-utils'),
+        consts = require('./core/constants'),
 
         /**
          *
          * Return allowed types for help logs
          *
          */
-        Templates = {
+        Templater = {
 
             /**
              *
@@ -28,20 +29,8 @@
             _excludeFiles: function (files) {
                 // files to excludes for templatings
                 var value, indexof,
-                    excludes = [
-                        // Windows
-                        'Thumbs.db',
-                        'ehthumbs.db',
-                        'Desktop.ini',
-                        // OSX
-                        '.DS_Store',
-                        '.AppleDouble',
-                        '.LSOverride',
-                        // Externals
-                        '.Spotlight-V100',
-                        '.Trashes'
-                    ],
-                    results = [].concat(files);
+                    results = [].concat(files),
+                    excludes = [].concat(consts.EXCLUDES);
                 while (excludes.length) {
                     value = excludes.pop();
                     indexof = results.indexOf(value);
@@ -61,8 +50,8 @@
                 var files = {};
                 try {
                     files = fs.readdirSync(currentpath);
-                    files = Templates._excludeFiles(files);
-                    files = Templates._mapFilesToType(files, currentpath);
+                    files = Templater._excludeFiles(files);
+                    files = Templater._mapFilesToType(files, currentpath);
                 } catch (e) {
                     if (exitonerror) {
                         utils.error('Unable to scan dir: ' + currentpath);
@@ -85,41 +74,37 @@
                     copy = [].concat(files);
                 while (copy.length) {
                     value = copy.pop();
-                    results[value.split(constants.DOT)[0]] = path.join(filepath, value);
+                    results[value.split(consts.DOT)[0]] = path.join(filepath, value);
                 }
                 return results;
-            },
-
-            /**
-             *
-             * Returns a list a templates to use
-             *
-             */
-            getTemplates: function () {
-                var files, currentpath,
-                    results = {};
-                // iterates trough kiss module templates
-                currentpath = path.join(constants.MODULE_PATH, constants.KISS_DIR);
-                files = Templates._getfiles(currentpath, true);
-                results = assign(results, files);
-
-                // iterates through user home directory
-                currentpath = utils.homeuser();
-                currentpath = path.join(currentpath, constants.KISS_DIR);
-                files = Templates._getfiles(currentpath);
-                results = assign(results, files);
-
-                // iterates trough current working directory templates
-                currentpath = lookup(constants.KISS_DIR);
-                files = Templates._getfiles(currentpath);
-                results = assign(results, files);
-
-                return results;
             }
-
-
         };
 
-    module.exports = Templates.getTemplates;
+    /**
+     *
+     * Returns a list a templates to use
+     *
+     */
+    module.exports = function () {
+        var files, currentpath,
+            results = {};
+        // iterates trough kiss module templates
+        currentpath = path.join(consts.MODULE_PATH, consts.KISS_DIR);
+        files = Templater._getfiles(currentpath, true);
+        results = assign(results, files);
+
+        // iterates through user home directory
+        currentpath = utils.homeuser();
+        currentpath = path.join(currentpath, consts.KISS_DIR);
+        files = Templater._getfiles(currentpath);
+        results = assign(results, files);
+
+        // iterates trough current working directory templates
+        currentpath = lookup(consts.KISS_DIR);
+        files = Templater._getfiles(currentpath);
+        results = assign(results, files);
+
+        return results;
+    };
 
 }());
