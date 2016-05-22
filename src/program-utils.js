@@ -9,6 +9,7 @@
         // requires
         colors = require('./core/colors'),
         consts = require('./core/constants'),
+        WELCOME_MSG = 'Keep It Stupid Simple templated files generator',
 
         /**
          *
@@ -25,8 +26,7 @@
                 var semver = Utils.semver(),
                     msg = 'Kiss v' + semver + consts.NEW_LINE;
                 Utils.info(msg);
-                msg = 'Keep It Stupid Simple templated files generator';
-                msg += consts.NEW_LINE;
+                msg = WELCOME_MSG + consts.NEW_LINE;
                 Utils.debug(msg);
             },
 
@@ -66,18 +66,20 @@
                 process.exit(0);
             },
 
-            stop: function (reason) {
+            exit: function (reason) {
                 Utils.version();
                 Utils.usage();
                 Utils.options();
                 Utils.error(reason);
-                // exit
                 process.exit(1);
             },
 
             /**
              *
+             * Print template's content to console
              *
+             * @param {String} filetype
+             * @param {Object} types
              *
              */
             print: function (filetype, types) {
@@ -98,13 +100,13 @@
                     // output file content to console
                     Utils.debug(output);
                 } catch (e) {
-                    Utils.stop('Unable to print template');
+                    Utils.exit('Unable to print template');
                 }
             },
 
             /**
              *
-             *
+             * Show a magenta colored message
              *
              */
             info: function (msg) {
@@ -114,7 +116,7 @@
 
             /**
              *
-             *
+             * Log a message in console
              *
              */
             log: function (msg) {
@@ -125,7 +127,7 @@
 
             /**
              *
-             *
+             * Show a green colored mesage
              *
              */
             success: function (msg) {
@@ -136,6 +138,11 @@
                 }
             },
 
+            /**
+             *
+             * Show a gray colored message
+             *
+             */
             debug: function (msg) {
                 var value;
                 if (process.stdout.isTTY) {
@@ -144,6 +151,14 @@
                 }
             },
 
+            /**
+             *
+             * Show a red clored message
+             *
+             * @param {String} msg
+             * @param {Boolean} throwerror - wether throw an error catcheble by cli
+             *
+             */
             error: function (msg, throwerror) {
                 var value,
                     thrw = throwerror;
@@ -177,8 +192,7 @@
 
             /**
              *
-             *
-             * return current user home path
+             * Returns current user home path
              *
              */
             homeuser: function () {

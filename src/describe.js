@@ -9,11 +9,11 @@
 
     /**
      *
-     *
+     * Write out available templates and their paths
      *
      */
     module.exports = function (types) {
-        // populate description for help log
+        //
         var key,
             desc = 'Filetypes:',
             home = utils.homeuser(),

@@ -29,7 +29,7 @@
             parse: function () {
                 this._args = process.argv.slice(2);
                 if (!this._args.length) {
-                    utils.stop('Missing arguments');
+                    utils.exit('Missing arguments');
                 }
                 return this;
             },
@@ -61,7 +61,7 @@
                 valid = valid || this._args.indexOf('--version') !== -1;
                 if (valid && this._args.length > 1) {
                     // exit
-                    utils.stop('Too much arguments');
+                    utils.exit('Too much arguments');
                 } else if (valid) {
                     utils.version();
                     process.exit(0);
@@ -79,7 +79,7 @@
                 valid = valid || this._args.indexOf('--help') !== -1;
                 if (valid && this._args.length > 1) {
                     // exit
-                    utils.stop('Too much arguments');
+                    utils.exit('Too much arguments');
                 }
                 return valid;
             },
@@ -96,8 +96,9 @@
                     return this;
                 } catch (e) {
                     // exit with an error and prompt help
-                    utils.stop('Unknow template type');
+                    utils.exit('Unknow template type');
                 }
+                return false;
             },
 
             /**

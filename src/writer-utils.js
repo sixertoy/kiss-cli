@@ -18,9 +18,9 @@
              * Check if destination file has an extension
              *
              */
-            hasExtension: function (input) {
-                var ext = path.extname(input);
-                return (ext !== '' && ext !== constants.DOT);
+            hasextension: function (input) {
+                var ext = input.substring(input.lastIndexOf(constants.DOT));
+                return (ext !== input && ext !== '' && ext !== constants.DOT);
             },
 
             /**
@@ -30,7 +30,7 @@
              * It do not add extension to the output file
              *
              */
-            removeTrailingDot: function (input) {
+            removetrailingdot: function (input) {
                 var dest = input,
                     valid = (dest.charAt(dest.length - 1) === constants.DOT);
                 if (!valid) {
@@ -45,10 +45,10 @@
              * If it is a dot file do not add an extension
              *
              */
-            isDotFile: function (input) {
-                var base = path.basename(input),
-                    result = (base.charAt(0) === constants.DOT);
-                return result;
+            isdotfile: function (input) {
+                var spl = input.split(path.sep),
+                    val = spl[spl.length - 1];
+                return val.indexOf(constants.DOT) === 0;
             },
 
             /**
@@ -57,16 +57,16 @@
              * If it is a trailing dot, remove this dot and do not add extension
              *
              */
-            isTrailingDot: function (input) {
+            istrailingdot: function (input) {
                 var base = path.basename(input),
                     result = (base.charAt(base.length - 1) === constants.DOT);
                 return result;
             },
 
-            getTemplateExtension: function (input) {
+            getextension: function (input) {
                 var dest = input,
                     obj = path.parse(dest),
-                    index = obj.base.indexOf('.');
+                    index = obj.base.indexOf(constants.DOT);
                 if (index <= 0) {
                     return '';
                 }

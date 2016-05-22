@@ -9,11 +9,28 @@
 - if you are a team of developpers
 - and... especially, if you are sharing models with all contributors of a project across a lot of and differents IDE *(subl, atom, vim, intllij...)*
 
-<img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/v0.1.40/img/kiss-cli.gif" width="577" height="479" />
+<img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/master/img/kiss-cli.gif" width="577" height="479" />
 
 This templated files generator was motivated by the famous French Bonaldi's Effect:<br>
 *It's totally unnecessary and therefore strictly indispensable!*<br>
 But it's also a great concept of the play [La Cantatrice chauve](https://fr.wikipedia.org/wiki/La_Cantatrice_chauve) by Eugène Ionesco... in fact.
+
+## Usage
+
+Generate files based on the same template
+```bash
+kiss <type> <relative/filepath> [<relative/filepath> ...]
+```
+
+Generate files based on differents templates
+```bash
+kiss <relative/filepath.type> [<relative/filepath.type> ...]
+```
+
+Show a content of a models
+```bash
+kiss <model-name>
+```
 
 ## Install
 
@@ -21,17 +38,6 @@ But it's also a great concept of the play [La Cantatrice chauve](https://fr.wiki
 
 ```bash
 npm install -g kiss-cli
-```
-
-## Usage
-
-```bash
-kiss <relative/path/to/output/file> <type>
-```
-
-Show a content of a models
-```bash
-kiss <model-name>
 ```
 
 ## Default available templates
@@ -61,6 +67,8 @@ kiss --help
 
 ## History
 
+- v0.2.0
+    - Generate files from files extension
 - v0.1.41
     - Remove --debug option
     - Remove commander as cli parser

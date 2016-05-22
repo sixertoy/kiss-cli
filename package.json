@@ -15,11 +15,11 @@
     "url": "https://github.com/sixertoy"
   },
   "engines": {
-    "npm": ">3.5.1",
-    "node": ">4.4.1"
+    "npm": "2.15.1",
+    "node": "4.4.1"
   },
   "scripts": {
-    "lint": "jshint --reporter=node_modules/jshint-stylish ./src/**.js ./cli.js",
+    "lint": "eslint -c ./eslintrc.json ./cli.js './src/**/*.js'",
     "pretest": "npm run lint",
     "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/*.spec.js",
     "prepublish": "npm test"
@@ -62,8 +62,6 @@
   },
   "devDependencies": {
     "chai": "3.2.0",
-    "eslint": "2.10.2",
-    "jshint-stylish": "2.0.1",
     "mocha": "2.2.5"
   }
 }

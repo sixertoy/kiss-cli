@@ -25,12 +25,12 @@
              * With extension from user selected tempates
              *
              */
-            _getOutputFile: function (destination, ext) {
+            _getoutputfile: function (destination, ext) {
                 var obj,
                     dest = destination,
-                    isdotfile = wutils.isDotFile(dest),
-                    hasextension = wutils.hasExtension(dest),
-                    istrailingdot = wutils.isTrailingDot(dest);
+                    isdotfile = wutils.isdotfile(dest),
+                    hasextension = wutils.hasextension(dest),
+                    istrailingdot = wutils.istrailingdot(dest);
                 //
                 // add extension to output file name
                 // for user selected template
@@ -39,7 +39,7 @@
 
                 } else if (istrailingdot && !hasextension) {
                     obj = path.parse(destination);
-                    dest = wutils.removeTrailingDot(obj.base);
+                    dest = wutils.removetrailingdot(obj.base);
                     dest = path.join(obj.dir, dest);
                 }
                 return dest;
@@ -48,7 +48,7 @@
             _write: function (destinationfile, ext, rstream) {
                 // get absolute fullpath to output file from current dir
                 var wstream,
-                    dest = this._getOutputFile(destinationfile, ext),
+                    dest = this._getoutputfile(destinationfile, ext),
                     outputpath = path.relative(constants.CURRENT_WD, dest);
 
                 // process.stdout.cursorTo(0);
@@ -87,7 +87,7 @@
                     }
                     if (type) {
                         otype = type;
-                        ext = wutils.getTemplateExtension(tpl);
+                        ext = wutils.getextension(tpl);
                         // remove file current type extension
                         file = file.replace('.' + type, '');
                         this._write(file, ext, rstream);
@@ -99,7 +99,7 @@
             _writefast: function (files, template) {
                 var file,
                     self = this,
-                    extension = wutils.getTemplateExtension(template),
+                    extension = wutils.getextension(template),
                     rstream = fse.createReadStream(template);
                 rstream.on('end', function () {
                     if (!files.length) {
@@ -132,10 +132,13 @@
             isfast = Writer._writeslow(files, template);
 
         } catch (e) {
-            utils.stop('Error while writing file(s)');
+            utils.exit('Error while writing file(s)');
 
         }
         return isfast;
     };
+
+    // units tests
+    module.exports.writer = Writer;
 
 }());
