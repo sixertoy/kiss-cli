@@ -5,9 +5,9 @@
 
     var utils = require('./../program-utils');
 
-    module.exports = function () {
+    module.exports = function (target) {
         var output, src, i, key, len,
-            valid = arguments.length >= 1;
+            valid = arguments.length >= 2;
         if (!valid) {
             utils.exit('Cannot convert undefined or null to object');
         }
@@ -18,7 +18,7 @@
                 }
             }
         }
-        output = {};
+        output = target;
         len = arguments.length;
         for (i = 1; i < len; i++) {
             src = arguments[i];
