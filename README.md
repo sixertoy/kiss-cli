@@ -1,35 +1,20 @@
 # Kiss!
 
-> Keep It Stupid Simple templated files generator
+> Keep It Stupid Simple CLI Tool for generate files
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
 **You will need Kiss:**
 - if you are a developper
-- if you are a team of developpers
-- and... especially, if you are sharing models with all contributors of a project across a lot of and differents IDE *(subl, atom, vim, intllij...)*
+- and... if you are sharing models with a team of developpers
 
 <img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/master/img/kiss-cli.gif" width="577" height="479" />
 
-This templated files generator was motivated by the famous French Bonaldi's Effect:<br>
-*It's totally unnecessary and therefore strictly indispensable!*<br>
-But it's also a great concept of the play [La Cantatrice chauve](https://fr.wikipedia.org/wiki/La_Cantatrice_chauve) by Eugène Ionesco... in fact.
+## Examples
 
-## Usage
-
-Generate files based on the same template
+Generating a simple HTML page and an Angular module
 ```bash
-kiss <type> <relative/filepath> [<relative/filepath> ...]
-```
-
-Generate files based on differents templates
-```bash
-kiss <relative/filepath.type> [<relative/filepath.type> ...]
-```
-
-Show a content of a models
-```bash
-kiss <model-name>
+kiss index.html src/mymodule.ng
 ```
 
 ## Install
@@ -53,13 +38,28 @@ npm install -g kiss-cli
 
 ## Options
 
+Generate multiple files based on the same template
+```bash
+kiss <type> <relative/filepath> [<relative/filepath> ...]
+```
+
+Generate multiple files based on differents templates
+```bash
+kiss <relative/filepath.type> [<relative/filepath.type> ...]
+```
+
+Show a model's content
+```bash
+kiss <model-name>
+```
+
 Show KISS version
 ```bash
 kiss -V
 kiss --version
 ```
 
-Show KISS help with a list of available templates and their paths
+Show KISS help, list available templates and their paths
 ```bash
 kiss -h
 kiss --help
@@ -81,9 +81,14 @@ kiss --help
 - v0.1.24
     - Fix install 'npm install -g kiss-cli'
 
+This file generator was motivated by the famous French Bonaldi's Effect:<br>
+*It's totally unnecessary and therefore strictly indispensable!*<br>
+But it's also a great concept of the play [La Cantatrice chauve](https://fr.wikipedia.org/wiki/La_Cantatrice_chauve) by Eugène Ionesco :)
+
 ## Issues
 - Overwrite an existing file without prompts
 - Files permissions
+- Units Tests...
 
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE-MIT

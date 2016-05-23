@@ -30,7 +30,7 @@ console.time(timecolor);
     'use strict';
 
     var USE_DEBUG = false,
-        files, desc, template, type, args,
+        files, desc, template, type, args, err,
         // require
         write = require('./src/writer'),
         program = require('./src/program'),
@@ -82,6 +82,10 @@ console.time(timecolor);
     } catch (e) {
         if (USE_DEBUG) {
             console.log('error >>> ', e);
+        }
+        if (process.stderr.isTTY) {
+            err = '\u001b[31m! Unexpected error has occurred\u001b[39m\n';
+            process.stderr.write(err);
         }
         process.exit(1);
     }

@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 
     'use strict';
 
-    // npm install grunt load-grunt-config --save-dev
+    // npm i -D grunt load-grunt-config
     require('load-grunt-config')(grunt);
 
 };

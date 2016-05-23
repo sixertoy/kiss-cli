@@ -1,14 +1,21 @@
 {
   "name": "kiss-cli",
   "version": "0.2.0",
-  "description": "Command line to create files based on templates",
+  "description": "CLI tool for generate files",
   "preferGlobal": true,
   "bin": {
     "kiss": "./bin/kiss"
   },
-  "license": "MIT",
+  "license": [{
+    "type": "MIT",
+    "url": "https://raw.githubusercontent.com/sixertoy/kiss-cli/master/LICENSE"
+  }],
   "homepage": "https://github.com/sixertoy/kiss-cli",
   "repository": "sixertoy/kiss-cli",
+  "bugs": {
+    "url": "https://github.com/sixertoy/kiss-cli/issues",
+    "email": "sixertoy.github@gmail.com"
+  },
   "author": {
     "name": "Matthieu Lassalvy",
     "email": "sixertoy.github@gmail.com",
@@ -19,7 +26,7 @@
     "node": "4.4.1"
   },
   "scripts": {
-    "lint": "eslint -c ./eslintrc.json ./cli.js './src/**/*.js'",
+    "lint": "eslint -c ./.eslintrc.json ./cli.js './src/**/*.js'",
     "pretest": "npm run lint",
     "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/*.spec.js",
     "prepublish": "npm test"
@@ -33,10 +40,20 @@
   ],
   "keywords": [
     "cli",
-    "js",
+    "tool",
     "file",
     "files",
+    "generator",
+    "js",
+    "node",
+    "nodejs",
+    "project",
+    "projects",
+    "module",
+    "modules",
+    "template",
     "templates",
+    "snippet",
     "snippets",
     "html",
     "task",
@@ -47,17 +64,25 @@
     "amd",
     "commonjs",
     "angular",
+    "angular2",
     "angularjs",
+    "gulp",
     "gulpfile",
+    "require",
     "requirejs",
+    "grunt",
     "gruntfile",
     "javascript",
+    "mocha",
     "spec",
     "test",
-    "tests"
+    "tests",
+    "atom",
+    "github",
+    "sublime",
+    "sublime text"
   ],
   "dependencies": {
-    "deep-assign": "2.0.0",
     "fs-extra": "0.23.1"
   },
   "devDependencies": {

@@ -90,10 +90,12 @@
              *
              */
             isfile: function () {
-                var valid = this._args.length < 2;
+                var valid;
                 try {
-                    valid = valid && fs.lstatSync(this._args[0]).isFile();
-                    return this;
+                    valid = this._args.length;
+                    valid = valid && (typeof this._args[0] === 'string');
+                    valid = valid && (this._args[0].indexOf('.') !== -1);
+                    return valid;
                 } catch (e) {
                     // exit with an error and prompt help
                     utils.exit('Unknow template type');

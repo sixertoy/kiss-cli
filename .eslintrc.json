@@ -1,7 +1,6 @@
 {
   "env": {
     "browser": true
-
   },
   "rules": {
     "valid-jsdoc": 0,
@@ -167,7 +166,7 @@
     "id-length": [2, {
       "min": 3,
       "max": 25,
-      "exceptions": ["cb", "fs", "js", "e", "v", "h"]
+      "exceptions": ["cb", "fs", "js", "i", "e", "v", "h"]
     }],
     "indent": 2,
     "lines-around-comment": [2, {

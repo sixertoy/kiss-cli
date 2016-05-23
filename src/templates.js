@@ -5,9 +5,9 @@
 
     var fs = require('fs'),
         path = require('path'),
-        assign = require('deep-assign'),
         // requires
         lookup = require('./lookup'),
+        clone = require('./core/clone'),
         utils = require('./program-utils'),
         consts = require('./core/constants'),
 
@@ -91,18 +91,18 @@
         // iterates trough kiss module templates
         currentpath = path.join(consts.MODULE_PATH, consts.KISS_DIR);
         files = Templater._getfiles(currentpath, true);
-        results = assign(results, files);
+        results = clone(results, files);
 
         // iterates through user home directory
         currentpath = utils.homeuser();
         currentpath = path.join(currentpath, consts.KISS_DIR);
         files = Templater._getfiles(currentpath);
-        results = assign(results, files);
+        results = clone(results, files);
 
         // iterates trough current working directory templates
         currentpath = lookup(consts.KISS_DIR);
         files = Templater._getfiles(currentpath);
-        results = assign(results, files);
+        results = clone(results, files);
 
         return results;
     };
