@@ -5,7 +5,7 @@
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
 **You will need Kiss:**
-- if you are a developper
+- if you are a developer
 - and... if you are sharing models with a team of developers
 
 <img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/master/img/kiss-cli.gif" width="577" height="479" />
