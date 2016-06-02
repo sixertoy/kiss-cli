@@ -1,12 +1,12 @@
 # Kiss!
 
-> Keep It Stupid Simple CLI Tool for generate files
+> Keep It Stupid Simple CLI Tool files generator
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
 **You will need Kiss:**
 - if you are a developper
-- and... if you are sharing models with a team of developpers
+- and... if you are sharing models with a team of developers
 
 <img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/master/img/kiss-cli.gif" width="577" height="479" />
 
@@ -16,10 +16,11 @@ Generating a simple HTML page and an Angular module
 ```bash
 kiss index.html src/mymodule.ng
 ```
+> Kiss use [fs-extra](https://github.com/jprichardson/node-fs-extra) modules to generate unexisting folders
 
 ## Install
 
-> **must be installed globally**
+> **Kiss-cli must be installed globally**
 
 ```bash
 npm install -g kiss-cli
@@ -38,14 +39,19 @@ npm install -g kiss-cli
 
 ## Options
 
-Generate multiple files based on the same template
+Generate a single/multiple file(s) based on the same template
 ```bash
-kiss <type> <relative/filepath> [<relative/filepath> ...]
+kiss <type> <relative/filename> [<relative/filename> ...]
 ```
 
-Generate multiple files based on differents templates
+Generate a single/multiple file(s) based on differents templates
 ```bash
-kiss <relative/filepath.type> [<relative/filepath.type> ...]
+kiss <relative/filename.type> [<relative/filename.type> ...]
+```
+
+Generate a single/multiple file(s) with no extension based on a templates
+```bash
+kiss <type> <relative/filename.> [<relative/filename.type> ...]
 ```
 
 Show a model's content
@@ -53,22 +59,28 @@ Show a model's content
 kiss <model-name>
 ```
 
-Show KISS version
+Show version
 ```bash
 kiss -V
 kiss --version
 ```
 
-Show KISS help, list available templates and their paths
+Show help, list available templates and their paths
 ```bash
 kiss -h
 kiss --help
 ```
 
+## Templates Behaviors
+
+You can create a `.kiss` folder in you ~/home and in a specific project's folder to override/create templates
+
+```project folder > home folder > kiss folder```
+
 ## History
 
 - v0.2.0
-    - Generate files from files extension
+    - Generate files by types extension
 - v0.1.41
     - Remove --debug option
     - Remove commander as cli parser
@@ -80,6 +92,8 @@ kiss --help
     - ```project folder > home folder > kiss folder```
 - v0.1.24
     - Fix install 'npm install -g kiss-cli'
+
+## About
 
 This file generator was motivated by the famous French Bonaldi's Effect:<br>
 *It's totally unnecessary and therefore strictly indispensable!*<br>

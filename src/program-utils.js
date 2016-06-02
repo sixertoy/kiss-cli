@@ -50,9 +50,13 @@
                 var msg = consts.NEW_LINE;
                 // Usage
                 msg += 'Usage:' + consts.NEW_LINE;
-                msg += consts.INDENT + 'kiss [options]' + consts.NEW_LINE;
-                msg += consts.INDENT + 'kiss <type>' + consts.NEW_LINE;
-                msg += consts.INDENT + 'kiss <filepath> [...]';
+                msg += consts.INDENT + 'kiss <options>';
+                msg += consts.NEW_LINE;
+                msg += consts.INDENT + 'kiss <type>';
+                msg += consts.NEW_LINE;
+                msg += consts.INDENT + 'kiss <filename.type> [...]';
+                msg += consts.NEW_LINE;
+                msg += consts.INDENT + 'kiss <type> <relative/filename> [...]';
                 msg += consts.NEW_LINE;
                 Utils.log(msg);
             },
@@ -66,11 +70,11 @@
                 process.exit(0);
             },
 
-            exit: function (reason) {
+            exit: function (reason, trow) {
                 Utils.version();
                 Utils.usage();
                 Utils.options();
-                Utils.error(reason);
+                Utils.error(reason, trow);
                 process.exit(1);
             },
 

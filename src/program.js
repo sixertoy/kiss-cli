@@ -3,8 +3,7 @@
 
     'use strict';
 
-    var fs = require('fs'),
-        utils = require('./program-utils'),
+    var programUtils = require('./program-utils'),
 
         /**
          *
@@ -29,7 +28,7 @@
             parse: function () {
                 this._args = process.argv.slice(2);
                 if (!this._args.length) {
-                    utils.exit('Missing arguments');
+                    programUtils.exit('Missing arguments', false);
                 }
                 return this;
             },
@@ -45,8 +44,8 @@
                 valid = valid && keys.indexOf(this._args[0]) !== -1;
                 if (valid) {
                     // show content of a template type
-                    utils.version();
-                    utils.print(this._args.shift(), files);
+                    programUtils.version();
+                    programUtils.print(this._args.shift(), files);
                     process.exit(0);
                 }
             },
@@ -61,9 +60,9 @@
                 valid = valid || this._args.indexOf('--version') !== -1;
                 if (valid && this._args.length > 1) {
                     // exit
-                    utils.exit('Too much arguments');
+                    programUtils.exit('Too much arguments');
                 } else if (valid) {
-                    utils.version();
+                    programUtils.version();
                     process.exit(0);
                 }
                 return valid;
@@ -79,7 +78,7 @@
                 valid = valid || this._args.indexOf('--help') !== -1;
                 if (valid && this._args.length > 1) {
                     // exit
-                    utils.exit('Too much arguments');
+                    programUtils.exit('Too much arguments');
                 }
                 return valid;
             },
@@ -98,7 +97,7 @@
                     return valid;
                 } catch (e) {
                     // exit with an error and prompt help
-                    utils.exit('Unknow template type');
+                    programUtils.exit('Unknow template type');
                 }
                 return false;
             },

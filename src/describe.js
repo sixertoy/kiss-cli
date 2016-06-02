@@ -15,7 +15,7 @@
     module.exports = function (types) {
         //
         var key,
-            desc = 'Filetypes:',
+            desc = 'Types:',
             home = utils.homeuser(),
             keys = Object.keys(types).sort();
         while (keys.length) {

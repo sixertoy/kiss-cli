@@ -3,6 +3,8 @@
 
     'use strict';
 
-    module.exports = {};
+    var ClassObject = {};
+
+    module.exports = ClassObject;
 
 }());
