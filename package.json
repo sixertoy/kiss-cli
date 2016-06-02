@@ -1,15 +1,17 @@
 {
   "name": "kiss-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "IDE agnostic file snippets",
   "preferGlobal": true,
   "bin": {
     "kiss": "./bin/kiss"
   },
-  "license": [{
-    "type": "MIT",
-    "url": "https://raw.githubusercontent.com/sixertoy/kiss-cli/master/LICENSE"
-  }],
+  "license": [
+    {
+      "type": "MIT",
+      "url": "https://raw.githubusercontent.com/sixertoy/kiss-cli/master/LICENSE"
+    }
+  ],
   "homepage": "https://github.com/sixertoy/kiss-cli",
   "repository": "sixertoy/kiss-cli",
   "bugs": {
