@@ -1,7 +1,7 @@
 {
   "name": "kiss-cli",
-  "version": "0.2.0",
-  "description": "CLI tool for generate files",
+  "version": "0.2.1",
+  "description": "IDE agnostic file snippets",
   "preferGlobal": true,
   "bin": {
     "kiss": "./bin/kiss"
