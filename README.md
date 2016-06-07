@@ -1,14 +1,13 @@
 # Kiss!
 
-Quickly create files from a command line based on user defined snippets (global | user's home | projects) Templates can be shared through a team of developers inside a project. Developers for a project uses the same templates Kiss!
-
 > Keep It Stupid Simple CLI, an IDEs agnostic file snippets
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
 **You will need Kiss:**
 - if you are a developer
-- and... if you are sharing models with a team of developers
+- developers in a project uses the same templates Kiss!
+- quickly create files from a command line based on user defined snippets (project > user's home > global)
 
 <img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/master/img/kiss-cli.gif" width="577" height="479" />
 
