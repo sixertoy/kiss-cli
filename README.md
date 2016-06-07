@@ -6,8 +6,8 @@
 
 **You will need Kiss:**
 - if you are a developer
-- developers in a project uses the same snippets
-- quickly create files from a command line based on user defined snippets (project > user's home > global)
+- if developers in a project need to used the same snippets
+- to quickly create files from a command line based on user defined snippets (project > user's home > global)
 
 
 <img src="https://raw.githubusercontent.com/sixertoy/kiss-cli/master/img/kiss-cli.gif" width="577" height="479" />
