@@ -1,6 +1,6 @@
 # Kiss!
 
-> Keep It Stupid Simple CLI Tool files generator
+> Keep It Stupid Simple CLI an IDEs agnostic file snippets
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
