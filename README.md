@@ -2,6 +2,8 @@
 
 > Keep It Stupid Simple CLI, an IDEs agnostic file snippets
 
+Quickly create files from a command line based on user defined snippets (global | user's home | projects) Templates can be shared through a team of developers inside a project. Developers for a project uses the same templates Kiss!
+
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 
 **You will need Kiss:**
