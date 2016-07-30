@@ -1,6 +1,6 @@
 {
   "name": "kiss-cli",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "dependencies": {
     "fs-extra": {
       "version": "0.23.1",
