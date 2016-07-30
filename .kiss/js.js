@@ -1,5 +1,5 @@
 /* global require, module */
-(function () {
+(function() {
 
     'use strict';
 

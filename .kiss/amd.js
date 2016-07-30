@@ -1,5 +1,5 @@
 /* global define */
-define(function (require, exports, module) {
+define(function(require, exports, module) {
 
     'use strict';
 
@@ -8,7 +8,7 @@ define(function (require, exports, module) {
         // requires
         _options = {};
 
-    function _onDomReady(){}
+    function _onDomReady (){}
 
     exports.onDomReady = _onDomReady;
 

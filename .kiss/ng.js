@@ -1,9 +1,9 @@
 /* global angular */
-(function () {
+(function() {
 
     'use strict';
 
     angular.module('moduleApp', [])
-        .controller('AppController', ['$scope', function ($scope) {}]);
+        .controller('AppController', ['$scope', function($scope) {}]);
 
 }());
