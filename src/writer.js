@@ -1,5 +1,5 @@
 /* globals module, require */
-(function () {
+(function() {
 
     'use strict';
 
@@ -25,7 +25,7 @@
              * With extension from user selected tempates
              *
              */
-            _getoutputfile: function (destination, ext) {
+            _getoutputfile: function(destination, ext) {
                 var obj,
                     dest = destination,
                     isdotfile = wutils.isdotfile(dest),
@@ -45,7 +45,7 @@
                 return dest;
             },
 
-            _write: function (destinationfile, ext, rstream) {
+            _write: function(destinationfile, ext, rstream) {
                 // get absolute fullpath to output file from current dir
                 var wstream,
                     dest = this._getoutputfile(destinationfile, ext),
@@ -61,13 +61,13 @@
                 rstream.pipe(wstream);
             },
 
-            _writeslow: function (files, templates) {
+            _writeslow: function(files, templates) {
                 var type, file, rstream, tpl, ext,
                     msg = '',
                     self = this,
                     otype = false,
                     keys = Object.keys(templates);
-                function __onstreamend__() {
+                function __onstreamend__ () {
                     if (!files.length) {
                         self._callback();
                     }
@@ -96,12 +96,12 @@
                 return false;
             },
 
-            _writefast: function (files, template) {
+            _writefast: function(files, template) {
                 var file,
                     self = this,
                     extension = wutils.getextension(template),
                     rstream = fse.createReadStream(template);
-                rstream.on('end', function () {
+                rstream.on('end', function() {
                     if (!files.length) {
                         self._callback();
                     }
@@ -119,7 +119,7 @@
      * Main entry point function
      *
      */
-    module.exports = function (outputfiles, template, callback) {
+    module.exports = function(outputfiles, template, callback) {
         Writer._callback = callback;
         var isfast,
             files = [].concat(outputfiles);

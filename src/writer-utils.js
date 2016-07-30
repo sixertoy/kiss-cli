@@ -1,5 +1,5 @@
 /* globals module, require */
-(function () {
+(function() {
 
     'use strict';
 
@@ -18,7 +18,7 @@
              * Check if destination file has an extension
              *
              */
-            hasextension: function (input) {
+            hasextension: function(input) {
                 var ext = input.substring(input.lastIndexOf(constants.DOT));
                 return (ext !== input && ext !== '' && ext !== constants.DOT);
             },
@@ -30,7 +30,7 @@
              * It do not add extension to the output file
              *
              */
-            removetrailingdot: function (input) {
+            removetrailingdot: function(input) {
                 var dest = input,
                     valid = (dest.charAt(dest.length - 1) === constants.DOT);
                 if (!valid) {
@@ -45,7 +45,7 @@
              * If it is a dot file do not add an extension
              *
              */
-            isdotfile: function (input) {
+            isdotfile: function(input) {
                 var spl = input.split(path.sep),
                     val = spl[spl.length - 1];
                 return val.indexOf(constants.DOT) === 0;
@@ -57,13 +57,13 @@
              * If it is a trailing dot, remove this dot and do not add extension
              *
              */
-            istrailingdot: function (input) {
+            istrailingdot: function(input) {
                 var base = path.basename(input),
                     result = (base.charAt(base.length - 1) === constants.DOT);
                 return result;
             },
 
-            getextension: function (input) {
+            getextension: function(input) {
                 var dest = input,
                     obj = path.parse(dest),
                     index = obj.base.indexOf(constants.DOT);
@@ -73,7 +73,7 @@
                 return obj.base.substring(index);
             },
 
-            gettype: function (file, keys) {
+            gettype: function(file, keys) {
                 var result = false,
                     ext = path.extname(file);
                 if (ext !== '' && ext !== constants.DOT) {

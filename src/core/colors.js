@@ -1,5 +1,5 @@
 /* global module */
-(function () {
+(function() {
 
     'use strict';
 
@@ -14,35 +14,35 @@
         WHITE: 37,
         GRAY: 90,
 
-        __getColor: function (msg, code) {
+        __getColor: function(msg, code) {
             return '\u001b[' + code + 'm' + msg + '\u001b[39m';
         },
-        red: function (msg) {
+        red: function(msg) {
             return colors.__getColor(msg, colors.RED);
         },
-        gray: function (msg) {
+        gray: function(msg) {
             return colors.__getColor(msg, colors.GRAY);
         },
-        grey: function (msg) {
+        grey: function(msg) {
             // alias of gray
             return this.gray(msg);
         },
-        blue: function (msg) {
+        blue: function(msg) {
             return colors.__getColor(msg, colors.BLUE);
         },
-        cyan: function (msg) {
+        cyan: function(msg) {
             return colors.__getColor(msg, colors.CYAN);
         },
-        green: function (msg) {
+        green: function(msg) {
             return colors.__getColor(msg, colors.GREEN);
         },
-        white: function (msg) {
+        white: function(msg) {
             return colors.__getColor(msg, colors.WHITE);
         },
-        yellow: function (msg) {
+        yellow: function(msg) {
             return colors.__getColor(msg, colors.YELLOW);
         },
-        magenta: function (msg) {
+        magenta: function(msg) {
             return colors.__getColor(msg, colors.MAGENTA);
         }
     };

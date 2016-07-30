@@ -1,17 +1,17 @@
 /* global require, module */
-(function () {
+(function() {
 
     'use strict';
 
     var programUtils = require('./../program-utils');
 
-    module.exports = function (target) {
+    module.exports = function(target) {
         var output, src, i, key, len,
             valid = arguments.length >= 2;
         if (!valid) {
             programUtils.exit('Cannot convert undefined or null to object');
         }
-        function __assign__(source, tgt) {
+        function __assign__ (source, tgt) {
             for (key in source) {
                 if (Object.prototype.hasOwnProperty.call(source, key)) {
                     tgt[key] = source[key];

@@ -1,6 +1,6 @@
 /* eslint program-dangle: 0 */
 /* global require, module, process, __dirname */
-(function () {
+(function() {
 
     'use strict';
 

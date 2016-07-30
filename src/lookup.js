@@ -1,5 +1,5 @@
 /* global require, module, process */
-(function () {
+(function() {
 
     'use strict';
 
@@ -11,7 +11,7 @@
      * Check if file/path exists
      *
      */
-    function _exists(filepath) {
+    function _exists (filepath) {
         try {
             return fs.statSync(filepath);
         } catch (err) {
@@ -29,7 +29,7 @@
      * @param {string} file/directory name - File to lookup
      *
      */
-    module.exports = function (name, cwd) {
+    module.exports = function(name, cwd) {
         cwd = cwd || process.cwd();
         name = name || 'package.json';
         var file,

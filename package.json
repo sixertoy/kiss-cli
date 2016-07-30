@@ -1,7 +1,7 @@
 {
   "name": "kiss-cli",
   "version": "0.2.4",
-  "description": "Keep It Stupid Simple CLI, an IDEs agnostic file snippets",
+  "description": "Keep It Stupid Simple CLI, an IDEs agnostic file snippets :kiss:",
   "preferGlobal": true,
   "bin": {
     "kiss": "./bin/kiss"
@@ -88,7 +88,10 @@
     "fs-extra": "0.23.1"
   },
   "devDependencies": {
+    "babel-eslint": "6.1.2",
     "chai": "3.2.0",
+    "eslint": "^3.2.0",
+    "eslint-plugin-react": "^5.2.2",
     "mocha": "2.2.5"
   }
 }

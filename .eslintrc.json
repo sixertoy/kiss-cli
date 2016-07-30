@@ -1,6 +1,25 @@
 {
+
+  "parser": "babel-eslint",
   "env": {
     "browser": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "14.0"
+    }
+  },
+  "parserOptions": {
+    "ecmaVersion": "5",
+    "sourceType": "script",
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
   },
   "rules": {
     "valid-jsdoc": 0,
@@ -77,7 +96,7 @@
     "complexity": [2, 20],
     "consistent-return": 2,
     "curly": [2, "all"],
-    "default-case": 1,
+    "default-case": 0,
     "dot-notation": [2, {
       "allowKeywords": true
     }],
@@ -85,7 +104,7 @@
     "eqeqeq": [2, "allow-null"],
     "guard-for-in": 2,
     "no-alert": 2,
-    "no-caller": 2,
+    "no-caller": 1,
     "no-div-regex": 2,
     "no-else-return": 2,
     "no-eq-null": 2,
@@ -99,7 +118,7 @@
       "string": true
     }],
     "no-implied-eval": 2,
-    "no-invalid-this": 0,
+    "no-invalid-this": 1,
     "no-iterator": 2,
     "no-labels": 2,
     "no-lone-blocks": 2,
@@ -146,7 +165,7 @@
     "no-undefined": 2,
     "no-unused-vars": 2,
     "no-use-before-define": 2,
-    "callback-return": [2, ["callback"]],
+    "callback-return": 0,
     "handle-callback-err": [2, "err"],
     "no-new-require": 2,
     "no-path-concat": 2,
@@ -166,9 +185,15 @@
     "id-length": [2, {
       "min": 3,
       "max": 25,
-      "exceptions": ["cb", "fs", "js", "i", "e", "v", "h"]
+      "exceptions": ["by", "cb", "fa", "fs", "id", "js", "ok", "on", "pp", "pt", "ne",
+        "nw", "se", "sw", "e", "i", "j", "k", "l", "m", "n", "x", "y",
+        "z", "OK", "Q", "L", "W", "$"
+      ]
     }],
-    "indent": 2,
+    "indent": [2, 4, {
+      "SwitchCase": 0,
+      "VariableDeclarator": 1
+    }],
     "lines-around-comment": [2, {
       "beforeBlockComment": true,
       "allowBlockStart": true
@@ -196,30 +221,37 @@
     }],
     "no-unneeded-ternary": 2,
     "one-var": 2,
-    "operator-linebreak": [2, "after"],
+    "operator-linebreak": [2, "before", { "overrides": {}}],
     "quotes": [2, "single"],
     "semi": [2, "always"],
     "space-before-function-paren": [2, {
-      "anonymous": "always",
-      "named": "never"
+      "anonymous": "never",
+      "named": "always"
     }],
     "space-in-parens": [2, "never"],
     "spaced-comment": [2, "always", {
-      "exceptions": ["-", "+", "#", "global", "global",
-        "eslint"
-      ]
+      "exceptions": ["-", "+", "#"]
     }],
     "wrap-regex": 2,
     "max-depth": [2, 4],
-    "max-len": [2, 90, 4, {
+    "max-len": [2, 100, 4, {
       "ignoreComments": true,
       "ignoreUrls": true
     }],
-    "max-params": [2, 3],
+    "max-params": [2, 4],
     "max-statements": [2, 25],
     "no-bitwise": 2,
-    "no-plusplus": [2, {
-      "allowForLoopAfterthoughts": true
-    }]
+    "no-plusplus": 0,
+    "react/prop-types": 2,
+    "react/no-comment-textnodes": 2,
+    "react/prefer-es6-class": [2, "never"],
+    "react/no-deprecated": [1, {"react": "0.14.8"}],
+    "react/forbid-prop-types": [1, { "forbid": ["any"] }],
+    "react/jsx-uses-vars": 2,
+    "react/jsx-indent": [2, 4],
+    "react/jsx-no-undef": 2,
+    "react/jsx-indent-props": [2, 4],
+    "react/jsx-no-duplicate-props": 2,
+    "react/jsx-max-props-per-line": [1, { "maximum": 1 }]
   }
 }

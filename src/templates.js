@@ -1,5 +1,5 @@
 /* global require, module */
-(function () {
+(function() {
 
     'use strict';
 
@@ -26,7 +26,7 @@
              * kiss module, home folder and current path folder
              *
              */
-            _excludeFiles: function (files) {
+            _excludeFiles: function(files) {
                 // files to excludes for templatings
                 var value, indexof,
                     results = [].concat(files),
@@ -46,7 +46,7 @@
              * Returns files in a .kiss folder
              *
              */
-            _getfiles: function (currentpath, exitonerror) {
+            _getfiles: function(currentpath, exitonerror) {
                 var files = {};
                 try {
                     files = fs.readdirSync(currentpath);
@@ -68,7 +68,7 @@
              * Will populate path for files
              *
              */
-            _mapFilesToType: function (files, filepath) {
+            _mapFilesToType: function(files, filepath) {
                 var value,
                     results = {},
                     copy = [].concat(files);
@@ -85,7 +85,7 @@
      * Returns a list a templates to use
      *
      */
-    module.exports = function () {
+    module.exports = function() {
         var files, currentpath,
             results = {};
         // iterates trough kiss module templates

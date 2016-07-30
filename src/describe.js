@@ -1,5 +1,5 @@
 /* global require, module */
-(function () {
+(function() {
 
     'use strict';
 
@@ -12,7 +12,7 @@
      * Write out available templates and their paths
      *
      */
-    module.exports = function (types) {
+    module.exports = function(types) {
         //
         var key,
             desc = 'Types:',

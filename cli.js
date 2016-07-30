@@ -25,7 +25,7 @@
 var timecolor = '\u001b[32mSuccess\u001b[39m';
 console.time(timecolor);
 
-(function (time) {
+(function(time) {
 
     'use strict';
 
@@ -74,7 +74,7 @@ console.time(timecolor);
         }
 
         // write output file with tem
-        write(args, template, function () {
+        write(args, template, function() {
             console.timeEnd(time);
             process.exit(0);
         });

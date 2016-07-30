@@ -1,5 +1,5 @@
 /* global module, process, require */
-(function () {
+(function() {
 
     'use strict';
 
@@ -25,7 +25,7 @@
              * Parse arguments from process
              *
              */
-            parse: function () {
+            parse: function() {
                 this._args = process.argv.slice(2);
                 if (!this._args.length) {
                     programUtils.exit('Missing arguments', false);
@@ -38,7 +38,7 @@
              * Output template content and exit
              *
              */
-            print: function (files) {
+            print: function(files) {
                 var keys = Object.keys(files),
                     valid = this._args.length < 2;
                 valid = valid && keys.indexOf(this._args[0]) !== -1;
@@ -55,7 +55,7 @@
              * Show KISS cli version
              *
              */
-            needversion: function () {
+            needversion: function() {
                 var valid = this._args.indexOf('-V') !== -1;
                 valid = valid || this._args.indexOf('--version') !== -1;
                 if (valid && this._args.length > 1) {
@@ -73,7 +73,7 @@
              * Check if help is needed
              *
              */
-            needhelp: function () {
+            needhelp: function() {
                 var valid = this._args.indexOf('-h') !== -1;
                 valid = valid || this._args.indexOf('--help') !== -1;
                 if (valid && this._args.length > 1) {
@@ -88,7 +88,7 @@
              * Check if first argument is a file
              *
              */
-            isfile: function () {
+            isfile: function() {
                 var valid;
                 try {
                     valid = this._args.length;
@@ -107,7 +107,7 @@
              * Check if first argument is a file
              *
              */
-            isknowtype: function (files) {
+            isknowtype: function(files) {
                 var value = this._args[0],
                     keys = Object.keys(files),
                     valid = keys.indexOf(value) !== -1;
@@ -117,7 +117,7 @@
                 return value;
             },
 
-            args: function () {
+            args: function() {
                 return [].concat(this._args);
             }
 

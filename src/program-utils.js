@@ -1,6 +1,6 @@
 /* eslint no-process-env: 0 */
 /* global require, module, process */
-(function () {
+(function() {
 
     'use strict';
 
@@ -9,6 +9,7 @@
         // requires
         colors = require('./core/colors'),
         consts = require('./core/constants'),
+        REPO_URL = 'https://github.com/sixertoy/kiss-cli',
         WELCOME_MSG = 'Keep It Stupid Simple templated files generator',
 
         /**
@@ -22,7 +23,7 @@
             _semver: false,
             _homeuser: false,
 
-            version: function () {
+            version: function() {
                 var semver = Utils.semver(),
                     msg = 'Kiss v' + semver + consts.NEW_LINE;
                 Utils.info(msg);
@@ -30,7 +31,7 @@
                 Utils.debug(msg);
             },
 
-            options: function () {
+            options: function() {
                 var msg = consts.NEW_LINE;
                 // option
                 msg += 'Options:' + consts.NEW_LINE;
@@ -44,9 +45,12 @@
                 msg += 'Ouput kiss-cli version' + consts.NEW_LINE;
                 msg += consts.NEW_LINE;
                 Utils.log(msg);
+                msg = 'please visit: ' + REPO_URL;
+                msg += consts.NEW_LINE + consts.NEW_LINE;
+                Utils.debug(msg);
             },
 
-            usage: function () {
+            usage: function() {
                 var msg = consts.NEW_LINE;
                 // Usage
                 msg += 'Usage:' + consts.NEW_LINE;
@@ -61,7 +65,7 @@
                 Utils.log(msg);
             },
 
-            help: function (desc) {
+            help: function(desc) {
                 Utils.version();
                 Utils.usage();
                 Utils.options();
@@ -70,7 +74,7 @@
                 process.exit(0);
             },
 
-            exit: function (reason, trow) {
+            exit: function(reason, trow) {
                 Utils.version();
                 Utils.usage();
                 Utils.options();
@@ -86,7 +90,7 @@
              * @param {Object} types
              *
              */
-            print: function (filetype, types) {
+            print: function(filetype, types) {
                 var input, output;
                 try {
                     // get template filename
@@ -113,7 +117,7 @@
              * Show a magenta colored message
              *
              */
-            info: function (msg) {
+            info: function(msg) {
                 var value = colors.magenta(msg);
                 process.stdout.write(value);
             },
@@ -123,7 +127,7 @@
              * Log a message in console
              *
              */
-            log: function (msg) {
+            log: function(msg) {
                 if (process.stdout.isTTY) {
                     process.stdout.write(msg);
                 }
@@ -134,7 +138,7 @@
              * Show a green colored mesage
              *
              */
-            success: function (msg) {
+            success: function(msg) {
                 var value;
                 if (process.stdout.isTTY) {
                     value = colors.green(msg);
@@ -147,7 +151,7 @@
              * Show a gray colored message
              *
              */
-            debug: function (msg) {
+            debug: function(msg) {
                 var value;
                 if (process.stdout.isTTY) {
                     value = colors.gray(msg);
@@ -163,7 +167,7 @@
              * @param {Boolean} throwerror - wether throw an error catcheble by cli
              *
              */
-            error: function (msg, throwerror) {
+            error: function(msg, throwerror) {
                 var value,
                     thrw = throwerror;
                 if (arguments.length < 2) {
@@ -184,7 +188,7 @@
              *
              *
              */
-            semver: function () {
+            semver: function() {
                 var pkg;
                 if (!this._semver) {
                     pkg = path.join(consts.MODULE_PATH, 'package.json');
@@ -199,7 +203,7 @@
              * Returns current user home path
              *
              */
-            homeuser: function () {
+            homeuser: function() {
                 var env;
                 if (!this._homeuser) {
                     env = process.env;
