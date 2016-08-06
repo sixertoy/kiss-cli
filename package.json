@@ -1,6 +1,6 @@
 {
   "name": "kiss-cli",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Keep It Stupid Simple CLI, an IDEs agnostic file snippets :kiss:",
   "preferGlobal": true,
   "bin": {
