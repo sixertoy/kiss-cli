@@ -6,8 +6,9 @@
  *
  * ## Installation
  * ---------------------------
- * > touch .env
- * npm i -D dotenv express express-livereload compression body-parser
+ * 
+ * `echo "PORT=9080" > .env`
+ * npm i -D dotenv express cors helmet body-parser compression
  *
  */
 const path = require('path');
