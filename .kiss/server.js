@@ -10,35 +10,35 @@
  * npm i -D dotenv express express-livereload compression body-parser
  *
  */
-require('dotenv').load();
-
-const cwd = process.cwd();
 const path = require('path');
+const cors = require('cors');
+const helmet = require('helmet');
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 
+require('dotenv').load({
+  path: path.join(__dirname, '.env')
+});
+  
 const config = {
   port: process.env.PORT || 9080,
-  debug: process.env.DEBUG || false
+  debug: process.env.DEBUG || false,
+  public: path.join(__dirname, 'public')
 };
 
-const publicpath = path.join(cwd, 'data');
 const server = express();
-// gzip compression
+server.disable('x-powered-by');
+server.use(cors());
+server.use(helmet());
 server.use(compression());
-// Parsing application/json
-server.use(bodyParser.json({
-  limit: '50mb'
-}));
+server.use(bodyParser.json({ limit: '50mb' }));
+
 // Express server is used to serve static ressouces
-server.use('/', express.static(publicpath));
+server.use('/', express.static(config.public));
 
 server.listen(config.port, () => {
-  if (!config.debug) {
-    return true;
-  }
-  const msg = 'Application now running under http://localhost:%d\n';
-  process.stdout.write(msg, config.port);
-  return true;
+  if (!config.debug) return;
+  const msg = `Server is running under http://localhost:${port}`;
+  console.log(`\x1b[32m${msg}\x1b[39m`);
 });
