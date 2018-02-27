@@ -1,144 +1,139 @@
-/* globals module, require */
-(function() {
+const path = require('path');
+const fse = require('fs-extra');
+// requires
+const utils = require('./program-utils');
+const wutils = require('./writer-utils');
+const constants = require('./core/constants');
 
-    'use strict';
 
-    var path = require('path'),
-        fse = require('fs-extra'),
-        // requires
-        utils = require('./program-utils'),
-        wutils = require('./writer-utils'),
-        constants = require('./core/constants'),
+/**
+*
+* Write Destination File
+*
+*/
+const Writer = {
 
-        /**
-         *
-         * Write Destination File
-         *
-         */
-        Writer = {
+  _callback: false,
 
-            _callback: false,
+  /**
+  *
+  * Returns full filepath for output file
+  * With extension from user selected tempates
+  *
+  */
+  _getoutputfile(destination, ext) {
+    let obj = null;
+    let dest = destination;
+    const isdotfile = wutils.isdotfile(dest);
+    const hasextension = wutils.hasextension(dest);
+    const istrailingdot = wutils.istrailingdot(dest);
 
-            /**
-             *
-             * Returns full filepath for output file
-             * With extension from user selected tempates
-             *
-             */
-            _getoutputfile: function(destination, ext) {
-                var obj,
-                    dest = destination,
-                    isdotfile = wutils.isdotfile(dest),
-                    hasextension = wutils.hasextension(dest),
-                    istrailingdot = wutils.istrailingdot(dest);
-                //
-                // add extension to output file name
-                // for user selected template
-                if (!isdotfile && !istrailingdot && !hasextension) {
-                    dest = (dest + ext);
+    //
+    // add extension to output file name
+    // for user selected template
+    if (!isdotfile && !istrailingdot && !hasextension) {
+      dest += ext;
+    } else if (istrailingdot && !hasextension) {
+      obj = path.parse(destination);
+      dest = wutils.removetrailingdot(obj.base);
+      dest = path.join(obj.dir, dest);
+    }
+    return dest;
+  },
 
-                } else if (istrailingdot && !hasextension) {
-                    obj = path.parse(destination);
-                    dest = wutils.removetrailingdot(obj.base);
-                    dest = path.join(obj.dir, dest);
-                }
-                return dest;
-            },
+  _write(destinationfile, ext, rstream) {
+    // get absolute fullpath to output file from current dir
+    let wstream = null;
+    const dest = this._getoutputfile(destinationfile, ext);
+    const outputpath = path.relative(constants.CURRENT_WD, dest);
 
-            _write: function(destinationfile, ext, rstream) {
-                // get absolute fullpath to output file from current dir
-                var wstream,
-                    dest = this._getoutputfile(destinationfile, ext),
-                    outputpath = path.relative(constants.CURRENT_WD, dest);
+    // process.stdout.cursorTo(0);
+    utils.debug(`Write: ${outputpath}${constants.NEW_LINE}`);
+    // process.stdout.clearLine(1);
+    // check if path exists and file can be written
+    fse.ensureFileSync(outputpath);
+    // write template content into output
+    wstream = fse.createWriteStream(outputpath);
+    rstream.pipe(wstream);
+  },
 
-                // process.stdout.cursorTo(0);
-                utils.debug('Write: ' + outputpath + constants.NEW_LINE);
-                // process.stdout.clearLine(1);
-                // check if path exists and file can be written
-                fse.ensureFileSync(outputpath);
-                // write template content into output
-                wstream = fse.createWriteStream(outputpath);
-                rstream.pipe(wstream);
-            },
+  _writeslow(files, templates) {
+    let msg = '';
+    let tpl = null;
+    let ext = null;
+    let type = null;
+    let file = null;
+    let otype = false;
+    let rstream = null;
+    const self = this;
+    const keys = Object.keys(templates);
+    function __onstreamend__ () {
+      if (!files.length) {
+        self._callback();
+      }
+    }
+    while (files.length) {
+      file = files.shift();
+      type = wutils.gettype(file, keys);
+      if (!type) {
+        msg = `Unable to write file '${file}'. Unknow type`;
+        utils.error(msg, false);
+      } else if (type !== otype) {
+        // create a new stream
+        tpl = templates[type];
+        rstream = fse.createReadStream(tpl);
+        rstream.on('end', __onstreamend__);
+      }
+      if (type) {
+        otype = type;
+        ext = wutils.getextension(tpl);
+        // remove file current type extension
+        file = file.replace(`.${type}`, '');
+        this._write(file, ext, rstream);
+      }
+    }
+    return false;
+  },
 
-            _writeslow: function(files, templates) {
-                var type, file, rstream, tpl, ext,
-                    msg = '',
-                    self = this,
-                    otype = false,
-                    keys = Object.keys(templates);
-                function __onstreamend__ () {
-                    if (!files.length) {
-                        self._callback();
-                    }
-                }
-                while (files.length) {
-                    file = files.shift();
-                    type = wutils.gettype(file, keys);
-                    if (!type) {
-                        msg = 'Unable to write file ';
-                        msg += '\'' + file + '\'' + '. Unknow type';
-                        utils.error(msg, false);
-                    } else if (type !== otype) {
-                        // create a new stream
-                        tpl = templates[type];
-                        rstream = fse.createReadStream(tpl);
-                        rstream.on('end', __onstreamend__);
-                    }
-                    if (type) {
-                        otype = type;
-                        ext = wutils.getextension(tpl);
-                        // remove file current type extension
-                        file = file.replace('.' + type, '');
-                        this._write(file, ext, rstream);
-                    }
-                }
-                return false;
-            },
+  _writefast(files, template) {
+    let file,
+    self = this,
+    extension = wutils.getextension(template),
+    rstream = fse.createReadStream(template);
+    rstream.on('end', () => {
+      if (!files.length) {
+        self._callback();
+      }
+    });
+    while (files.length) {
+      file = files.shift();
+      this._write(file, extension, rstream);
+    }
+    return true;
+  },
+};
 
-            _writefast: function(files, template) {
-                var file,
-                    self = this,
-                    extension = wutils.getextension(template),
-                    rstream = fse.createReadStream(template);
-                rstream.on('end', function() {
-                    if (!files.length) {
-                        self._callback();
-                    }
-                });
-                while (files.length) {
-                    file = files.shift();
-                    this._write(file, extension, rstream);
-                }
-                return true;
-            }
-        };
+/**
+*
+* Main entry point function
+*
+*/
+module.exports = function (outputfiles, template, callback) {
+  Writer._callback = callback;
+  let isfast,
+  files = [].concat(outputfiles);
+  try {
+    // if template is a string will create only once stream reader
+    if (typeof template === 'string') {
+      isfast = Writer._writefast(files, template);
+    }
+    // else wil create multiple stream for each template
+    isfast = Writer._writeslow(files, template);
+  } catch (e) {
+    utils.exit('Error while writing file(s)');
+  }
+  return isfast;
+};
 
-    /**
-     *
-     * Main entry point function
-     *
-     */
-    module.exports = function(outputfiles, template, callback) {
-        Writer._callback = callback;
-        var isfast,
-            files = [].concat(outputfiles);
-        try {
-            // if template is a string will create only once stream reader
-            if (typeof template === 'string') {
-                isfast = Writer._writefast(files, template);
-            }
-            // else wil create multiple stream for each template
-            isfast = Writer._writeslow(files, template);
-
-        } catch (e) {
-            utils.exit('Error while writing file(s)');
-
-        }
-        return isfast;
-    };
-
-    // units tests
-    module.exports.writer = Writer;
-
-}());
+// units tests
+module.exports.writer = Writer;
