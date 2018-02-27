@@ -21,7 +21,7 @@ const Writer = {
   * With extension from user selected tempates
   *
   */
-  _getoutputfile(destination, ext) {
+  getoutputfile(destination, ext) {
     let obj = null;
     let dest = destination;
     const isdotfile = wutils.isdotfile(dest);
@@ -44,7 +44,7 @@ const Writer = {
   _write(destinationfile, ext, rstream) {
     // get absolute fullpath to output file from current dir
     let wstream = null;
-    const dest = this._getoutputfile(destinationfile, ext);
+    const dest = this.getoutputfile(destinationfile, ext);
     const outputpath = path.relative(constants.CURRENT_WD, dest);
 
     // process.stdout.cursorTo(0);

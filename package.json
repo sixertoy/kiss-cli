@@ -31,9 +31,8 @@
   },
   "scripts": {
     "lint": "eslint -c ./.eslintrc.json ./cli.js './src/**/*.js'",
-    "pretest": "npm run lint",
     "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/*.spec.js",
-    "prepublish": "npm test"
+    "prepublish": "npm run lint && npm test"
   },
   "files": [
     "bin/",
@@ -95,6 +94,8 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "husky": "^0.14.3",
+    "istanbul": "^0.4.5",
     "mocha": "^5.0.1"
   }
 }
