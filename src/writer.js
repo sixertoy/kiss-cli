@@ -48,7 +48,7 @@ const Writer = {
     const outputpath = path.relative(constants.CURRENT_WD, dest);
 
     // process.stdout.cursorTo(0);
-    utils.debug(`Write: ${outputpath}${constants.NEW_LINE}`);
+    utils.debug(`Write: ${outputpath}${constants.NL}`);
     // process.stdout.clearLine(1);
     // check if path exists and file can be written
     fse.ensureFileSync(outputpath);
@@ -57,7 +57,7 @@ const Writer = {
     rstream.pipe(wstream);
   },
 
-  _writeslow(files, templates) {
+  writeslow(files, templates) {
     let msg = '';
     let tpl = null;
     let ext = null;
@@ -95,7 +95,7 @@ const Writer = {
     return false;
   },
 
-  _writefast(files, template) {
+  writefast(files, template) {
     let file,
     self = this,
     extension = wutils.getextension(template),
@@ -125,10 +125,10 @@ module.exports = function (outputfiles, template, callback) {
   try {
     // if template is a string will create only once stream reader
     if (typeof template === 'string') {
-      isfast = Writer._writefast(files, template);
+      isfast = Writer.writefast(files, template);
     }
     // else wil create multiple stream for each template
-    isfast = Writer._writeslow(files, template);
+    isfast = Writer.writeslow(files, template);
   } catch (e) {
     utils.exit('Error while writing file(s)');
   }

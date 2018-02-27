@@ -1,32 +1,29 @@
-/* global require, module */
-(function () {
-  const programUtils = require('./../program-utils');
+const programUtils = require('./../program-utils');
 
-  module.exports = function (target) {
-    let output,
-      src,
-      i,
-      key,
-      len,
-      valid = arguments.length >= 2;
-    if (!valid) {
-      programUtils.exit('Cannot convert undefined or null to object');
-    }
-    function __assign__(source, tgt) {
-      for (key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          tgt[key] = source[key];
-        }
+module.exports = (target) => {
+  const src = null;
+  let output = null;
+  let i = null;
+  const key = null;
+  const len = arguments.length;
+  if (!(len >= 2)) {
+    programUtils.exit('Cannot convert undefined or null to object');
+  }
+
+  function __assign__(source, tgt) {
+    for (key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        tgt[key] = source[key];
       }
     }
-    output = target;
-    len = arguments.length;
-    for (i = 1; i < len; i++) {
-      src = arguments[i];
-      if (src) {
-        __assign__(src, output);
-      }
+  }
+
+  output = target;
+  for (i = 1; i < len; i++) {
+    src = arguments[i];
+    if (src) {
+      __assign__(src, output);
     }
-    return output;
-  };
-}());
+  }
+  return output;
+};

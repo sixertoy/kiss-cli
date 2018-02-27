@@ -1,124 +1,71 @@
-/* global module, process, require */
-(function () {
-  let programUtils = require('./program-utils'),
+const describe = require('./describe');
+const Utils = require('./program-utils');
+const Package = require('./../package.json');
+const Constants = require('./core/constants');
 
-    /**
-         *
-         * CLI arguments parser
-         *
-         */
-    Program = {
+const WELCOME_MSG = `
+Keep It Stupid Simple templated files generator
+`;
 
-      _args: false,
+/**
+*
+* CLI arguments parser
+*
+*/
+const Program = {
 
-      /* ---------------------------------
+  cmdargs: false,
 
-            Public
+  // Parse arguments from process
+  parse: (files) => {
+    const args = process.argv.slice(2);
+    if (!args.length) {
+      Utils.exit('Missing arguments', false);
+    }
+    return args;
+  },
 
-            --------------------------------- */
+  // Show KISS cli version
+  printversion: () => {
+    const semver = Package.version;
+    Utils.info(`Kiss v${semver}${Constants.NL}`);
+    Utils.debug(WELCOME_MSG);
+  },
 
-      /**
-             *
-             * Parse arguments from process
-             *
-             */
-      parse() {
-        this._args = process.argv.slice(2);
-        if (!this._args.length) {
-          programUtils.exit('Missing arguments', false);
-        }
-        return this;
-      },
+  // Output template content and exit
+  print: (files) => {
+    let keys = Object.keys(files),
+    valid = this.cmdargs.length < 2;
+    valid = valid && keys.indexOf(this.cmdargs[0]) !== -1;
+    if (valid) {
+      // show content of a template type
+      Utils.print(this.cmdargs.shift(), files);
+      process.exit(0);
+    }
+  },
 
-      /**
-             *
-             * Output template content and exit
-             *
-             */
-      print(files) {
-        let keys = Object.keys(files),
-          valid = this._args.length < 2;
-        valid = valid && keys.indexOf(this._args[0]) !== -1;
-        if (valid) {
-          // show content of a template type
-          programUtils.version();
-          programUtils.print(this._args.shift(), files);
-          process.exit(0);
-        }
-      },
+  // Check if first argument is a file
+  isfile: () => {
+    let valid;
+    try {
+      valid = this.cmdargs.length;
+      valid = valid && (typeof this.cmdargs[0] === 'string');
+      valid = valid && (this.cmdargs[0].indexOf('.') !== -1);
+      return valid;
+    } catch (e) {
+      // exit with an error and prompt help
+      Utils.exit('Unknow template type');
+    }
+    return false;
+  },
 
-      /**
-             *
-             * Show KISS cli version
-             *
-             */
-      needversion() {
-        let valid = this._args.indexOf('-V') !== -1;
-        valid = valid || this._args.indexOf('--version') !== -1;
-        if (valid && this._args.length > 1) {
-          // exit
-          programUtils.exit('Too much arguments');
-        } else if (valid) {
-          programUtils.version();
-          process.exit(0);
-        }
-        return valid;
-      },
+  // Check if first argument is a file
+  isknowtype: files => Object.keys(files)
+    .includes(this.cmdargs[0]),
 
-      /**
-             *
-             * Check if help is needed
-             *
-             */
-      needhelp() {
-        let valid = this._args.indexOf('-h') !== -1;
-        valid = valid || this._args.indexOf('--help') !== -1;
-        if (valid && this._args.length > 1) {
-          // exit
-          programUtils.exit('Too much arguments');
-        }
-        return valid;
-      },
+  args: () =>
+    [].concat(this.cmdargs),
 
-      /**
-             *
-             * Check if first argument is a file
-             *
-             */
-      isfile() {
-        let valid;
-        try {
-          valid = this._args.length;
-          valid = valid && (typeof this._args[0] === 'string');
-          valid = valid && (this._args[0].indexOf('.') !== -1);
-          return valid;
-        } catch (e) {
-          // exit with an error and prompt help
-          programUtils.exit('Unknow template type');
-        }
-        return false;
-      },
+};
 
-      /**
-             *
-             * Check if first argument is a file
-             *
-             */
-      isknowtype(files) {
-        let value = this._args[0],
-          keys = Object.keys(files),
-          valid = keys.indexOf(value) !== -1;
-        if (!valid) {
-          value = false;
-        }
-        return value;
-      },
-
-      args() {
-        return [].concat(this._args);
-      },
-
-    };
-
-  module.exports = Program;
-}());
+module.exports = Program;

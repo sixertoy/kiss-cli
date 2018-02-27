@@ -19,75 +19,71 @@
  *
  */
 // require
-const write = require('./src/writer');
+// const write = require('./src/writer');
 const program = require('./src/program');
 const describe = require('./src/describe');
-const utils = require('./src/program-utils');
+// const Utils = require('./src/program-utils');
 const templates = require('./src/templates');
 
-const USE_DEBUG = false;
+const USE_DEBUG = true;
 const TIME_COLOR = '\u001b[32mSuccess\u001b[39m';
+// eslint-disable-next-line no-console
+const time = console.time(TIME_COLOR);
 
-// log colored execution time
-process.stdout.write(`${TIME_COLOR}\n`);
+try {
+  // show KISS version
+  program.printversion();
+  // retrieves KISS templates files
+  // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
+  const files = templates();
+  // validate arguments
+  // if no arguments:
+  // - exit with error
+  // - show usages and templates
+  const args = program.parse(files);
 
-(function execute(time) {
-  let err = null;
-  let desc = null;
-  let type = null;
-  let args = null;
-  let files = null;
-  let template = null;
-
-  try {
-    // validate arguments
-    // exit with error if no arguments
-    program.parse();
-    // show version if options -V or --version is used
-    program.needversion();
-
-    // retrieve templates list in
-    // 1/ kiss extension folder
-    // 2/ user's home folder
-    // 3/ current project folder
-    files = templates();
-    // output help if -h or --help is used
-    if (program.needhelp()) {
-      desc = describe(files);
-      utils.help(desc);
-    }
-
-    // if arguments.length === 1 and argument is a template
-    // if is not a know template file will prompt content and exit
-    program.print(files);
-    // if arguments.length === 1 and is not a file
-    // exit and prompt an error
-    program.isfile();
-    // if arguments.length > 1 and is a know type
-    template = false;
-    args = program.args();
-    type = program.isknowtype(files);
-    if (type) {
-      args.shift();
-      template = files[type];
-    } else {
-      template = files;
-    }
-
-    // write output file with tem
-    write(args, template, () => {
-      // eslint-disable-next-line no-console
-      console.timeEnd(time);
-      process.exit(0);
-    });
-  } catch (e) {
-    if (USE_DEBUG) {
-      process.stdout.write(`error >>> ${e}\n`);
-    }
-    if (process.stderr.isTTY) {
-      err = '\u001b[31m! Unexpected error has occurred\u001b[39m\n';
-      process.stderr.write(err);
-    }
-    process.exit(1);
+  // retrieve templates list in
+  // 1/ kiss extension folder
+  // 2/ user's home folder
+  // 3/ current project folder
+  // output help if -h or --help is used
+  /*
+  if (program.needhelp()) {
+    utils.help(desc);
   }
-}(TIME_COLOR));
+
+  // if arguments.length === 1 and argument is a template
+  // if is not a know template file will prompt content and exit
+  program.print(files);
+  // if arguments.length === 1 and is not a file
+  // exit and prompt an error
+  program.isfile();
+  // if arguments.length > 1 and is a know type
+  template = false;
+  args = program.args();
+  type = program.isknowtype(files);
+  if (type) {
+    args.shift();
+    template = files[type];
+  } else {
+    template = files;
+  }
+
+  // write output file with tem
+  write(args, template, () => {
+  });
+  */
+
+  // eslint-disable-next-line no-console
+  console.timeEnd(time);
+  process.exit(0);
+} catch (e) {
+  if (USE_DEBUG) {
+    process.stdout.write(`error >>> ${e}\n`);
+  }
+  if (process.stderr.isTTY) {
+    const err = '\u001b[31m! Unexpected error has occurred\u001b[39m\n';
+    process.stderr.write(err);
+  }
+  process.exit(1);
+}

@@ -1,108 +1,57 @@
 /* global require, module */
-(function () {
-  var fs = require('fs'),
-    path = require('path'),
-    // requires
-    lookup = require('./lookup'),
-    clone = require('./core/clone'),
-    utils = require('./program-utils'),
-    consts = require('./core/constants'),
+const fs = require('fs');
+const path = require('path');
+// requires
+const lookup = require('./core/lookup');
+const fileexists = require('./core/fileexists');
 
-    /**
-         *
-         * Return allowed types for help logs
-         *
-         */
-    Templater = {
+const KISS_DIR = '.kiss';
+const KISS_PATH = path.join(__dirname, '..');
+const EXCLUDED = [
+  // Windows
+  'Thumbs.db',
+  'ehthumbs.db',
+  'Desktop.ini',
+  // OSX
+  '.DS_Store',
+  '.AppleDouble',
+  '.LSOverride',
+  // Externals
+  '.Spotlight-V100',
+  '.Trashes',
+];
 
-      /**
-             *
-             * Remove excluded files
-             * from fs.readdir results
-             * fs.readdir iterates on all .kiss directories
-             * kiss module, home folder and current path folder
-             *
-             */
-      _excludeFiles(files) {
-        // files to excludes for templatings
-        let value,
-          indexof,
-          results = [].concat(files),
-          excludes = [].concat(consts.EXCLUDES);
-        while (excludes.length) {
-          value = excludes.pop();
-          indexof = results.indexOf(value);
-          if (indexof >= 0) {
-            results.splice(indexof, 1);
-          }
-        }
-        return results;
-      },
+function homeuser() {
+  const { HOME, USERPROFILE } = process.env;
+  return HOME || USERPROFILE;
+}
 
-      /**
-             *
-             * Returns files in a .kiss folder
-             *
-             */
-      _getfiles(currentpath, exitonerror) {
-        let files = {};
-        try {
-          files = fs.readdirSync(currentpath);
-          files = Templater._excludeFiles(files);
-          files = Templater._mapFilesToType(files, currentpath);
-        } catch (e) {
-          if (exitonerror) {
-            utils.error(`Unable to scan dir: ${currentpath}`);
-          }
-          files = {};
-        }
-        return files;
-      },
+const toobj = arr =>
+  ({ [arr[1].split('.')[0]]: path.join.apply(null, arr) });
 
-      /**
-             *
-             * Return an object
-             * Keys are file basename
-             * Will populate path for files
-             *
-             */
-      _mapFilesToType(files, filepath) {
-        let value,
-          results = {},
-          copy = [].concat(files);
-        while (copy.length) {
-          value = copy.pop();
-          results[value.split(consts.DOT)[0]] = path.join(filepath, value);
-        }
-        return results;
-      },
-    };
 
-    /**
-     *
-     * Returns a list a templates to use
-     *
-     */
-  module.exports = function () {
-    let files,
-      currentpath,
-      results = {};
-    // iterates trough kiss module templates
-    currentpath = path.join(consts.MODULE_PATH, consts.KISS_DIR);
-    files = Templater._getfiles(currentpath, true);
-    results = clone(results, files);
-
-    // iterates through user home directory
-    currentpath = utils.homeuser();
-    currentpath = path.join(currentpath, consts.KISS_DIR);
-    files = Templater._getfiles(currentpath);
-    results = clone(results, files);
-
-    // iterates trough current working directory templates
-    currentpath = lookup(consts.KISS_DIR);
-    files = Templater._getfiles(currentpath);
-    results = clone(results, files);
-
-    return results;
-  };
-}());
+// Return an object
+// Keys are file basename
+// Will populate path for files
+module.exports = () => [
+  // iterates trough Kiss module templates
+  path.join(KISS_PATH, KISS_DIR),
+  // iterates through user home directory
+  path.join(homeuser(), KISS_DIR),
+  // iterates trough Current Working Directory templates
+  lookup(KISS_DIR),
+]
+  // filter non existing paths
+  .filter(fpath =>
+    fileexists(fpath) && fpath)
+  // get template files in directories
+  .reduce((acc, fpath) => acc
+    .concat(fs.readdirSync(fpath) // returns an array of filenames, exclude '.', '..'
+      .map(file => [fpath, file])), [])
+  // exlude system files
+  .filter(arr =>
+    (EXCLUDED.indexOf(arr[1]) > 0 ? false : arr))
+  // transform filename to key
+  // object value is file's fullpath
+  .reduce((acc, arr) =>
+    Object.assign({}, acc, toobj(arr)), {});

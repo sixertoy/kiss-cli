@@ -1,216 +1,146 @@
 /* eslint no-process-env: 0 */
 /* global require, module, process */
-(function () {
-  var fs = require('fs'),
-    path = require('path'),
-    // requires
-    colors = require('./core/colors'),
-    consts = require('./core/constants'),
-    REPO_URL = 'https://github.com/sixertoy/kiss-cli',
-    WELCOME_MSG = 'Keep It Stupid Simple templated files generator',
+const fs = require('fs');
+const colors = require('./core/colors');
+const Constants = require('./core/constants');
 
-    /**
-         *
-         * Stop process if an error
-         * Show a message & Log program help
-         *
-         */
-    Utils = {
+const USAGE = `
+Usage:
+${Constants.INDENT}kiss <options>
+${Constants.INDENT}kiss <type>
+${Constants.INDENT}kiss <filename.type> [...]
+${Constants.INDENT}kiss <type> <relative/filename> [...]
 
-      _semver: false,
-      _homeuser: false,
+please visit: https://github.com/sixertoy/kiss-cli
+`;
 
-      version() {
-        let semver = Utils.semver(),
-          msg = `Kiss v${semver}${consts.NEW_LINE}`;
-        Utils.info(msg);
-        msg = WELCOME_MSG + consts.NEW_LINE;
-        Utils.debug(msg);
-      },
+/**
+*
+* Stop process if an error
+* Show a message & Log program help
+*
+*/
+const Utils = {
 
-      options() {
-        let msg = consts.NEW_LINE;
-        // option
-        msg += `Options:${consts.NEW_LINE}`;
-        // help option
-        msg += `${consts.INDENT}-h, --help`;
-        msg += consts.INDENT + consts.INDENT;
-        msg += `Ouput kiss-cli help${consts.NEW_LINE}`;
-        // version option
-        msg += `${consts.INDENT}-V, --version`;
-        msg += consts.INDENT + consts.INDENT;
-        msg += `Ouput kiss-cli version${consts.NEW_LINE}`;
-        msg += consts.NEW_LINE;
-        Utils.log(msg);
-        msg = `please visit: ${REPO_URL}`;
-        msg += consts.NEW_LINE + consts.NEW_LINE;
-        Utils.debug(msg);
-      },
+  semverv: false,
+  homeUser: false,
 
-      usage() {
-        let msg = consts.NEW_LINE;
-        // Usage
-        msg += `Usage:${consts.NEW_LINE}`;
-        msg += `${consts.INDENT}kiss <options>`;
-        msg += consts.NEW_LINE;
-        msg += `${consts.INDENT}kiss <type>`;
-        msg += consts.NEW_LINE;
-        msg += `${consts.INDENT}kiss <filename.type> [...]`;
-        msg += consts.NEW_LINE;
-        msg += `${consts.INDENT}kiss <type> <relative/filename> [...]`;
-        msg += consts.NEW_LINE;
-        Utils.log(msg);
-      },
+  help: (desc) => {
+    Utils.log(USAGE);
+    Utils.log(desc);
+    process.exit(0);
+  },
 
-      help(desc) {
-        Utils.version();
-        Utils.usage();
-        Utils.options();
-        Utils.log(desc);
-        // exit
-        process.exit(0);
-      },
+  exit: (reason, trow) => {
+    Utils.log(USAGE);
+    Utils.error(reason, trow);
+    process.exit(1);
+  },
 
-      exit(reason, trow) {
-        Utils.version();
-        Utils.usage();
-        Utils.options();
-        Utils.error(reason, trow);
-        process.exit(1);
-      },
+  /**
+  *
+  * Print template's content to console
+  *
+  * @param {String} filetype
+  * @param {Object} types
+  *
+  */
+  print: (filetype, types) => {
+    let input = null;
+    let output = null;
+    try {
+      // get template filename
+      input = types[filetype];
 
-      /**
-             *
-             * Print template's content to console
-             *
-             * @param {String} filetype
-             * @param {Object} types
-             *
-             */
-      print(filetype, types) {
-        let input,
-          output;
-        try {
-          // get template filename
-          input = types[filetype];
+      output = Constants.NL;
+      output += 'Template content:';
+      Utils.log(output);
+      output = Constants.NL + input;
+      Utils.success(output);
+      // get template content
+      output = Constants.NL;
+      output += fs.readFileSync(input, 'utf8');
+      output += Constants.NL;
+      // output file content to console
+      Utils.debug(output);
+    } catch (e) {
+      Utils.exit('Unable to print template');
+    }
+  },
 
-          output = consts.NEW_LINE;
-          output += 'Template content:';
-          Utils.log(output);
-          output = consts.NEW_LINE + input;
-          Utils.success(output);
-          // get template content
-          output = consts.NEW_LINE;
-          output += fs.readFileSync(input, 'utf8');
-          output += consts.NEW_LINE;
-          // output file content to console
-          Utils.debug(output);
-        } catch (e) {
-          Utils.exit('Unable to print template');
-        }
-      },
+  /**
+  *
+  * Show a magenta colored message
+  *
+  */
+  info: (msg) => {
+    if (!process.stdout.isTTY) return;
+    const value = colors.magenta(msg);
+    process.stdout.write(value);
+  },
 
-      /**
-             *
-             * Show a magenta colored message
-             *
-             */
-      info(msg) {
-        const value = colors.magenta(msg);
-        process.stdout.write(value);
-      },
+  /**
+  *
+  * Log a message in console
+  *
+  */
+  log: (msg) => {
+    if (!process.stdout.isTTY) return;
+    process.stdout.write(msg);
+  },
 
-      /**
-             *
-             * Log a message in console
-             *
-             */
-      log(msg) {
-        if (process.stdout.isTTY) {
-          process.stdout.write(msg);
-        }
-      },
+  /**
+  *
+  * Show a green colored mesage
+  *
+  */
+  success: (msg) => {
+    if (!process.stdout.isTTY) return;
+    process.stdout.write(colors.green(msg));
+  },
 
-      /**
-             *
-             * Show a green colored mesage
-             *
-             */
-      success(msg) {
-        let value;
-        if (process.stdout.isTTY) {
-          value = colors.green(msg);
-          process.stdout.write(value);
-        }
-      },
+  /**
+  *
+  * Show a gray colored message
+  *
+  */
+  debug: (msg) => {
+    if (process.stdout.isTTY) return;
+    process.stdout.write(colors.gray(msg));
+  },
 
-      /**
-             *
-             * Show a gray colored message
-             *
-             */
-      debug(msg) {
-        let value;
-        if (process.stdout.isTTY) {
-          value = colors.gray(msg);
-          process.stdout.write(value);
-        }
-      },
+  /**
+  *
+  * Show a red clored message
+  *
+  * @param {String} msg
+  * @param {Boolean} throwerror - wether throw an error catcheble by cli
+  *
+  */
+  error: (msg, throwerror) => {
+    let value = null;
+    let thrw = throwerror;
+    if (arguments.length < 2) {
+      thrw = true;
+    }
+    if (process.stderr.isTTY) {
+      value = colors.red('Error: ');
+      value += colors.red(msg + Constants.NL);
+      process.stderr.write(value);
+    }
+    if (thrw) {
+      throw new Error(msg);
+    }
+  },
 
-      /**
-             *
-             * Show a red clored message
-             *
-             * @param {String} msg
-             * @param {Boolean} throwerror - wether throw an error catcheble by cli
-             *
-             */
-      error(msg, throwerror) {
-        let value,
-          thrw = throwerror;
-        if (arguments.length < 2) {
-          thrw = true;
-        }
-        if (process.stderr.isTTY) {
-          value = colors.red('Error: ');
-          value += colors.red(msg + consts.NEW_LINE);
-          process.stderr.write(value);
-        }
-        if (thrw) {
-          throw new Error(msg);
-        }
-      },
+  homeuser: () => {
+    if (!this.homeUser) {
+      const { HOME, USERPROFILE } = process.env;
+      this.homeUser = HOME || USERPROFILE;
+    }
+    return this.homeUser;
+  },
 
-      /**
-             *
-             *
-             *
-             */
-      semver() {
-        let pkg;
-        if (!this._semver) {
-          pkg = path.join(consts.MODULE_PATH, 'package.json');
-          pkg = require(pkg);
-          this._semver = pkg.version;
-        }
-        return this._semver;
-      },
+};
 
-      /**
-             *
-             * Returns current user home path
-             *
-             */
-      homeuser() {
-        let env;
-        if (!this._homeuser) {
-          env = process.env;
-          this._homeuser = env.HOME || env.USERPROFILE;
-        }
-        return this._homeuser;
-      },
-
-    };
-
-  module.exports = Utils;
-}());
+module.exports = Utils;
