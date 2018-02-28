@@ -1,9 +1,9 @@
 const path = require('path');
 const fse = require('fs-extra');
 // requires
-const utils = require('./program-utils');
 const wutils = require('./writer-utils');
-const constants = require('./core/constants');
+const { exit } = require('./../core/logger');
+const constants = require('./../core/constants');
 
 
 /**
@@ -130,7 +130,7 @@ module.exports = function (outputfiles, template, callback) {
     // else wil create multiple stream for each template
     isfast = Writer.writeslow(files, template);
   } catch (e) {
-    utils.exit('Error while writing file(s)');
+    exit('Error while writing file(s)');
   }
   return isfast;
 };

@@ -2,8 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 // requires
-const lookup = require('./core/lookup');
-const fileexists = require('./core/fileexists');
+const lookup = require('./lookup');
+const fileexists = require('./fileexists');
 
 const KISS_DIR = '.kiss';
 const KISS_PATH = path.join(__dirname, '..');
