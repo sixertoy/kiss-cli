@@ -2,8 +2,8 @@ const path = require('path');
 const fse = require('fs-extra');
 // requires
 const wutils = require('./writer-utils');
-const { exit } = require('./../core/logger');
-const constants = require('./../core/constants');
+const Constants = require('./../core/constants');
+const { exit, debug, error } = require('./../core/logger');
 
 
 /**
@@ -45,10 +45,10 @@ const Writer = {
     // get absolute fullpath to output file from current dir
     let wstream = null;
     const dest = this.getoutputfile(destinationfile, ext);
-    const outputpath = path.relative(constants.CURRENT_WD, dest);
+    const outputpath = path.relative(process.cwd(), dest);
 
     // process.stdout.cursorTo(0);
-    utils.debug(`Write: ${outputpath}${constants.NL}`);
+    debug(`Write: ${outputpath}${Constants.NL}`);
     // process.stdout.clearLine(1);
     // check if path exists and file can be written
     fse.ensureFileSync(outputpath);
@@ -77,7 +77,7 @@ const Writer = {
       type = wutils.gettype(file, keys);
       if (!type) {
         msg = `Unable to write file '${file}'. Unknow type`;
-        utils.error(msg, false);
+        error(msg, false);
       } else if (type !== otype) {
         // create a new stream
         tpl = templates[type];

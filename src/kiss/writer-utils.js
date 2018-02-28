@@ -1,6 +1,6 @@
 /* globals module, require */
 const path = require('path');
-const constants = require('./core/constants');
+const constants = require('./../core/constants');
 
 /**
 *
