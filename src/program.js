@@ -16,7 +16,7 @@ const USAGE = `
 ${Colors.bold('Usage:')}
 ${Constants.INDENT}kiss <url>
 ${Constants.INDENT}kiss '<rgb_color>'
-${Constants.INDENT}kiss <template> <relative/file/path>
+${Constants.INDENT}kiss <template_type> <./relative/destination/file>
 `;
 
 const WELCOME_MSG = `

@@ -1,139 +1,23 @@
+const fs = require('fs');
 const path = require('path');
-const fse = require('fs-extra');
-// requires
-const wutils = require('./writer-utils');
-const Constants = require('./../core/constants');
-const { exit, debug, error } = require('./../core/logger');
 
-
-/**
-*
-* Write Destination File
-*
-*/
-const Writer = {
-
-  _callback: false,
-
-  /**
-  *
-  * Returns full filepath for output file
-  * With extension from user selected tempates
-  *
-  */
-  getoutputfile(destination, ext) {
-    let obj = null;
-    let dest = destination;
-    const isdotfile = wutils.isdotfile(dest);
-    const hasextension = wutils.hasextension(dest);
-    const istrailingdot = wutils.istrailingdot(dest);
-
-    //
-    // add extension to output file name
-    // for user selected template
-    if (!isdotfile && !istrailingdot && !hasextension) {
-      dest += ext;
-    } else if (istrailingdot && !hasextension) {
-      obj = path.parse(destination);
-      dest = wutils.removetrailingdot(obj.base);
-      dest = path.join(obj.dir, dest);
-    }
-    return dest;
-  },
-
-  _write(destinationfile, ext, rstream) {
-    // get absolute fullpath to output file from current dir
-    let wstream = null;
-    const dest = this.getoutputfile(destinationfile, ext);
-    const outputpath = path.relative(process.cwd(), dest);
-
-    // process.stdout.cursorTo(0);
-    debug(`Write: ${outputpath}${Constants.NL}`);
-    // process.stdout.clearLine(1);
-    // check if path exists and file can be written
-    fse.ensureFileSync(outputpath);
-    // write template content into output
-    wstream = fse.createWriteStream(outputpath);
-    rstream.pipe(wstream);
-  },
-
-  writeslow(files, templates) {
-    let msg = '';
-    let tpl = null;
-    let ext = null;
-    let type = null;
-    let file = null;
-    let otype = false;
-    let rstream = null;
-    const self = this;
-    const keys = Object.keys(templates);
-    function __onstreamend__ () {
-      if (!files.length) {
-        self._callback();
-      }
-    }
-    while (files.length) {
-      file = files.shift();
-      type = wutils.gettype(file, keys);
-      if (!type) {
-        msg = `Unable to write file '${file}'. Unknow type`;
-        error(msg, false);
-      } else if (type !== otype) {
-        // create a new stream
-        tpl = templates[type];
-        rstream = fse.createReadStream(tpl);
-        rstream.on('end', __onstreamend__);
-      }
-      if (type) {
-        otype = type;
-        ext = wutils.getextension(tpl);
-        // remove file current type extension
-        file = file.replace(`.${type}`, '');
-        this._write(file, ext, rstream);
-      }
-    }
-    return false;
-  },
-
-  writefast(files, template) {
-    let file,
-    self = this,
-    extension = wutils.getextension(template),
-    rstream = fse.createReadStream(template);
-    rstream.on('end', () => {
-      if (!files.length) {
-        self._callback();
-      }
-    });
-    while (files.length) {
-      file = files.shift();
-      this._write(file, extension, rstream);
-    }
-    return true;
-  },
+/*
+const getextension = (filepath) => {
+  const base = path.basename(filepath);
+  const multidot = (base.match(new RegExp(/[.]/g)).length > 1);
+  return !multidot ? path.extname(filepath) : base.substr(base.indexOf('.'));
 };
+*/
 
 /**
 *
 * Main entry point function
 *
 */
-module.exports = function (outputfiles, template, callback) {
-  Writer._callback = callback;
-  let isfast,
-  files = [].concat(outputfiles);
-  try {
-    // if template is a string will create only once stream reader
-    if (typeof template === 'string') {
-      isfast = Writer.writefast(files, template);
-    }
-    // else wil create multiple stream for each template
-    isfast = Writer.writeslow(files, template);
-  } catch (e) {
-    exit('Error while writing file(s)');
-  }
-  return isfast;
+module.exports = {
+  write: (template, file) => {
+    const readable = fs.createReadStream(template);
+    const writable = fs.createWriteStream(path.resolve(file));
+    readable.pipe(writable);
+  },
 };
-
-// units tests
-module.exports.writer = Writer;

@@ -7,4 +7,4 @@ module.exports = args => (args
   && args[1].trim().length > 2
   && (args[1].indexOf('.') === 0)
   && (args[1].indexOf(path.sep) === 1)
-  && args[1]) || false; // only if is a filepath
+  && args[1]) || false; // only if is an filepath

@@ -36,6 +36,6 @@ module.exports = (args) => {
   // Output template content and exit
   if (validtype && !validfile) help(printTemplate(args[0], files));
   // Write templates
-  if (validtype && validfile) write();
+  if (validtype && validfile) write(files[validtype], validfile);
   return args;
 };
