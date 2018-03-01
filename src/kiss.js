@@ -28,11 +28,28 @@ const homeuser = () => {
   return HOME || USERPROFILE;
 };
 
-const toobj = (arr) => {
+// transform array of filepaths to object
+const templatestoobj = (arr) => {
   let key = arr[1].split('.')[0];
   key = key.indexOf('_') < 0 ? key : key.split('_')[1];
   return ({ [key]: path.join.apply(null, arr) });
 };
+
+// create nested directory if not exists
+const mkdirp = (fullpath, rootpath = process.cwd()) => {
+  const relative = path.relative(rootpath, fullpath);
+  if (rootpath === fullpath) return false;
+  const splitted = relative.split(path.sep);
+  const directory = path.join(rootpath, splitted.shift());
+  try {
+    if (!fs.existsSync(directory)) fs.mkdirSync(directory);
+    return mkdirp(fullpath, directory);
+  } catch (e) {
+    // FIXME real error catcher
+    throw new Error(e);
+  }
+};
+
 
 // Iterates parents directory to find a file/directory
 // By default look for 'package.json' file
@@ -79,7 +96,7 @@ const gettemplates = () => [
   // transform filename to key
   // object value is file's fullpath
   .reduce((acc, arr) =>
-    Object.assign({}, acc, toobj(arr)), {});
+    Object.assign({}, acc, templatestoobj(arr)), {});
 
 const write = (template, files) => new Promise((resolve) => {
   // FIXME promises should be returned at all writeStream ends
@@ -121,19 +138,32 @@ module.exports = (args) => {
   if (validtype && !args[1]) help(printTemplate(args, templates));
 
   // Get all files
-  const files = args.slice(validtype ? 1 : 0)
-    .filter(file => (isfile(file) || warning(`Invalid file ${Colors.bold(file)}\n`)))
-    .map(file => ({ type: validtype, file }));
+  let files = args.slice(validtype ? 1 : 0)
+    .map((file) => {
+      if (!isfile(file)) {
+        return warning(`Invalid file ${Colors.bold(file)}\n`);
+      }
+      const dirname = `${path.sep}${path.relative('/', path.dirname(file))}`;
+      if (!fs.existsSync(dirname)) mkdirp(dirname);
+      else if (!fs.statSync(dirname).isDirectory()) {
+        // if path exists and is not a directory
+        // FIXME -> use prompt to ask for override yes/no
+        return warning(`File already exists ${Colors.bold(dirname)}\n`);
+      }
+      return ({ type: validtype, file });
+    });
 
   // Output help with available template if invalid file
   // If there's no valid files starting at second argument
   if (!files.length) help(printTypes(templates), 'Invalid file');
-  else {
-    // Write templates
-    write(templates[validtype], files)
-      .then(() => success(`Success ${files
-        .map(({ file }) => `\n${Constants.INDENT}${path.relative('/', file)}`)}`))
-      .catch(e => exit(e));
-  }
+
+  // filtering files with warning
+  files = files.filter(f => f);
+  if (!files.length) return args;
+  // Write templates
+  write(templates[validtype], files)
+    .then(() => success(`Success ${files
+      .map(({ file }) => `\n${Constants.INDENT}${path.relative('/', file)}`)}`))
+    .catch(e => exit(e));
   return args;
 };

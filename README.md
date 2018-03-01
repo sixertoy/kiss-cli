@@ -94,6 +94,7 @@ But it's also a great concept of the play [La Cantatrice chauve](https://fr.wiki
 
 ## Issues
 - Overwrite an existing file without prompts
+- Not so Asynchronous
 - Files permissions
 - Units Tests...
 - :apple: tested only
