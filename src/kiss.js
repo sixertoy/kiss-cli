@@ -1,9 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { help } = require('./program');
 const isfile = require('./core/isfile');
 const Colors = require('./core/colors');
+const { warning } = require('./core/logger');
 const Constants = require('./core/constants');
+const { help, success } = require('./program');
 const isknowtype = require('./core/isknowtype');
 
 const KISS_DIR = '.kiss';
@@ -22,10 +23,10 @@ const EXCLUDED_FILES = [
   '.Trashes',
 ];
 
-function homeuser() {
+const homeuser = () => {
   const { HOME, USERPROFILE } = process.env;
   return HOME || USERPROFILE;
-}
+};
 
 const toobj = arr =>
   ({ [arr[1].split('.')[0]]: path.join.apply(null, arr) });
@@ -59,7 +60,7 @@ const lookup = (filename) => {
 // returns an object
 // keys are template basename
 // and template paths
-const gettemplates = () => () => [
+const gettemplates = () => [
   // iterates trough Kiss module templates
   path.join(KISS_PATH, KISS_DIR),
   // iterates through user home directory
@@ -82,19 +83,22 @@ const gettemplates = () => () => [
   .reduce((acc, arr) =>
     Object.assign({}, acc, toobj(arr)), {});
 
-const write = (template, file) => {
+const write = (template, files) => new Promise((resolve) => {
+  // FIXME promises should be returned at all writeStream ends
+  // Not at readableStream's end
+  const writables = files.map(file =>
+    fs.createWriteStream(path.resolve(file)));
   const readable = fs.createReadStream(template);
-  const writable = fs.createWriteStream(path.resolve(file));
-  readable.pipe(writable);
-};
+  readable.on('end', resolve);
+  readable.on('data', data => writables.map(w => w.write(data)));
+});
 
 // output all available template types and paths in console
 const printTypes = types => `
 ${Colors.bold('Available Templates:')}
 ${Object.keys(types).map(key => `\
 ${Constants.INDENT}${Colors.green(key)}: ${Colors.grey(types[key])}
-`).join('')}
-`;
+`).join('')}`;
 
 // output a template content in console
 const printTemplate = (filetype, types) => `
@@ -111,14 +115,25 @@ module.exports = (args) => {
   // Check if first argument is a known type
   const validtype = isknowtype(args, templates);
 
-  // Check if second argument is a file
-  const validfile = isfile(args);
+  // Get all files
+  const files = args.slice(1).filter((file) => {
+    const valid = isfile(file);
+    if (!valid) warning(`Invalid file ${Colors.bold(file)}\n`);
+    return valid;
+  });
 
   // Output available templates
   if (!validtype) help(printTypes(templates), 'Invalid type');
   // Output template content and exit
-  if (validtype && !validfile) help(printTemplate(args[0], templates));
+  // If there's no second argument defined
+  if (validtype && !args[1]) help(printTemplate(args, templates));
+  // Output help with available template if invalid file
+  // If there's no valid files starting at second argument
+  if (validtype && !files.length) help(printTypes(templates), 'Invalid file');
   // Write templates
-  if (validtype && validfile) write(templates[validtype], validfile);
+  if (validtype && files) {
+    write(templates[validtype], files)
+      .then(() => success(`Success ${files} written`));
+  }
   return args;
 };

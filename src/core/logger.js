@@ -16,7 +16,7 @@ module.exports = {
   },
 
   // Show a green colored mesage
-  success: (msg) => {
+  ok: (msg) => {
     if (!process.stdout.isTTY) return;
     process.stdout.write(colors.green(msg));
   },
@@ -25,6 +25,10 @@ module.exports = {
   debug: (msg) => {
     if (!process.stdout.isTTY) return;
     process.stdout.write(colors.gray(msg));
+  },
+  warning: (msg) => {
+    if (!process.stderr.isTTY) return;
+    process.stderr.write(`${colors.yellow(`Warning: ${msg}`)}`);
   },
   // Show a red clored message
   // @param {Boolean} throwerror - wheter throw an error catchable by cli

@@ -1,6 +1,6 @@
 {
   "name": "kiss-cli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Keep It Stupid Simple CLI, an IDEs agnostic file snippets :kiss:",
   "preferGlobal": true,
   "main": "./cli.js",

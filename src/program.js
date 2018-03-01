@@ -2,9 +2,10 @@ const Colors = require('./core/colors');
 const Package = require('./../package.json');
 const Constants = require('./core/constants');
 const {
+  ok,
   log,
-  error,
   info,
+  error,
   debug,
 } = require('./core/logger');
 
@@ -12,15 +13,16 @@ const VISIT = `
 please visit: https://github.com/sixertoy/kiss-cli
 `;
 
+// ${Constants.INDENT}kiss <url>
+// ${Constants.INDENT}kiss '<rgb_color>'
 const USAGE = `
 ${Colors.bold('Usage:')}
-${Constants.INDENT}kiss <url>
-${Constants.INDENT}kiss '<rgb_color>'
-${Constants.INDENT}kiss <template_type> <./relative/destination/file>
+${Constants.INDENT}kiss <template_type> <./relative/path/to/my.file>
+${Constants.INDENT}kiss <template_type> [<r/p/t/my.file> <r/p/t/my2.file> ...]
 `;
 
 const WELCOME_MSG = `
-Keep It Stupid Simple templated files generator
+Keep It Stupid Simple agnostic file snippets
 `;
 
 const TIME_COLOR = 'takes';
@@ -44,7 +46,15 @@ function help(desc, reason) {
   process.exit(1);
 }
 
-function version() {
+function success(msg) {
+  if (msg) ok(`${msg}\n`);
+  // eslint-disable-next-line no-console
+  console.timeEnd(TIME_COLOR);
+  process.exit(0);
+}
+
+function version(msg) {
+  if (msg) log(msg);
   // eslint-disable-next-line no-console
   console.time(TIME_COLOR);
   info(`Kiss v${Package.version}`);
@@ -54,6 +64,7 @@ function version() {
 const Program = {
   help,
   exit,
+  success,
   version,
   args: () => {
     const argsv = process.argv.slice(2);

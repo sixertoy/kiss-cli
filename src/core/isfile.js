@@ -1,10 +1,8 @@
 const path = require('path');
 
-module.exports = args => (args
-  && Array.isArray(args)
-  && (args.length > 1)
-  && (typeof args[1] === 'string')
-  && args[1].trim().length > 2
-  && (args[1].indexOf('.') === 0)
-  && (args[1].indexOf(path.sep) === 1)
-  && args[1]) || false; // only if is an filepath
+module.exports = file => (file
+  && (typeof file === 'string')
+  && file.trim().length > 2
+  && (file.indexOf('.') === 0)
+  && (file.indexOf(path.sep) === 1)
+  && file) || false; // only if is an filepath
