@@ -17,8 +17,8 @@ please visit: https://github.com/sixertoy/kiss-cli
 // ${Constants.INDENT}kiss '<rgb_color>'
 const USAGE = `
 ${Colors.bold('Usage:')}
-${Constants.INDENT}kiss <template_type> <./relative/path/to/my.file>
-${Constants.INDENT}kiss <template_type> [<r/p/t/my.file> <r/p/t/my2.file> ...]
+${Constants.INDENT}kiss <type> <./relative/path/to/my.file> [...<r/p/t/my2.file>]
+${Constants.INDENT}kiss <r/p/t/myfile.type> [...<r/p/t/myfile2.type>]
 `;
 
 const WELCOME_MSG = `

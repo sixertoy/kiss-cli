@@ -10,7 +10,7 @@ KISS (Keep It Stupid Simple) CLI is an IDEs agnostic file snippets
 - You are bored of copying/pasting 2, 3, 4... times from the same file in a row
 - ... :watch:
 
-#### A Terminal story telling (A.K.A. The Example)
+#### A Terminal's story telling (A.K.A. The Example)
 
 ```bash
 # ---- Creating a new template
@@ -96,6 +96,7 @@ But it's also a great concept of the play [La Cantatrice chauve](https://fr.wiki
 - Overwrite an existing file without prompts
 - Files permissions
 - Units Tests...
+- :apple: tested only
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] [![Build][travis-img]][travis-url] [![Coverage][coverall-img]][coverall-url]
 

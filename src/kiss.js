@@ -4,8 +4,8 @@ const isfile = require('./core/isfile');
 const Colors = require('./core/colors');
 const { warning } = require('./core/logger');
 const Constants = require('./core/constants');
-const { help, success } = require('./program');
 const isknowtype = require('./core/isknowtype');
+const { help, success, exit } = require('./program');
 
 const KISS_DIR = '.kiss';
 const KISS_PATH = path.join(__dirname, '..');
@@ -28,8 +28,12 @@ const homeuser = () => {
   return HOME || USERPROFILE;
 };
 
-const toobj = arr =>
-  ({ [arr[1].split('.')[0]]: path.join.apply(null, arr) });
+const toobj = (arr) => {
+  let key = arr[1].split('.')[0];
+  key = key.indexOf('_') < 0 ? key : key.split('_')[1];
+  return ({ [key]: path.join.apply(null, arr) });
+};
+
 
 const fileexists = (filepath) => {
   try {
@@ -56,6 +60,9 @@ const lookup = (filename) => {
   }
   return false;
 };
+
+const nolinebreaks = str =>
+  str.split('\n').filter(l => l).join('\n');
 
 // returns an object
 // keys are template basename
@@ -86,8 +93,8 @@ const gettemplates = () => [
 const write = (template, files) => new Promise((resolve) => {
   // FIXME promises should be returned at all writeStream ends
   // Not at readableStream's end
-  const writables = files.map(file =>
-    fs.createWriteStream(path.resolve(file)));
+  const writables = files
+    .map(({ file }) => fs.createWriteStream(path.resolve(file)));
   const readable = fs.createReadStream(template);
   readable.on('end', resolve);
   readable.on('data', data => writables.map(w => w.write(data)));
@@ -105,7 +112,7 @@ ${Object.keys(types).map((key) => {
 const printTemplate = (filetype, types) => `
 ${Colors.bold('Template content:')}
 ${Colors.green(types[filetype])}
-${Colors.grey(fs.readFileSync(types[filetype], 'utf8'))}\
+${Colors.grey(nolinebreaks(fs.readFileSync(types[filetype], 'utf8')))}\
 `;
 
 module.exports = (args) => {
@@ -123,14 +130,9 @@ module.exports = (args) => {
   if (validtype && !args[1]) help(printTemplate(args, templates));
 
   // Get all files
-  const files = args.slice(validtype ? 1 : 0).filter((file) => {
-    const valid = isfile(file);
-    if (!valid) {
-      warning(`Invalid file ${Colors.bold(file)}\n`);
-      return false;
-    }
-    return valid;
-  });
+  const files = args.slice(validtype ? 1 : 0)
+    .filter(file => (isfile(file) || warning(`Invalid file ${Colors.bold(file)}\n`)))
+    .map(file => ({ type: validtype, file }));
 
   // Output help with available template if invalid file
   // If there's no valid files starting at second argument
@@ -138,7 +140,9 @@ module.exports = (args) => {
   else {
     // Write templates
     write(templates[validtype], files)
-      .then(() => success(`Success ${files} written`));
+      .then(() => success(`Success ${files
+        .map(({ file }) => `\n${Constants.INDENT}${path.relative('/', file)}`)}`))
+      .catch(e => exit(e));
   }
   return args;
 };

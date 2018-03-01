@@ -27,13 +27,15 @@ module.exports = {
     process.stdout.write(colors.gray(msg));
   },
   warning: (msg) => {
-    if (!process.stderr.isTTY) return;
-    process.stderr.write(`${colors.yellow(`Warning: ${msg}`)}`);
+    const input = `${colors.yellow(`Warning: ${msg}`)}`;
+    if (process.stderr.isTTY) process.stderr.write(input);
+    return false;
   },
   // Show a red clored message
   // @param {Boolean} throwerror - wheter throw an error catchable by cli
   error: (msg) => {
-    if (!process.stderr.isTTY) return;
-    process.stderr.write(`\n${colors.red(`Error: ${msg}`)}`);
+    const input = `\n${colors.red(`Error: ${msg}`)}`;
+    if (process.stderr.isTTY) process.stderr.write(input);
+    return false;
   },
 };
