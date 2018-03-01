@@ -1,7 +1,8 @@
 {
   "name": "kiss-cli",
   "version": "0.3.2",
-  "description": "Keep It Stupid Simple CLI, an IDEs agnostic file snippets :kiss:",
+  "projectName": "KISS",
+  "description": "Keep It Stupid Simple agnostic file snippets :kiss:",
   "preferGlobal": true,
   "main": "./cli.js",
   "bin": {
@@ -84,9 +85,6 @@
     "sublime",
     "sublime text"
   ],
-  "dependencies": {
-    "fs-extra": "^5.0.0"
-  },
   "devDependencies": {
     "chai": "^4.1.2",
     "eslint": "^4.18.1",

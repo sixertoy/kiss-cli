@@ -10,7 +10,7 @@ const {
 } = require('./core/logger');
 
 const VISIT = `
-please visit: https://github.com/sixertoy/kiss-cli
+please visit: ${Package.homepage}
 `;
 
 // ${Constants.INDENT}kiss <url>
@@ -22,7 +22,7 @@ ${Constants.INDENT}kiss <r/p/t/myfile.type> [...<r/p/t/myfile2.type>]
 `;
 
 const WELCOME_MSG = `
-Keep It Stupid Simple agnostic file snippets
+${Package.description}
 `;
 
 const TIME_COLOR = 'takes';
@@ -57,7 +57,7 @@ function version(msg) {
   if (msg) log(msg);
   // eslint-disable-next-line no-console
   console.time(TIME_COLOR);
-  info(`Kiss v${Package.version}`);
+  info(`${Package.projectName} v${Package.version}`);
   debug(WELCOME_MSG);
 }
 
