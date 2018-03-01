@@ -34,15 +34,6 @@ const toobj = (arr) => {
   return ({ [key]: path.join.apply(null, arr) });
 };
 
-
-const fileexists = (filepath) => {
-  try {
-    return fs.statSync(filepath);
-  } catch (err) {
-    return false;
-  }
-};
-
 // Iterates parents directory to find a file/directory
 // By default look for 'package.json' file
 // That will give a root project directory
@@ -54,7 +45,7 @@ const lookup = (filename) => {
   while (len) {
     file = `${parts.join(path.sep)}${path.sep}`;
     file = path.resolve(`${file}${(filename || 'package.json')}`);
-    if (fileexists(file)) return file;
+    if (fs.existsSync(file)) return file;
     parts.pop();
     len -= 1;
   }
@@ -77,7 +68,7 @@ const gettemplates = () => [
 ]
   // filter non existing paths
   .filter(fpath =>
-    fileexists(fpath) && fpath)
+    fs.existsSync(fpath) && fpath)
   // get template files in directories
   .reduce((acc, fpath) => acc
     // returns an array of filenames, excluding '.', '..'
