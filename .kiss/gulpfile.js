@@ -1,26 +1,11 @@
-/* global require */
-/**
- *
- * Install Locals Dev
- * npm install gulp gulp-jshint jshint-stylish --save-dev
- *
- */
-(function() {
+// yarn add gulp --dev
+const gulp = require('gulp');
+const path = require('path');
 
-    'use strict';
+const src = './src';
+const dest = './build';
 
-    var src = './src',
-        dest = './build',
-        // requires
-        gulp = require('gulp'),
-        path = require('path'),
-        jshint = require('gulp-jshint');
-
-    gulp.task('default', function() {
-        gulp.src(path.join(src))
-            .pipe(jshint('.jshintrc'))
-            .pipe(jshint.reporter('jshint-stylish'))
-            .pipe(gulp.dest(dest));
-    });
-
-}());
+gulp.task('default', function() {
+  gulp.src(path.join(src))
+    .pipe(gulp.dest(dest));
+});

@@ -1,15 +1,10 @@
-/* global process, require, __dirname, console */
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true}] */
+// Simple NodeJS/Express Server
+// Installation
 /**
- *
- * Simple NodeJS/Express Server
- *
- * ## Installation
- * ---------------------------
- * 
- * `echo "PORT=9080" > .env`
- * npm i -D dotenv express cors helmet body-parser compression
- *
+ * touch .env
+ * echo "PORT=9080" > .env
+ * yarn add dotenv express cors helmet body-parser compression --dev
  */
 const path = require('path');
 const cors = require('cors');
@@ -21,7 +16,7 @@ const compression = require('compression');
 require('dotenv').load({
   path: path.join(__dirname, '.env')
 });
-  
+
 const config = {
   port: process.env.PORT || 9080,
   debug: process.env.DEBUG || false,
@@ -41,5 +36,5 @@ server.use('/', express.static(config.public));
 server.listen(config.port, () => {
   if (!config.debug) return;
   const msg = `Server is running under http://localhost:${port}`;
-  console.log(`\x1b[32m${msg}\x1b[39m`);
+  process.stdout.wite.log(`\x1b[32m${msg}\x1b[39m`);
 });
