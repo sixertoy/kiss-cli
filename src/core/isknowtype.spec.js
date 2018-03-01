@@ -8,7 +8,7 @@ const ALLOWED = {
 };
 
 describe('isknowtype', () => {
-  it('no arguments', () => {
+  it('not a valid argument', () => {
     expect(isknowtype()).to.equal(false);
     expect(isknowtype('')).to.equal(false);
     expect(isknowtype([])).to.equal(false);
@@ -16,17 +16,12 @@ describe('isknowtype', () => {
     expect(isknowtype(null)).to.equal(false);
     expect(isknowtype(false)).to.equal(false);
     expect(isknowtype(undefined)).to.equal(false);
+    expect(isknowtype('      ')).to.equal(false);
+    expect(isknowtype('')).to.equal(false);
+    expect(isknowtype('toto')).to.equal(false);
+    expect(isknowtype('html')).to.equal(false);
   });
-  it('not a valid argument', () => {
-    expect(isknowtype([null])).to.equal(false);
-    expect(isknowtype([false])).to.equal(false);
-    expect(isknowtype([undefined])).to.equal(false);
-    expect(isknowtype(['      '])).to.equal(false);
-    expect(isknowtype([''])).to.equal(false);
-    expect(isknowtype(['toto'], ALLOWED)).to.equal(false);
-    expect(isknowtype(['html', '<not_allowed>'], ALLOWED)).to.equal(false);
-  });
-  it('valid filepath', () => {
-    expect(isknowtype(['js'], ALLOWED)).to.equal('js');
+  it('valid type', () => {
+    expect(isknowtype('js', ALLOWED)).to.equal('js');
   });
 });

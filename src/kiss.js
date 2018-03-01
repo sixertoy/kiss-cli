@@ -96,9 +96,10 @@ const write = (template, files) => new Promise((resolve) => {
 // output all available template types and paths in console
 const printTypes = types => `
 ${Colors.bold('Available Templates:')}
-${Object.keys(types).map(key => `\
-${Constants.INDENT}${Colors.green(key)}: ${Colors.grey(types[key])}
-`).join('')}`;
+${Object.keys(types).map((key) => {
+    const k = key.indexOf('_') < 0 ? key : key.split('_')[1];
+    return `${Constants.INDENT}${Colors.green(k)}: ${Colors.grey(types[key])}\n`;
+  }).join('')}`;
 
 // output a template content in console
 const printTemplate = (filetype, types) => `
@@ -113,25 +114,29 @@ module.exports = (args) => {
   const templates = gettemplates();
 
   // Check if first argument is a known type
-  const validtype = isknowtype(args, templates);
-
-  // Get all files
-  const files = args.slice(1).filter((file) => {
-    const valid = isfile(file);
-    if (!valid) warning(`Invalid file ${Colors.bold(file)}\n`);
-    return valid;
-  });
-
+  const validfile = isfile(args[0]);
+  const validtype = isknowtype(args[0], templates);
   // Output available templates
-  if (!validtype) help(printTypes(templates), 'Invalid type');
+  if (!validtype && !validfile) help(printTypes(templates), 'Invalid type');
   // Output template content and exit
   // If there's no second argument defined
   if (validtype && !args[1]) help(printTemplate(args, templates));
+
+  // Get all files
+  const files = args.slice(validtype ? 1 : 0).filter((file) => {
+    const valid = isfile(file);
+    if (!valid) {
+      warning(`Invalid file ${Colors.bold(file)}\n`);
+      return false;
+    }
+    return valid;
+  });
+
   // Output help with available template if invalid file
   // If there's no valid files starting at second argument
-  if (validtype && !files.length) help(printTypes(templates), 'Invalid file');
-  // Write templates
-  if (validtype && files) {
+  if (!files.length) help(printTypes(templates), 'Invalid file');
+  else {
+    // Write templates
     write(templates[validtype], files)
       .then(() => success(`Success ${files} written`));
   }

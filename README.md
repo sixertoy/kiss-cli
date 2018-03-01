@@ -2,25 +2,59 @@
 
 KISS (Keep It Stupid Simple) CLI is an IDEs agnostic file snippets
 
-#### You will need Kiss if
+#### You could have need KISS if
 
 - You are a developer
-- Developers in a project share snippets files
+- You are a developer in a team of developers
+- You share your templates with your team (Back/Front)
+- You are bored of copying/pasting 2, 3, 4... times from the same file in a row
+- ... :watch:
 
-#### Examples
+#### A Terminal story telling (A.K.A. The Example)
 
 ```bash
-# Generates an HTML page
-kiss html ./index
+# ---- Creating a new template
+# Create a .kiss at your project root directory
+cd myproject
+mkdir .kiss
+# Create a new JSX template
+touch ./.kiss/jsx.js
+# Fill template content
+echo "const MyComponent = () => (<div />);" > ./.kiss/jsx.js
+# ---- Now it's time to write a new React component from scratch
+# ...(check an already existing file similar to the one you would like to create, in your current project)
+# ...(copy your existing content)
+# ...(paste your existing content into the new file)
+# ...(check unnecessary code)
+# ...(remove all unnecessary code)
+# ...(check if you forgot something)
+# ...(you probably forgot something)
+# ...(remove or add this something)
+# 
+# Or use KISS :)
+kiss ./src/app/components/mycomponent.redux ./src/app/components/mytoggler.dumb
+# now you can share your templates with your teammates ;)
+```
 
-# Generates an ExpressJS server file
-kiss ./index.server
+## Usage
 
-# Generates some React components file
-kiss ./src/app/components/MyComponent.redux ./src/app/components/MyComponent2.dumb
+> Create a `.kiss` folder in your project's directories to override/create templates<br>
+> Kiss looks for templates in `project root directory > user's home > global install`
 
-# Show template's content in console output
-kiss redux
+```bash
+# Generate a single/multiple file(s) based on the same template
+kiss <type> <relative/path/to/myfile.ext> [<r/p/t/myfile.ext> ...]
+
+# Generate a single/multiple file(s) based on differents templates
+kiss <relative/path/to/myfile.type> [<r/p/t/myfile.type> ...]
+```
+
+## Install
+
+> Must be installed globally
+
+```bash
+npm install -g kiss-cli
 ```
 
 #### Defaults available types/templates
@@ -31,27 +65,6 @@ kiss redux
 - React
   - `redux` A Redux connected pure component
   - `dumb` Component
-
-## Install
-
-> Must be installed globally
-
-```bash
-npm install -g kiss-cli
-```
-
-## Usage
-
-> Create a `.kiss` folder in your project's directories to override/create templates<br>
-> Kiss looks for templates in `project root directory > user's home > global install`
-
-```bash
-# Generate a single/multiple file(s) based on the same template
-kiss <type> <relative/path/to/filename> [<r/p/t/filename> ...]
-
-# Generate a single/multiple file(s) based on differents templates
-kiss <relative/path/to/filename.type> [<r/p/t/filename.type> ...]
-```
 
 ## History
 

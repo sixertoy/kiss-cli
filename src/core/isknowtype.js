@@ -1,8 +1,6 @@
-module.exports = (args, oallowed) => (args
-  && Array.isArray(args)
-  && (args.length > 0)
-  && (typeof args[0] === 'string')
-  && args[0].trim().length > 0
+module.exports = (arg, oallowed) => (arg
+  && (typeof arg === 'string')
+  && arg.trim().length > 0
   && oallowed
-  && Object.keys(oallowed).indexOf(args[0]) !== -1
-  && args[0]) || false; //
+  && Object.keys(oallowed).indexOf(arg) !== -1
+  && arg) || false; //
