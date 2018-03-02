@@ -1,11 +1,17 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true}] */
 // Simple NodeJS/Express Server
 // Installation
-/**
- * touch .env
- * echo "PORT=9080" > .env
- * yarn add dotenv express cors helmet body-parser compression --dev
- */
+/*
+(
+  mkdir public
+  kiss ./public/index.html
+  touch .env
+  echo "PORT=9080" > .env
+  echo "DEBUG=true" >> .env
+  yarn add dotenv express cors helmet body-parser compression --dev
+  curl https://www.gitignore.io/api/osx,node,linux,windows > .gitignore
+)
+*/
 const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -35,6 +41,6 @@ server.use('/', express.static(config.public));
 
 server.listen(config.port, () => {
   if (!config.debug) return;
-  const msg = `Server is running under http://localhost:${port}`;
-  process.stdout.wite.log(`\x1b[32m${msg}\x1b[39m`);
+  const msg = `Server is running under http://localhost:${config.port}`;
+  process.stdout.write(`\x1b[32m${msg}\x1b[39m\n`);
 });
