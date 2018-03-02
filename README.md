@@ -10,7 +10,7 @@ KISS (Keep It Stupid Simple) CLI is an IDEs agnostic file snippets
 - You are bored of copying/pasting 2, 3, 4... times from the same file in a row
 - ... :watch:
 
-#### A Terminal's story telling (A.K.A. The Example)
+#### :popcorn: A Terminal's story telling (A.K.A. The Example)
 
 ```bash
 # ---- Creating a new template
@@ -34,6 +34,12 @@ echo "const MyComponent = () => (<div />);" > ./.kiss/jsx.js
 # Or use KISS :)
 kiss ./src/app/components/mycomponent.redux ./src/app/components/mytoggler.dumb
 # now you can share your templates with your teammates ;)
+```
+
+#### :cookie: Scaffold with ease a simple ExpressJS server 
+
+```bash
+kiss ./myserver/index.server ./myserver/public/index.html
 ```
 
 ## Usage
@@ -60,14 +66,17 @@ npm install -g kiss-cli
 #### Defaults available types/templates
 
 - `html` HTML minimal ready page
-- `gulpfile` Simple Gulp task
+- `gulpfile` Gulpfile
 - `mocha` Simple Mocha test file
+- `server` Simple ExpressJS server
 - React
   - `redux` A Redux connected pure component
-  - `dumb` Component
+  - `dumb` Dump component
 
 ## History
 
+- v0.3.4
+    - :rocket: Release version
 - v0.3.1
     - Refactor all the things in ES6
     - Removing Angular, AMD, Grunt... Templates
