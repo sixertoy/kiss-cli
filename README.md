@@ -10,7 +10,9 @@
 
 KISS allows you to create minimal snippets in your projects or in your home directory and share these with your teammates.<br>
 In one single command line you can generate single or multiple files from these templates.<br>
-KISS (Keep It Stupid Simple) is an IDEs agnostic shareable file templates
+KISS (Keep It Stupid Simple) is an IDEs agnostic shareable file templates.<br>
+KISS do not intend to replace `yeoman` can also be stupid as a `cp`.<br>
+It's just a way of sharing templates
 
 
 #### :spaghetti: a Dev story telling (A.K.A. The Example)
@@ -44,7 +46,7 @@ kiss ./myproject/src/nav.redux ./myproject/src/btn1.dumb ./myproject/src/btn2.du
 ```
 
 - KISS must be installed globally
-- Create a `.kiss` folder in your project's directories to override default templates
+- Create a `.kiss` folder in your project's directories to override root templates
 - Kiss looks for templates in `(project)/.kiss` **>** `/User/home/.kiss` **>** `(global)node_modules/.kiss`
 
 #### Options
@@ -71,6 +73,8 @@ kiss <relative/path/to/myfile.type> [<r/p/t/myfile.type> ...]
 
 ## History
 
+- v0.3.9
+    - update documentation
 - v0.3.4
     - :rocket: Release version
 - v0.3.1
