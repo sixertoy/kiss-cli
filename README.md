@@ -1,66 +1,61 @@
-# :kiss: KISS
+# :hash: :wrench: KISS
 
-KISS (Keep It Stupid Simple) CLI is an IDEs agnostic file snippets
-
-#### You could have need KISS if
+**You could have need KISS if**
 
 - You are a developer
 - You are a developer in a team of developers
-- You share your templates with your team (Back/Front)
-- You are bored of copying/pasting 2, 3, 4... times from the same file in a row
-- ... :watch:
+- You share templates with your team (Back/Front)
+- You are bored of copying/pasting script content to create new script files
+- ... :kiss:
 
-#### :popcorn: A Terminal's story telling (A.K.A. The Example)
+KISS allows you to create minimal snippets in your projects or in your home directory and share these with your teammates.<br>
+In one single command line you can generate single or multiple files from these templates.<br>
+KISS (Keep It Stupid Simple) is an IDEs agnostic shareable file templates
 
+
+#### :spaghetti: a Dev story telling (A.K.A. The Example)
+
+**What you usually do**
 ```bash
-# ---- Creating a new template
-# Create a .kiss at your project root directory
-cd myproject
-mkdir .kiss
-# Create a new JSX template
-touch ./.kiss/jsx.js
-# Fill template content
-echo "const MyComponent = () => (<div />);" > ./.kiss/jsx.js
-# ---- Now it's time to write a new React component from scratch
-# ...(check an already existing file similar to the one you would like to create, in your current project)
-# ...(copy your existing content)
-# ...(paste your existing content into the new file)
-# ...(check unnecessary code)
-# ...(remove all unnecessary code)
-# ...(check if you forgot something)
-# ...(you probably forgot something)
-# ...(remove or add this something)
-# 
-# Or use KISS :)
-kiss ./src/app/components/mycomponent.redux ./src/app/components/mytoggler.dumb
-# now you can share your templates with your teammates ;)
+# ...(creating a new file)
+# ...(looking for a base file)
+# ...(copying your existing content)
+# ...(pasting your existing content into the new file)
+# ...(checking unnecessary code)
+# ...(removing all unnecessary code)
+# ...(checking if you forgot something)
+# ...(re-checking cause you probably forgot something)
+# ...(removing or add this something)
 ```
 
-#### :cookie: Scaffold with ease a simple ExpressJS server 
+#### :cookie: ...and how you can easily scaffold a simple ExpressJS server with KISS
 
 ```bash
 kiss ./myserver/index.server ./myserver/public/index.html
 ```
 
-## Usage
-
-> Create a `.kiss` folder in your project's directories to override/create templates<br>
-> Kiss looks for templates in `project root directory > user's home > global install`
-
-```bash
-# Generate a single/multiple file(s) based on the same template
-kiss <type> <relative/path/to/myfile.ext> [<r/p/t/myfile.ext> ...]
-
-# Generate a single/multiple file(s) based on differents templates
-kiss <relative/path/to/myfile.type> [<r/p/t/myfile.type> ...]
-```
-
-## Install
-
-> Must be installed globally
+## :popcorn: Try it!
 
 ```bash
 npm install -g kiss-cli
+mkdir myproject
+kiss ./myproject/src/nav.redux ./myproject/src/btn1.dumb ./myproject/src/btn2.dumb
+```
+
+- KISS must be installed globally
+- Create a `.kiss` folder in your project's directories to override default templates
+- Kiss looks for templates in `(project)/.kiss` **>** `/User/home/.kiss` **>** `(global)node_modules/.kiss`
+
+#### Options
+
+**Generate multiple files based on the same template**
+```bash
+kiss <type> <relative/path/to/myfile.ext> [<r/p/t/myfile.ext> ...]
+```
+
+**Generate multiple files based on differents templates**
+```bash
+kiss <relative/path/to/myfile.type> [<r/p/t/myfile.type> ...]
 ```
 
 #### Defaults available types/templates
