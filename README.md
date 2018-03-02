@@ -15,22 +15,23 @@ KISS (Keep It Stupid Simple) is an IDEs agnostic shareable file templates
 
 #### :spaghetti: a Dev story telling (A.K.A. The Example)
 
-**What you usually do**
+**What we usually do**
 ```bash
 # ...(creating a new file)
 # ...(looking for a base file)
-# ...(copying your existing content)
-# ...(pasting your existing content into the new file)
-# ...(checking unnecessary code)
-# ...(removing all unnecessary code)
-# ...(checking if you forgot something)
+# ...(copying existing content)
+# ...(pasting existing content into the new file)
+# ...(checking for unused code)
+# ...(removing all unused code)
+# ...(re-checking if you have forgotten something)
 # ...(re-checking cause you probably forgot something)
-# ...(removing or add this something)
+# ...(adding some new code)
 ```
 
-#### :cookie: ...and how you can easily scaffold a simple ExpressJS server with KISS
+#### :cookie: ...and how you can do with your own defined templates
 
 ```bash
+# Scaffolding a simple ExpressJS server from default templates
 kiss ./myserver/index.server ./myserver/public/index.html
 ```
 
