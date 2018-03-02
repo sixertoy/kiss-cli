@@ -28,11 +28,17 @@ const homeuser = () => {
   return HOME || USERPROFILE;
 };
 
-// transform array of filepaths to object
+// transform an array of file paths to object
+// INPUT -> ['/User/home/.kiss/mytype.js', ...]
+// OUTPUT -> [{ mytype: { file: '/User/home/.kiss/mytype.js', ext: 'js'} }, ...]
 const templatestoobj = (arr) => {
   let key = arr[1].split('.')[0];
   key = key.indexOf('_') < 0 ? key : key.split('_')[1];
-  return ({ [key]: path.join.apply(null, arr) });
+  const file = path.join.apply(null, arr);
+  const fname = path.basename(file);
+  // substr -> gitignore
+  const ext = `${fname.substr(fname.indexOf('.'))}`;
+  return ({ [key]: { file, ext } });
 };
 
 // create nested directory if not exists
@@ -52,25 +58,20 @@ const mkdirp = (fullpath, rootpath = process.cwd()) => {
 
 
 // Iterates parents directory to find a file/directory
-// By default look for 'package.json' file
-// That will give a root project directory
-const lookup = (filename) => {
-  let file = null;
+// That will gives a root project directory
+const lookup = (search) => {
   const resolved = path.resolve(process.cwd());
-  const parts = resolved.split(path.sep);
+  const parts = resolved.split(path.sep).filter(v => v);
+  let found = false;
   let len = parts.length;
-  while (len) {
-    file = `${parts.join(path.sep)}${path.sep}`;
-    file = path.resolve(`${file}${(filename || 'package.json')}`);
-    if (fs.existsSync(file)) return file;
+  while (len && !found) {
+    const file = path.resolve(`${resolved}${path.sep}${search}`);
+    found = fs.existsSync(file);
     parts.pop();
     len -= 1;
   }
   return false;
 };
-
-const nolinebreaks = str =>
-  str.split('\n').filter(l => l).join('\n');
 
 // returns an object
 // keys are template basename
@@ -98,29 +99,22 @@ const gettemplates = () => [
   .reduce((acc, arr) =>
     Object.assign({}, acc, templatestoobj(arr)), {});
 
-const write = (template, files) => new Promise((resolve) => {
-  // FIXME promises should be returned at all writeStream ends
-  // Not at readableStream's end
-  const writables = files
-    .map(({ file }) => fs.createWriteStream(path.resolve(file)));
-  const readable = fs.createReadStream(template);
-  readable.on('end', resolve);
-  readable.on('data', data => writables.map(w => w.write(data)));
-});
-
 // output all available template types and paths in console
 const printTypes = types => `
 ${Colors.bold('Available Templates:')}
 ${Object.keys(types).map((key) => {
     const k = key.indexOf('_') < 0 ? key : key.split('_')[1];
-    return `${Constants.INDENT}${Colors.green(k)}: ${Colors.grey(types[key])}\n`;
+    return `${Constants.INDENT}${Colors.green(k)}: ${Colors.grey(types[key].file)}\n`;
   }).join('')}`;
+
+const nolinebreaks = str =>
+  str.split('\n').filter(l => l).join('\n');
 
 // output a template content in console
 const printTemplate = (filetype, types) => `
 ${Colors.bold('Template content:')}
 ${Colors.green(types[filetype])}
-${Colors.grey(nolinebreaks(fs.readFileSync(types[filetype], 'utf8')))}\
+${Colors.grey(nolinebreaks(fs.readFileSync(types[filetype].file, 'utf8')))}\
 `;
 
 module.exports = (args) => {
@@ -139,18 +133,24 @@ module.exports = (args) => {
 
   // Get all files
   let files = args.slice(validtype ? 1 : 0)
-    .map((file) => {
-      if (!isfile(file)) {
-        return warning(`Invalid file ${Colors.bold(file)}\n`);
+    .map((filepath) => {
+      if (!isfile(filepath)) {
+        return warning(`Invalid file ${Colors.bold(filepath)}\n`);
       }
-      const dirname = `${path.sep}${path.relative('/', path.dirname(file))}`;
+      const type = validtype || path.extname(filepath).substr(1);
+      if (!templates[type]) {
+        return warning(`Invalid type for file ${Colors.bold(filepath)}\n`);
+      }
+      const file = validtype ? filepath
+        : filepath.replace(`.${type}`, templates[type].ext);
+      const dirname = `${path.sep}${path.relative('/', path.dirname(filepath))}`;
       if (!fs.existsSync(dirname)) mkdirp(dirname);
       else if (!fs.statSync(dirname).isDirectory()) {
         // if path exists and is not a directory
         // FIXME -> use prompt to ask for override yes/no
         return warning(`File already exists ${Colors.bold(dirname)}\n`);
       }
-      return ({ type: validtype, file });
+      return ({ type, file });
     });
 
   // Output help with available template if invalid file
@@ -161,9 +161,20 @@ module.exports = (args) => {
   files = files.filter(f => f);
   if (!files.length) return args;
   // Write templates
-  write(templates[validtype], files)
-    .then(() => success(`Success ${files
-      .map(({ file }) => `\n${Constants.INDENT}${path.relative('/', file)}`)}`))
+  const group = files.reduce((acc, obj) =>
+    Object.assign({}, acc, { [obj.type]: [obj.file].concat(acc[obj.type] || []) }), {});
+  Promise.all(Object.keys(group).map(key => new Promise((resolve) => {
+    // FIXME promises should be returned when all writeStream ends
+    // Not when readableStream's end
+    const writables = group[key]
+      .map(file => fs.createWriteStream(path.resolve(file)));
+    const readable = fs.createReadStream(templates[key].file);
+    readable.on('end', () => resolve(group[key]));
+    readable.on('data', data => writables.map(w => w.write(data)));
+  })))
+    .then((...written) =>
+      success(`Success ${written.toString().split(',')
+        .map(file => `\n${Constants.INDENT}${path.relative('/', file)}`)}`))
     .catch(e => exit(e));
   return args;
 };
