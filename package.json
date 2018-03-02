@@ -1,6 +1,6 @@
 {
   "name": "kiss-cli",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "projectName": "KISS",
   "description": "Keep It Stupid Simple agnostic file snippets :kiss:",
   "preferGlobal": true,

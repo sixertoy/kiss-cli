@@ -8,11 +8,7 @@
 - You are bored of copying/pasting script content to create new script files
 - ... :kiss:
 
-KISS allows you to create minimal snippets in your projects or in your home directory and share these with your teammates.<br>
-In one single command line you can generate single or multiple files from these templates.<br>
-KISS (Keep It Stupid Simple) is an IDEs agnostic shareable file templates.<br>
-KISS do not intend to replace `yeoman` can also be stupid as a `cp`.<br>
-It's just a way of sharing templates
+KISS allows you to create your own snippets for a context and share these with your project's teammates. A single command line can generate single or multiple files from these templates.
 
 
 #### :spaghetti: a Dev story telling (A.K.A. The Example)
@@ -33,21 +29,22 @@ It's just a way of sharing templates
 #### :cookie: ...and how you can do with your own defined templates
 
 ```bash
-# Scaffolding a simple ExpressJS server from default templates
+# A simple ExpressJS server from default templates
 kiss ./myserver/index.server ./myserver/public/index.html
 ```
 
 ## :popcorn: Try it!
 
+- KISS must be installed globally
+- To add new types, create templates in a folder named `.kiss` at the root directory of your project beside of your `package.json` file
+- Templates files must be named `<type>.<extension>`
+- Kiss priorize templates in `(project)/.kiss` **>** `/User/home/.kiss` **>** `(global)node_modules/.kiss`
+
 ```bash
 npm install -g kiss-cli
-mkdir myproject
-kiss ./myproject/src/nav.redux ./myproject/src/btn1.dumb ./myproject/src/btn2.dumb
+mkdir myproject && cd myproject
+kiss ./src/nav.<type> ./src/btn1.<type2> ./src/btn2.<type2>
 ```
-
-- KISS must be installed globally
-- Create a `.kiss` folder in your project's directories to override root templates
-- Kiss looks for templates in `(project)/.kiss` **>** `/User/home/.kiss` **>** `(global)node_modules/.kiss`
 
 #### Options
 
