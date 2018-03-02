@@ -39,7 +39,7 @@
     "bin/",
     "src/",
     ".kiss/",
-    "./cli.js"
+    "cli.js"
   ],
   "keywords": [
     "cli",
