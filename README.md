@@ -58,6 +58,11 @@ kiss <type> <relative/path/to/myfile.ext> [<r/p/t/myfile.ext> ...]
 kiss <relative/path/to/myfile.type> [<r/p/t/myfile.type> ...]
 ```
 
+**Show available types**
+```bash
+kiss *
+```
+
 #### Defaults available types/templates
 
 - `html` HTML minimal ready page
