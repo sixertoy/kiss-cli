@@ -1,6 +1,6 @@
 {
   "name": "kiss-cli",
-  "version": "0.3.11",
+  "version": "0.3.12",
   "projectName": "KISS",
   "description": "Keep It Stupid Simple agnostic file snippets :kiss:",
   "preferGlobal": true,
@@ -32,15 +32,11 @@
   },
   "scripts": {
     "lint": "eslint -c ./.eslintrc.json ./cli.js './src/**/*.js'",
-    "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./src/**/*.spec.js",
+    "test":
+      "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./src/**/*.spec.js",
     "prepublish": "npm run lint && npm test"
   },
-  "files": [
-    "bin/",
-    "src/",
-    ".kiss/",
-    "cli.js"
-  ],
+  "files": ["bin/", "src/", ".kiss/", "cli.js"],
   "keywords": [
     "cli",
     "tool",

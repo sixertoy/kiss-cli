@@ -2,11 +2,7 @@ const Colors = require('./core/colors');
 const Package = require('./../package.json');
 const Constants = require('./core/constants');
 const {
-  ok,
-  log,
-  info,
-  error,
-  debug,
+  ok, log, info, error, debug,
 } = require('./core/logger');
 
 const VISIT = `
@@ -61,7 +57,13 @@ function version(msg) {
   debug(WELCOME_MSG);
 }
 
+function raw(msg) {
+  process.stdout.write(msg);
+  process.exit(0);
+}
+
 const Program = {
+  raw,
   help,
   exit,
   success,
@@ -71,7 +73,6 @@ const Program = {
     if (!argsv.length) exit('Missing arguments', false);
     return argsv;
   },
-
 };
 
 module.exports = Program;
