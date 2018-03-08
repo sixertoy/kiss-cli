@@ -60,18 +60,19 @@ const mkdirp = (fullpath, rootpath = process.cwd()) => {
 
 // Iterates parents directory to find a file/directory
 // That will gives a root project directory
-const lookup = (search) => {
-  const resolved = path.resolve(process.cwd());
+const lookup = () => {
+  const resolved = process.cwd();
   const parts = resolved.split(path.sep).filter(v => v);
   let found = false;
   let len = parts.length;
-  while (len && !found) {
-    const file = path.resolve(`${resolved}${path.sep}${search}`);
+  while (len) {
+    const file = `${path.sep}${parts.join(path.sep)}${path.sep}.kiss`;
     found = fs.existsSync(file);
+    if (found) return file;
     parts.pop();
     len -= 1;
   }
-  return false;
+  return found;
 };
 
 // returns an object
@@ -84,16 +85,15 @@ const gettemplates = () =>
     // iterates through user home directory
     path.join(homeuser(), KISS_DIR),
     // iterates trough Current Working Directory templates
-    lookup(KISS_DIR),
+    lookup(),
   ]
     // filter non existing paths
     .filter(fpath => fs.existsSync(fpath) && fpath)
     // get template files in directories
     .reduce(
       (acc, fpath) =>
-        acc
-          // returns an array of filenames, excluding '.', '..'
-          .concat(fs.readdirSync(fpath).map(file => [fpath, file])),
+        // returns an array of filenames, excluding '.', '..'
+        acc.concat(fs.readdirSync(fpath).map(file => [fpath, file])),
       [],
     )
     // exlude system files

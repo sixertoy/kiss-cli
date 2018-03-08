@@ -32,11 +32,15 @@
   },
   "scripts": {
     "lint": "eslint -c ./.eslintrc.json ./cli.js './src/**/*.js'",
-    "test":
-      "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./src/**/*.spec.js",
+    "test": "istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./src/**/*.spec.js",
     "prepublish": "npm run lint && npm test"
   },
-  "files": ["bin/", "src/", ".kiss/", "cli.js"],
+  "files": [
+    "bin/",
+    "src/",
+    ".kiss/",
+    "cli.js"
+  ],
   "keywords": [
     "cli",
     "tool",
