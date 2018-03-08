@@ -60,8 +60,8 @@ const mkdirp = (fullpath, rootpath = process.cwd()) => {
 
 // Iterates parents directory to find a file/directory
 // That will gives a root project directory
-const lookup = () => {
-  const resolved = process.cwd();
+const lookup = (search = false) => {
+  const resolved = search || process.cwd();
   const parts = resolved.split(path.sep).filter(v => v);
   let found = false;
   let len = parts.length;
@@ -78,14 +78,14 @@ const lookup = () => {
 // returns an object
 // keys are template basename
 // and template paths
-const gettemplates = () =>
+const gettemplates = search =>
   [
     // iterates trough Kiss module templates
     path.join(KISS_PATH, KISS_DIR),
     // iterates through user home directory
     path.join(homeuser(), KISS_DIR),
     // iterates trough Current Working Directory templates
-    lookup(),
+    lookup(search),
   ]
     // filter non existing paths
     .filter(fpath => fs.existsSync(fpath) && fpath)
@@ -126,18 +126,24 @@ ${Colors.grey(nolinebreaks(fs.readFileSync(types[filetype].file, 'utf8')))}\
 `;
 
 module.exports = (args) => {
+  const isatom = args && args[1] === '--atom';
+
   // retrieve KISS templates files
   // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
-  const templates = gettemplates();
+  const templates = gettemplates(isatom && args[2]);
 
   // Check if first argument is a known type
   const validfile = isfile(args[0]);
   const validtype = isknowtype(args[0], templates);
 
-  if (validtype && (args[1] && args[1] === '--atom')) {
+  /* ------- ATOM KISS CLI ------- */
+  if (validtype && isatom) {
     const rawcontent = fs.readFileSync(templates[validtype].file, 'utf8');
-    raw(nolinebreaks(rawcontent));
+    raw(nolinebreaks(`${rawcontent}`));
+  } else if (!validtype && isatom) {
+    raw(nolinebreaks(`atom-kiss-cli: Unable to find template for type '${args[0]}'`));
   }
+  /* ------- ATOM KISS CLI ------- */
 
   // Output available templates
   if (!validtype && !validfile) help(printTypes(templates), 'Invalid type');
