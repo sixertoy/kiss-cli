@@ -20,7 +20,7 @@
  */
 const kiss = require('./src/kiss');
 const { error } = require('./src/core/logger');
-const { args, version } = require('./src/program');
+const { args, version } = require('./src/helpers');
 
 const USE_DEBUG = true;
 

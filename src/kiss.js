@@ -6,7 +6,7 @@ const Colors = require('./core/colors');
 const { warning } = require('./core/logger');
 const Constants = require('./constants');
 const isknowtype = require('./core/isknowtype');
-const { exit, help, raw, success } = require('./program');
+const { exit, help, raw, success } = require('./helpers');
 
 const KISS_DIR = '.kiss';
 const KISS_PATH = path.join(__dirname, '..');
