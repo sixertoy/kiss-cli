@@ -207,3 +207,4 @@ bower_components/
 # #########################
 temp/
 !/bin/kiss
+.nyc_output

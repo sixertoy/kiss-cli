@@ -1,7 +1,48 @@
 {
-  "extends":"airbnb",
-  "env": {
-    "node": true,
-    "mocha": true
+  "extends": ["airbnb-base", "prettier"],
+  "plugins": ["sort-destructure-keys"],
+  "rules": {
+    "no-undef": [2, { "typeof": true }],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          ["builtin", "external"],
+          ["internal", "parent", "sibling", "index"]
+        ],
+        "newlines-between": "always"
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.test.js",
+          "**/*.spec.js",
+          "**/*.stories.js",
+          "rollup*"
+        ]
+      }
+    ],
+    "sort-destructure-keys/sort-destructure-keys": [
+      2,
+      {
+        "caseSensitive": false
+      }
+    ],
+    "sort-keys": [
+      2,
+      "asc",
+      {
+        "caseSensitive": true,
+        "natural": false
+      }
+    ],
+    "sort-vars": [
+      2,
+      {
+        "ignoreCase": true
+      }
+    ]
   }
 }
