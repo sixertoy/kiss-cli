@@ -1,13 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+
 const isfile = require('./core/isfile');
 const Colors = require('./core/colors');
 const { warning } = require('./core/logger');
 const Constants = require('./core/constants');
 const isknowtype = require('./core/isknowtype');
-const {
-  help, raw, success, exit,
-} = require('./program');
+const { exit, help, raw, success } = require('./program');
 
 const KISS_DIR = '.kiss';
 const KISS_PATH = path.join(__dirname, '..');
@@ -33,14 +32,14 @@ const homeuser = () => {
 // transform an array of file paths to object
 // INPUT -> ['/User/home/.kiss/mytype.js', ...]
 // OUTPUT -> [{ mytype: { file: '/User/home/.kiss/mytype.js', ext: 'js'} }, ...]
-const templatestoobj = (arr) => {
+const templatestoobj = arr => {
   let key = arr[1].split('.')[0];
   key = key.indexOf('_') < 0 ? key : key.split('_')[1];
   const file = path.join.apply(null, arr);
   const fname = path.basename(file);
   // substr -> gitignore
   const ext = `${fname.substr(fname.indexOf('.'))}`;
-  return { [key]: { file, ext } };
+  return { [key]: { ext, file } };
 };
 
 // create nested directory if not exists
@@ -94,7 +93,7 @@ const gettemplates = search =>
       (acc, fpath) =>
         // returns an array of filenames, excluding '.', '..'
         acc.concat(fs.readdirSync(fpath).map(file => [fpath, file])),
-      [],
+      []
     )
     // exlude system files
     .filter(arr => (EXCLUDED_FILES.indexOf(arr[1]) > 0 ? false : arr))
@@ -106,11 +105,13 @@ const gettemplates = search =>
 const printTypes = types => `
 ${Colors.bold('Available Templates:')}
 ${Object.keys(types)
-    .map((key) => {
-      const k = key.indexOf('_') < 0 ? key : key.split('_')[1];
-      return `${Constants.INDENT}${Colors.green(k)}: ${Colors.grey(types[key].file)}\n`;
-    })
-    .join('')}`;
+  .map(key => {
+    const k = key.indexOf('_') < 0 ? key : key.split('_')[1];
+    return `${Constants.INDENT}${Colors.green(k)}: ${Colors.grey(
+      types[key].file
+    )}\n`;
+  })
+  .join('')}`;
 
 const nolinebreaks = str =>
   str
@@ -125,7 +126,7 @@ ${Colors.green(types[filetype])}
 ${Colors.grey(nolinebreaks(fs.readFileSync(types[filetype].file, 'utf8')))}\
 `;
 
-module.exports = (args) => {
+module.exports = args => {
   const isatom = args && args[1] === '--atom';
 
   // retrieve KISS templates files
@@ -141,7 +142,11 @@ module.exports = (args) => {
     const rawcontent = fs.readFileSync(templates[validtype].file, 'utf8');
     raw(nolinebreaks(`${rawcontent}`));
   } else if (!validtype && isatom) {
-    raw(nolinebreaks(`atom-kiss-cli: Unable to find template for type '${args[0]}'`));
+    raw(
+      nolinebreaks(
+        `atom-kiss-cli: Unable to find template for type '${args[0]}'`
+      )
+    );
   }
   /* ------- ATOM KISS CLI ------- */
 
@@ -152,7 +157,7 @@ module.exports = (args) => {
   if (validtype && !args[1]) help(printTemplate(args, templates));
 
   // Get all files
-  let files = args.slice(validtype ? 1 : 0).map((filepath) => {
+  let files = args.slice(validtype ? 1 : 0).map(filepath => {
     if (!isfile(filepath)) {
       return warning(`Invalid file ${Colors.bold(filepath)}\n`);
     }
@@ -160,7 +165,9 @@ module.exports = (args) => {
     if (!templates[type]) {
       return warning(`Invalid type for file ${Colors.bold(filepath)}\n`);
     }
-    const file = validtype ? filepath : filepath.replace(`.${type}`, templates[type].ext);
+    const file = validtype
+      ? filepath
+      : filepath.replace(`.${type}`, templates[type].ext);
     const dirname = `${path.sep}${path.relative('/', path.dirname(filepath))}`;
     if (!fs.existsSync(dirname)) mkdirp(dirname);
     else if (!fs.statSync(dirname).isDirectory()) {
@@ -168,7 +175,7 @@ module.exports = (args) => {
       // FIXME -> use prompt to ask for override yes/no
       return warning(`File already exists ${Colors.bold(dirname)}\n`);
     }
-    return { type, file };
+    return { file, type };
   });
 
   // Output help with available template if invalid file
@@ -184,22 +191,31 @@ module.exports = (args) => {
       Object.assign({}, acc, {
         [obj.type]: [obj.file].concat(acc[obj.type] || []),
       }),
-    {},
+    {}
   );
-  Promise.all(Object.keys(group).map(key =>
-    new Promise((resolve) => {
-      // FIXME promises should be returned when all writeStream ends
-      // Not when readableStream's end
-      const writables = group[key].map(file => fs.createWriteStream(path.resolve(file)));
-      const readable = fs.createReadStream(templates[key].file);
-      readable.on('end', () => resolve(group[key]));
-      readable.on('data', data => writables.map(w => w.write(data)));
-    })))
+  Promise.all(
+    Object.keys(group).map(
+      key =>
+        new Promise(resolve => {
+          // FIXME promises should be returned when all writeStream ends
+          // Not when readableStream's end
+          const writables = group[key].map(file =>
+            fs.createWriteStream(path.resolve(file))
+          );
+          const readable = fs.createReadStream(templates[key].file);
+          readable.on('end', () => resolve(group[key]));
+          readable.on('data', data => writables.map(w => w.write(data)));
+        })
+    )
+  )
     .then((...written) =>
-      success(`Success ${written
-        .toString()
-        .split(',')
-        .map(file => `\n${Constants.INDENT}${path.relative('/', file)}`)}`))
+      success(
+        `Success ${written
+          .toString()
+          .split(',')
+          .map(file => `\n${Constants.INDENT}${path.relative('/', file)}`)}`
+      )
+    )
     .catch(e => exit(e));
   return args;
 };

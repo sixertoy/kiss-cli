@@ -1,9 +1,7 @@
 const Colors = require('./core/colors');
 const Package = require('./../package.json');
 const Constants = require('./core/constants');
-const {
-  ok, log, info, error, debug,
-} = require('./core/logger');
+const { debug, error, info, log, ok } = require('./core/logger');
 
 const VISIT = `
 please visit: ${Package.homepage}
@@ -13,7 +11,9 @@ please visit: ${Package.homepage}
 // ${Constants.INDENT}kiss '<rgb_color>'
 const USAGE = `
 ${Colors.bold('Usage:')}
-${Constants.INDENT}kiss <type> <./relative/path/to/my.file> [...<r/p/t/my2.file>]
+${
+  Constants.INDENT
+}kiss <type> <./relative/path/to/my.file> [...<r/p/t/my2.file>]
 ${Constants.INDENT}kiss <r/p/t/myfile.type> [...<r/p/t/myfile2.type>]
 `;
 
@@ -63,16 +63,16 @@ function raw(msg) {
 }
 
 const Program = {
-  raw,
-  help,
-  exit,
-  success,
-  version,
   args: () => {
     const argsv = process.argv.slice(2);
     if (!argsv.length) exit('Missing arguments', false);
     return argsv;
   },
+  exit,
+  help,
+  raw,
+  success,
+  version,
 };
 
 module.exports = Program;

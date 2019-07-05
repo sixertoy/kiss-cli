@@ -1,38 +1,26 @@
 const COLORS = {
-  RED: 31,
-  GREEN: 32,
-  YELLOW: 33,
   BLUE: 34,
-  MAGENTA: 35,
   CYAN: 36,
-  WHITE: 37,
   GRAY: 90,
+  GREEN: 32,
+  MAGENTA: 35,
+  RED: 31,
+  WHITE: 37,
+  YELLOW: 33,
 };
 
-
-const getColor = (msg, code) =>
-  `\u001b[${code}m${msg}\u001b[39m`;
+const getColor = (msg, code) => `\u001b[${code}m${msg}\u001b[39m`;
 
 module.exports = {
-  bold: msg =>
-    `\u001b[0;1m${msg}\u001b[0;0m`,
-  red: msg =>
-    getColor(msg, COLORS.RED),
-  gray: msg =>
-    getColor(msg, COLORS.GRAY),
+  blue: msg => getColor(msg, COLORS.BLUE),
+  bold: msg => `\u001b[0;1m${msg}\u001b[0;0m`,
+  cyan: msg => getColor(msg, COLORS.CYAN),
   // alias of gray
-  grey: msg =>
-    getColor(msg, COLORS.GRAY),
-  blue: msg =>
-    getColor(msg, COLORS.BLUE),
-  cyan: msg =>
-    getColor(msg, COLORS.CYAN),
-  green: msg =>
-    getColor(msg, COLORS.GREEN),
-  white: msg =>
-    getColor(msg, COLORS.WHITE),
-  yellow: msg =>
-    getColor(msg, COLORS.YELLOW),
-  magenta: msg =>
-    getColor(msg, COLORS.MAGENTA),
+  gray: msg => getColor(msg, COLORS.GRAY),
+  green: msg => getColor(msg, COLORS.GREEN),
+  grey: msg => getColor(msg, COLORS.GRAY),
+  magenta: msg => getColor(msg, COLORS.MAGENTA),
+  red: msg => getColor(msg, COLORS.RED),
+  white: msg => getColor(msg, COLORS.WHITE),
+  yellow: msg => getColor(msg, COLORS.YELLOW),
 };

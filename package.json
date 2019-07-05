@@ -98,7 +98,7 @@
     "prettier-eslint-cli": "^5.0.0"
   },
   "scripts": {
-    "lint": "eslint -c ./.eslintrc.json ./cli.js './src/**/*.js'",
+    "lint": "eslint --fix -c ./.eslintrc.json ./cli.js './src/**/*.js'",
     "test": "nyc $(yarn bin)/_mocha --report lcovonly ./src/**/*.spec.js",
     "prepublish": "yarn lint && yarn test"
   }

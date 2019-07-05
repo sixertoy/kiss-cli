@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+
 const isknowtype = require('./isknowtype');
 
 const ALLOWED = {

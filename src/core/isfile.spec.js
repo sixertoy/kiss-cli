@@ -1,5 +1,6 @@
-const isfile = require('./isfile');
 const { expect } = require('chai');
+
+const isfile = require('./isfile');
 
 describe('isfile', () => {
   it('not a valid argument', () => {

@@ -1,12 +1,9 @@
 module.exports = {
+  CURRENT_WD: process.cwd(), // Template directory name
   DOT: '.',
+  INDENT: '  ',
+  NL: '\n', // unix end line
   TAB: '\t',
   TILDE: '~',
-  INDENT: '  ',
   WHITESPACE: ' ',
-  // unix end line
-  NL: '\n',
-  // Template directory name
-  // current working dir
-  CURRENT_WD: process.cwd(),
 };

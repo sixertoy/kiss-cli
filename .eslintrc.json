@@ -1,6 +1,10 @@
 {
   "extends": ["airbnb-base", "prettier"],
   "plugins": ["sort-destructure-keys"],
+  "env": {
+    "mocha": true,
+    "node": true
+  },
   "rules": {
     "no-undef": [2, { "typeof": true }],
     "import/order": [

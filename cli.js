@@ -19,19 +19,15 @@
  *
  */
 const kiss = require('./src/kiss');
-const { compose } = require('./src/core/fp');
 const { error } = require('./src/core/logger');
-const { exit, version, args } = require('./src/program');
+const { args, version } = require('./src/program');
 
 const USE_DEBUG = true;
 
 try {
-  // show KISS version
+  const commandArguments = args();
   version();
-  compose(
-    kiss,
-    argsv => ((!argsv && exit('Invalid arguments')) || argsv),
-  )(args());
+  kiss(commandArguments);
 } catch (e) {
   if (USE_DEBUG) {
     error(`error >>> ${e}\n`);
