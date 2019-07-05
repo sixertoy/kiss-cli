@@ -5,4 +5,4 @@ module.exports = (arg, oallowed) =>
     oallowed &&
     Object.keys(oallowed).indexOf(arg) !== -1 &&
     arg) ||
-  false; //
+  false;

@@ -1,38 +1,29 @@
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 
+const noop = require('./core/noop');
 const isfile = require('./core/isfile');
+const home = require('./core/home');
 const Colors = require('./core/colors');
 const { warning } = require('./core/logger');
 const Constants = require('./constants');
 const isknowtype = require('./core/isknowtype');
-const { exit, help, raw, success } = require('./helpers');
+const { exit, raw, success } = require('./helpers');
+const {
+  excludeNonExistingPath,
+  excludeSystemsFiles,
+  outputAvailableTypes,
+  outputTemplateContent,
+  removeEmptyLinesFromContent,
+} = require('./domain');
 
-const KISS_DIR = '.kiss';
-const KISS_PATH = path.join(__dirname, '..');
-const EXCLUDED_FILES = [
-  // Windows
-  'Thumbs.db',
-  'ehthumbs.db',
-  'Desktop.ini',
-  // OSX
-  '.DS_Store',
-  '.AppleDouble',
-  '.LSOverride',
-  // Externals
-  '.Spotlight-V100',
-  '.Trashes',
-];
+const KISS_DIRNAME = '.kiss';
+const KISS_ROOTPATH = path.join(__dirname, '..');
 
-const homeuser = () => {
-  const { HOME, USERPROFILE } = process.env;
-  return HOME || USERPROFILE;
-};
-
-// transform an array of file paths to object
-// INPUT -> ['/User/home/.kiss/mytype.js', ...]
-// OUTPUT -> [{ mytype: { file: '/User/home/.kiss/mytype.js', ext: 'js'} }, ...]
-const templatestoobj = arr => {
+const templatesToObject = arr => {
+  // transform an array of file paths to object
+  // INPUT -> ['/User/home/.kiss/mytype.js', ...]
+  // OUTPUT -> [{ mytype: { file: '/User/home/.kiss/mytype.js', ext: 'js'} }, ...]
   let key = arr[1].split('.')[0];
   key = key.indexOf('_') < 0 ? key : key.split('_')[1];
   const file = path.join.apply(null, arr);
@@ -59,9 +50,9 @@ const mkdirp = (fullpath, rootpath = process.cwd()) => {
 
 // Iterates parents directory to find a file/directory
 // That will gives a root project directory
-const lookup = (search = false) => {
-  const resolved = search || process.cwd();
-  const parts = resolved.split(path.sep).filter(v => v);
+const lookupForProjectKissFolder = (currentWorkingDir = false) => {
+  const resolvedPath = currentWorkingDir || process.cwd();
+  const parts = resolvedPath.split(path.sep).filter(noop);
   let found = false;
   let len = parts.length;
   while (len) {
@@ -74,100 +65,78 @@ const lookup = (search = false) => {
   return found;
 };
 
+// returns an array of filenames, excluding '.', '..'
+const getTemplatesFilesInDirectory = (acc, fpath) =>
+  acc.concat(fs.readdirSync(fpath).map(file => [fpath, file]));
+
+const mapTemplatesFilesToTypes = (acc, arr) => {
+  const obj = templatesToObject(arr);
+  return Object.assign({}, acc, obj);
+};
+
+const kissRootDefinedTemplates = path.join(KISS_ROOTPATH, KISS_DIRNAME);
+const userDefinedTemplates = path.join(home(), KISS_DIRNAME);
+
 // returns an object
-// keys are template basename
-// and template paths
-const gettemplates = search =>
+// { [template basename]: template path }
+const getTemplates = currentWorkingDir =>
   [
-    // iterates trough Kiss module templates
-    path.join(KISS_PATH, KISS_DIR),
-    // iterates through user home directory
-    path.join(homeuser(), KISS_DIR),
+    kissRootDefinedTemplates,
+    userDefinedTemplates,
     // iterates trough Current Working Directory templates
-    lookup(search),
+    lookupForProjectKissFolder(currentWorkingDir),
   ]
-    // filter non existing paths
-    .filter(fpath => fs.existsSync(fpath) && fpath)
-    // get template files in directories
-    .reduce(
-      (acc, fpath) =>
-        // returns an array of filenames, excluding '.', '..'
-        acc.concat(fs.readdirSync(fpath).map(file => [fpath, file])),
-      []
-    )
-    // exlude system files
-    .filter(arr => (EXCLUDED_FILES.indexOf(arr[1]) > 0 ? false : arr))
-    // transform filename to key
-    // object value is file's fullpath
-    .reduce((acc, arr) => Object.assign({}, acc, templatestoobj(arr)), {});
-
-// output all available template types and paths in console
-const printTypes = types => `
-${Colors.bold('Available Templates:')}
-${Object.keys(types)
-  .map(key => {
-    const k = key.indexOf('_') < 0 ? key : key.split('_')[1];
-    return `${Constants.INDENT}${Colors.green(k)}: ${Colors.grey(
-      types[key].file
-    )}\n`;
-  })
-  .join('')}`;
-
-const nolinebreaks = str =>
-  str
-    .split('\n')
-    .filter(l => l)
-    .join('\n');
-
-// output a template content in console
-const printTemplate = (filetype, types) => `
-${Colors.bold('Template content:')}
-${Colors.green(types[filetype])}
-${Colors.grey(nolinebreaks(fs.readFileSync(types[filetype].file, 'utf8')))}\
-`;
+    .filter(excludeNonExistingPath)
+    .reduce(getTemplatesFilesInDirectory, [])
+    .filter(excludeSystemsFiles)
+    .reduce(mapTemplatesFilesToTypes, {});
 
 module.exports = args => {
-  const isatom = args && args[1] === '--atom';
+  const usedFromAtomExtension = args && args[1] === '--atom';
 
   // retrieve KISS templates files
   // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
-  const templates = gettemplates(isatom && args[2]);
+  const templates = getTemplates(usedFromAtomExtension && args[2]);
 
   // Check if first argument is a known type
-  const validfile = isfile(args[0]);
-  const validtype = isknowtype(args[0], templates);
+  const isValidFile = isfile(args[0]);
+  const isValidType = isknowtype(args[0], templates);
 
   /* ------- ATOM KISS CLI ------- */
-  if (validtype && isatom) {
-    const rawcontent = fs.readFileSync(templates[validtype].file, 'utf8');
-    raw(nolinebreaks(`${rawcontent}`));
-  } else if (!validtype && isatom) {
+  if (isValidType && usedFromAtomExtension) {
+    const rawcontent = fs.readFileSync(templates[isValidType].file, 'utf8');
+    raw(removeEmptyLinesFromContent(`${rawcontent}`));
+  } else if (!isValidType && usedFromAtomExtension) {
     raw(
-      nolinebreaks(
+      removeEmptyLinesFromContent(
         `atom-kiss-cli: Unable to find template for type '${args[0]}'`
       )
     );
   }
   /* ------- ATOM KISS CLI ------- */
 
-  // Output available templates
-  if (!validtype && !validfile) help(printTypes(templates), 'Invalid type');
-  // Output template content and exit
-  // If there's no second argument defined
-  if (validtype && !args[1]) help(printTemplate(args, templates));
+  const isNotValidFileOrType = !isValidType && !isValidFile;
+  if (isNotValidFileOrType) outputAvailableTypes(templates);
+
+  const noSecondArgument = isValidType && !args[1];
+  if (noSecondArgument) outputTemplateContent(args, templates);
 
   // Get all files
-  let files = args.slice(validtype ? 1 : 0).map(filepath => {
+  let files = args.slice(isValidType ? 1 : 0).map(filepath => {
     if (!isfile(filepath)) {
       return warning(`Invalid file ${Colors.bold(filepath)}\n`);
     }
-    const type = validtype || path.extname(filepath).substr(1);
+
+    const type = isValidType || path.extname(filepath).substr(1);
     if (!templates[type]) {
       return warning(`Invalid type for file ${Colors.bold(filepath)}\n`);
     }
-    const file = validtype
-      ? filepath
-      : filepath.replace(`.${type}`, templates[type].ext);
+
+    let file = filepath;
+    if (!isValidType) {
+      file = filepath.replace(`.${type}`, templates[type].ext);
+    }
+
     const dirname = `${path.sep}${path.relative('/', path.dirname(filepath))}`;
     if (!fs.existsSync(dirname)) mkdirp(dirname);
     else if (!fs.statSync(dirname).isDirectory()) {
@@ -178,12 +147,13 @@ module.exports = args => {
     return { file, type };
   });
 
-  // Output help with available template if invalid file
-  // If there's no valid files starting at second argument
-  if (!files.length) help(printTypes(templates), 'Invalid file');
+  if (!files.length) {
+    // If there's no valid files starting at second argument
+    outputAvailableTypes(templates);
+  }
 
   // filtering files with warning
-  files = files.filter(f => f);
+  files = files.filter(noop);
   if (!files.length) return args;
   // Write templates
   const group = files.reduce(

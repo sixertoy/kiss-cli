@@ -7,4 +7,4 @@ module.exports = file =>
     file.indexOf('.') === 0 &&
     file.indexOf(path.sep) === 1 &&
     file) ||
-  false; // only if is an filepath
+  false; // only if is a filepath
