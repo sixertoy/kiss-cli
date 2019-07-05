@@ -1,7 +1,6 @@
-const Colors = require('./core/colors');
+const Constants = require('./constants');
 const Package = require('./../package.json');
-const Constants = require('./core/constants');
-const { debug, error, info, log, ok } = require('./core/logger');
+const { colors, debug, error, info, log, ok } = require('./core/logger');
 
 const VISIT = `
 please visit: ${Package.homepage}
@@ -10,7 +9,7 @@ please visit: ${Package.homepage}
 // ${Constants.INDENT}kiss <url>
 // ${Constants.INDENT}kiss '<rgb_color>'
 const USAGE = `
-${Colors.bold('Usage:')}
+${colors.bold('Usage:')}
 ${
   Constants.INDENT
 }kiss <type> <./relative/path/to/my.file> [...<r/p/t/my2.file>]

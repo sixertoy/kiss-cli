@@ -4,7 +4,7 @@ const path = require('path');
 const isfile = require('./core/isfile');
 const Colors = require('./core/colors');
 const { warning } = require('./core/logger');
-const Constants = require('./core/constants');
+const Constants = require('./constants');
 const isknowtype = require('./core/isknowtype');
 const { exit, help, raw, success } = require('./program');
 
