@@ -1,26 +1,6 @@
-const Constants = require('./constants');
+const { TIME_COLOR, USAGE, VISIT, WELCOME_MSG } = require('./constants');
 const Package = require('./../package.json');
-const { colors, debug, error, info, log, ok } = require('./core/logger');
-
-const VISIT = `
-please visit: ${Package.homepage}
-`;
-
-// ${Constants.INDENT}kiss <url>
-// ${Constants.INDENT}kiss '<rgb_color>'
-const USAGE = `
-${colors.bold('Usage:')}
-${
-  Constants.INDENT
-}kiss <type> <./relative/path/to/my.file> [...<r/p/t/my2.file>]
-${Constants.INDENT}kiss <r/p/t/myfile.type> [...<r/p/t/myfile2.type>]
-`;
-
-const WELCOME_MSG = `
-${Package.description}
-`;
-
-const TIME_COLOR = 'takes';
+const { debug, error, info, log, ok } = require('./core/logger');
 
 function exit(reason) {
   log(USAGE);
