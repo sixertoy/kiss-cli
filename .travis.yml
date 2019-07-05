@@ -1,9 +1,15 @@
+sudo: required
 language: node_js
 node_js:
-  - "8.9.3"
+  - '8.10.0'
+cache:
+  yarn: true
 before_install:
-  - npm install -g eslint istanbul coveralls
+  # upgrade Yarn
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.0
+  - export PATH=$HOME/.yarn/bin:$PATH
+  - export DIRNAME=$(pwd)
 script:
-  - npm test --verbose
+  - yarn test --verbose
 after_success:
   - cat ./coverage/lcov.info | coveralls && rm -rf ./coverage
