@@ -12,7 +12,7 @@ const { exit, raw, success } = require('./helpers');
 const {
   excludeNonExistingPath,
   excludeSystemsFiles,
-  outputAvailableTypes,
+  outputAvailableTemplates,
   outputTemplateContent,
   removeEmptyLinesFromContent,
 } = require('./domain');
@@ -50,9 +50,8 @@ const mkdirp = (fullpath, rootpath = process.cwd()) => {
 
 // Iterates parents directory to find a file/directory
 // That will gives a root project directory
-const lookupForProjectKissFolder = (currentWorkingDir = false) => {
-  const resolvedPath = currentWorkingDir || process.cwd();
-  const parts = resolvedPath.split(path.sep).filter(noop);
+const lookupForProjectKissFolder = currentWorkingDir => {
+  const parts = currentWorkingDir.split(path.sep).filter(noop);
   let found = false;
   let len = parts.length;
   while (len) {
@@ -79,44 +78,32 @@ const userDefinedTemplates = path.join(home(), KISS_DIRNAME);
 
 // returns an object
 // { [template basename]: template path }
-const getTemplates = currentWorkingDir =>
-  [
+const getTemplates = currentWorkingDir => {
+  const kissDirectories = [
     kissRootDefinedTemplates,
     userDefinedTemplates,
-    // iterates trough Current Working Directory templates
     lookupForProjectKissFolder(currentWorkingDir),
-  ]
+  ];
+  // retrieve KISS templates files
+  // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
+  return kissDirectories
     .filter(excludeNonExistingPath)
     .reduce(getTemplatesFilesInDirectory, [])
     .filter(excludeSystemsFiles)
     .reduce(mapTemplatesFilesToTypes, {});
+};
 
-module.exports = args => {
-  const usedFromAtomExtension = args && args[1] === '--atom';
+/* --------------------------------------------------------------------
 
-  // retrieve KISS templates files
-  // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
-  const templates = getTemplates(usedFromAtomExtension && args[2]);
 
-  // Check if first argument is a known type
-  const isValidFile = isfile(args[0]);
-  const isValidType = isknowtype(args[0], templates);
+ RUNNERS
 
-  /* ------- ATOM KISS CLI ------- */
-  if (isValidType && usedFromAtomExtension) {
-    const rawcontent = fs.readFileSync(templates[isValidType].file, 'utf8');
-    raw(removeEmptyLinesFromContent(`${rawcontent}`));
-  } else if (!isValidType && usedFromAtomExtension) {
-    raw(
-      removeEmptyLinesFromContent(
-        `atom-kiss-cli: Unable to find template for type '${args[0]}'`
-      )
-    );
-  }
-  /* ------- ATOM KISS CLI ------- */
 
+-------------------------------------------------------------------- */
+
+const runForTerminal = (args, templates, isValidType, isValidFile) => {
   const isNotValidFileOrType = !isValidType && !isValidFile;
-  if (isNotValidFileOrType) outputAvailableTypes(templates);
+  if (isNotValidFileOrType) outputAvailableTemplates(templates);
 
   const noSecondArgument = isValidType && !args[1];
   if (noSecondArgument) outputTemplateContent(args, templates);
@@ -147,14 +134,15 @@ module.exports = args => {
     return { file, type };
   });
 
+  // If there's no valid files starting at second argument
   if (!files.length) {
-    // If there's no valid files starting at second argument
-    outputAvailableTypes(templates);
+    return outputAvailableTemplates(templates);
   }
 
   // filtering files with warning
   files = files.filter(noop);
   if (!files.length) return args;
+
   // Write templates
   const group = files.reduce(
     (acc, obj) =>
@@ -163,6 +151,7 @@ module.exports = args => {
       }),
     {}
   );
+
   Promise.all(
     Object.keys(group).map(
       key =>
@@ -189,3 +178,51 @@ module.exports = args => {
     .catch(e => exit(e));
   return args;
 };
+
+const outputAtomTemplate = (type, templates) => {
+  const rawcontent = fs.readFileSync(templates[type].file, 'utf8');
+  raw(removeEmptyLinesFromContent(`${rawcontent}`));
+};
+
+/* --------------------------------------------------------------------
+
+
+ ENTRY POINT
+
+
+-------------------------------------------------------------------- */
+
+const run = args => {
+  let cmdArgs = [...args];
+  let currentWorkingDir = process.cwd();
+
+  const createFileForAtom = cmdArgs && cmdArgs.indexOf('--atom') !== -1;
+  if (createFileForAtom) {
+    // on supprime le flag atom dans les arguments
+    cmdArgs = cmdArgs.filter(v => v !== '--atom');
+    // si le premier argument vient du plugin atom-kiss-cli
+    // le plugin renvoi en second argument le chemin du projet
+    const fileFromAtom = cmdArgs[1];
+    currentWorkingDir = path.dirname(fileFromAtom);
+    currentWorkingDir = path.resolve(currentWorkingDir);
+  }
+
+  const templates = getTemplates(currentWorkingDir);
+  const isValidFile = isfile(cmdArgs[0]);
+  const isValidType = isknowtype(cmdArgs[0], templates);
+
+  if (createFileForAtom) {
+    if (!isValidType) {
+      const msg = `Unable to find template "${cmdArgs[0]}"`;
+      process.stderr.write(msg);
+      process.exit(0);
+    }
+    return outputAtomTemplate(isValidType, templates);
+  }
+
+  const isNotValidFileOrType = !isValidType && !isValidFile;
+  if (isNotValidFileOrType) return outputAvailableTemplates(templates);
+  return runForTerminal(cmdArgs, templates, isValidType, isValidFile);
+};
+
+module.exports = run;

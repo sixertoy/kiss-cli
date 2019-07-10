@@ -15,7 +15,7 @@ ${content}
 `;
 
 // output all available template types and paths in console
-const outputAvailableTypes = types => {
+const outputAvailableTemplates = types => {
   const title = Colors.bold('Available Templates:');
   const content = Object.keys(types)
     .map(getTypesPair(types))
@@ -24,4 +24,4 @@ const outputAvailableTypes = types => {
   help(message, 'Invalid type');
 };
 
-module.exports = outputAvailableTypes;
+module.exports = outputAvailableTemplates;

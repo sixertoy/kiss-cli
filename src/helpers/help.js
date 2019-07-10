@@ -8,7 +8,7 @@ function help(desc, reason) {
   debug(VISIT);
   // eslint-disable-next-line no-console
   console.timeEnd(TIME_COLOR);
-  process.exit(1);
+  process.exit(0);
 }
 
 module.exports = help;

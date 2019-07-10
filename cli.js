@@ -25,8 +25,8 @@ const { args, version } = require('./src/helpers');
 const USE_DEBUG = true;
 
 try {
-  const commandArguments = args();
   version();
+  const commandArguments = args();
   kiss(commandArguments);
 } catch (e) {
   if (USE_DEBUG) {
