@@ -1,4 +1,6 @@
-const { colors } = require('./core/logger');
+const path = require('path');
+
+const { colors } = require('./core');
 const { description, homepage } = require('./../package.json');
 
 const INDENT = '  ';
@@ -21,10 +23,16 @@ ${description}
 
 const TIME_COLOR = 'takes';
 
+const KISS_DIRNAME = '.kiss';
+
+const KISS_ROOTPATH = path.join(__dirname, '..');
+
 module.exports = {
   CURRENT_WD: process.cwd(), // Template directory name
   DOT: '.',
   INDENT,
+  KISS_DIRNAME,
+  KISS_ROOTPATH,
   NL: '\n', // unix end line
   TAB: '\t',
   TILDE: '~',

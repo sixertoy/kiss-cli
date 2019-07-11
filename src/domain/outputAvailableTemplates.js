@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const Colors = require('./../core/colors');
-const removeEmptyLinesFromContent = require('./remove-empty-lines-from-content');
+const { colors } = require('./../core');
+const removeEmptyLinesFromContent = require('./removeEmptyLinesFromContent');
 const { help } = require('./../helpers');
 
 const getMessage = (title, subtitle, content) => `
@@ -12,12 +12,12 @@ ${content}\
 
 // output a template content in console
 const outputTemplateContent = (filetype, types) => {
-  const title = Colors.bold('Template content:');
-  const subtitle = Colors.green(types[filetype]);
+  const title = colors.bold('Template content:');
+  const subtitle = colors.green(types[filetype]);
   let content = removeEmptyLinesFromContent(
     fs.readFileSync(types[filetype].file, 'utf8')
   );
-  content = Colors.grey(content);
+  content = colors.grey(content);
   const message = getMessage(title, subtitle, content);
   help(message);
 };

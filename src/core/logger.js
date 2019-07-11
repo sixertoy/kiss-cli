@@ -1,8 +1,6 @@
 const colors = require('./colors');
 
 module.exports = {
-  colors,
-
   // Show a gray colored message
   debug: msg => {
     if (!process.stdout.isTTY) return;

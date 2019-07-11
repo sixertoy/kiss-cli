@@ -1,8 +1,9 @@
-const excludeSystemsFiles = require('./exclude-systems-files');
-const excludeNonExistingPath = require('./exclude-non-existing-path');
-const outputAvailableTypes = require('./output-available-templates');
-const outputTemplateContent = require('./output-template-content');
-const removeEmptyLinesFromContent = require('./remove-empty-lines-from-content');
+const excludeNonExistingPath = require('./excludeNonExistingPath');
+const excludeSystemsFiles = require('./excludeSystemsFiles');
+const outputAvailableTypes = require('./outputAvailableTemplates');
+const outputTemplateContent = require('./outputTemplateContent');
+const removeEmptyLinesFromContent = require('./removeEmptyLinesFromContent');
+const templatesToObject = require('./templatesToObject');
 
 module.exports = {
   excludeNonExistingPath,
@@ -10,4 +11,5 @@ module.exports = {
   outputAvailableTypes,
   outputTemplateContent,
   removeEmptyLinesFromContent,
+  templatesToObject,
 };

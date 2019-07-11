@@ -1,5 +1,5 @@
 const { TIME_COLOR } = require('./../constants');
-const { ok } = require('./../core/logger');
+const { ok } = require('./../core');
 
 function success(msg) {
   if (msg) ok(`${msg}\n`);

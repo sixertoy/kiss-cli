@@ -1,4 +1,4 @@
-const noop = require('../core/noop');
+const { noop } = require('../core');
 
 const removeEmptyLinesFromContent = str =>
   str

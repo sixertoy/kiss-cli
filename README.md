@@ -14,7 +14,7 @@ kiss server ./index.js
 - KISS must be installed globally
 - To add new types, create templates in a folder named `.kiss` at the root directory of your project beside of your `package.json` file
 - Templates files must be named `<type>.<extension>`
-- Kiss priorize templates in `(project)/.kiss` **>** `/User/home/.kiss` **>** `(global)node_modules/.kiss`
+- Kiss priorize templates in `(project)/.kiss` **>** `/User/home/.kiss` **>** `(npm_prefix_path)/.kiss`
 
 **You could have need KISS if**
 

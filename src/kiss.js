@@ -1,37 +1,20 @@
 const path = require('path');
 const fs = require('fs');
 
-const noop = require('./core/noop');
-const isfile = require('./core/isfile');
-const home = require('./core/home');
-const Colors = require('./core/colors');
-const { warning } = require('./core/logger');
 const Constants = require('./constants');
-const isknowtype = require('./core/isknowtype');
-const { exit, raw, success } = require('./helpers');
+const { colors, home, isfile, isknowtype, noop, warning } = require('./core');
 const {
   excludeNonExistingPath,
   excludeSystemsFiles,
   outputAvailableTemplates,
   outputTemplateContent,
   removeEmptyLinesFromContent,
+  templatesToObject,
 } = require('./domain');
+const { exit, raw, success } = require('./helpers');
 
 const KISS_DIRNAME = '.kiss';
 const KISS_ROOTPATH = path.join(__dirname, '..');
-
-const templatesToObject = arr => {
-  // transform an array of file paths to object
-  // INPUT -> ['/User/home/.kiss/mytype.js', ...]
-  // OUTPUT -> [{ mytype: { file: '/User/home/.kiss/mytype.js', ext: 'js'} }, ...]
-  let key = arr[1].split('.')[0];
-  key = key.indexOf('_') < 0 ? key : key.split('_')[1];
-  const file = path.join.apply(null, arr);
-  const fname = path.basename(file);
-  // substr -> gitignore
-  const ext = `${fname.substr(fname.indexOf('.'))}`;
-  return { [key]: { ext, file } };
-};
 
 // create nested directory if not exists
 const mkdirp = (fullpath, rootpath = process.cwd()) => {
@@ -73,8 +56,8 @@ const mapTemplatesFilesToTypes = (acc, arr) => {
   return Object.assign({}, acc, obj);
 };
 
-const kissRootDefinedTemplates = path.join(KISS_ROOTPATH, KISS_DIRNAME);
 const userDefinedTemplates = path.join(home(), KISS_DIRNAME);
+const kissRootDefinedTemplates = path.join(KISS_ROOTPATH, KISS_DIRNAME);
 
 // returns an object
 // { [template basename]: template path }
@@ -111,12 +94,12 @@ const runForTerminal = (args, templates, isValidType, isValidFile) => {
   // Get all files
   let files = args.slice(isValidType ? 1 : 0).map(filepath => {
     if (!isfile(filepath)) {
-      return warning(`Invalid file ${Colors.bold(filepath)}\n`);
+      return warning(`Invalid file ${colors.bold(filepath)}\n`);
     }
 
     const type = isValidType || path.extname(filepath).substr(1);
     if (!templates[type]) {
-      return warning(`Invalid type for file ${Colors.bold(filepath)}\n`);
+      return warning(`Invalid type for file ${colors.bold(filepath)}\n`);
     }
 
     let file = filepath;
@@ -129,7 +112,7 @@ const runForTerminal = (args, templates, isValidType, isValidFile) => {
     else if (!fs.statSync(dirname).isDirectory()) {
       // if path exists and is not a directory
       // FIXME -> use prompt to ask for override yes/no
-      return warning(`File already exists ${Colors.bold(dirname)}\n`);
+      return warning(`File already exists ${colors.bold(dirname)}\n`);
     }
     return { file, type };
   });

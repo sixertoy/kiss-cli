@@ -1,5 +1,5 @@
 const { TIME_COLOR, USAGE, VISIT } = require('./../constants');
-const { debug, error, log } = require('./../core/logger');
+const { debug, error, log } = require('./../core');
 
 function help(desc, reason) {
   log(USAGE);
