@@ -100,6 +100,6 @@
   "scripts": {
     "lint": "eslint --fix -c ./.eslintrc.json ./cli.js './src/**/*.js'",
     "test": "nyc $(yarn bin)/_mocha --report lcovonly ./src/**/*.spec.js",
-    "prepare": "yarn lint && yarn test"
+    "prepublishOnly": "yarn lint && yarn test"
   }
 }

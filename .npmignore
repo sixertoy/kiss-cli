@@ -1,5 +1,6 @@
 spec/
 temp/
+img/
 .editorconfig
 .gitattributes
 .gitignore
