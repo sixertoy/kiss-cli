@@ -179,7 +179,13 @@ const run = args => {
   let cmdArgs = [...args];
   let currentWorkingDir = process.cwd();
 
-  const createFileForAtom = cmdArgs && cmdArgs.indexOf('--atom') !== -1;
+  const showHelp =
+    cmdArgs &&
+    (cmdArgs.indexOf(' --help ') !== -1 || cmdArgs.indexOf(' -H ') !== -1);
+  const createFileForAtom =
+    cmdArgs &&
+    (cmdArgs.indexOf(' --atom ') !== -1 || cmdArgs.indexOf(' -A ') !== -1);
+
   if (createFileForAtom) {
     // on supprime le flag atom dans les arguments
     cmdArgs = cmdArgs.filter(v => v !== '--atom');

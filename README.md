@@ -1,6 +1,6 @@
 # :wrench: KISS
 
-KISS allows you to create your own snippets for a context and share these with your project's teammates.
+KISS allow to create your own snippets for a context and share these with your project's teammates.
 
 ```bash
 npm install -g kiss-cli
