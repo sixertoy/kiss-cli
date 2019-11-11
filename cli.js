@@ -16,19 +16,20 @@
  * kiss <type> <path/to/outputfile>
  *
  */
-// const path = require('path');
+const path = require('path');
 
 // const kiss = require('./src/kiss');
-const { outputVersion } = require('./src/helpers');
+const { home } = require('./src/core');
 const {
-  // KISS_DIRNAME,
-  // KISS_ROOTPATH,
-  OPTIONS,
-  TIME_COLOR,
-  USAGE,
-  VISIT,
-} = require('./src/constants');
-const { debug, error, log } = require('./src/core');
+  args,
+  outputHelp,
+  outputUsage,
+  outputVersion,
+  start,
+  success,
+} = require('./src/cli-helpers');
+const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
+const { error } = require('./src/core');
 
 const USE_DEBUG = true;
 const USE_TTY = process.stderr.isTTY;
@@ -36,49 +37,37 @@ const USE_TTY = process.stderr.isTTY;
 // returns an object
 // { [template basename]: template path }
 const getTemplatesList = () => {
-  // const kissDirectories = [
-  //   path.join(home(), KISS_DIRNAME),
-  //   path.join(KISS_ROOTPATH, KISS_DIRNAME),
-  //   lookupForProjectKissFolder(currentWorkingDir),
-  // ];
+  const kissDirectories = [
+    path.join(KISS_ROOTPATH, KISS_DIRNAME),
+    path.join(home(), KISS_DIRNAME),
+    // kiss.lookupForProjectKissFolder(currentWorkingDir),
+  ];
+
   // retrieve KISS templates files
   // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
-  // return kissDirectories
-  //   .filter(excludeNonExistingPath)
+  // return kissDirectories.filter(excludeNonExistingPath);
   //   .reduce(getTemplatesFilesInDirectory, [])
   //   .filter(excludeSystemsFiles)
   //   .reduce(mapTemplatesFilesToTypes, {});
 };
 
-function outputUsage() {
-  log(USAGE);
-  debug(VISIT);
-  process.exit(1);
-}
+// function checkIfArgumentAreValids(optsArray) {
+// function checkIfArgumentAreValids() {
+// console.log('optsArray', optsArray);
+// }
 
-function checkIfArgumentAreValids(optsArray) {
-  console.log('optsArray', optsArray);
-}
-
-function outputHelp() {
-  log(USAGE);
-  log(OPTIONS);
-  debug(VISIT);
-  process.exit(0);
+function shouldShowUsage(optsArray) {
+  if (!optsArray || !optsArray.length) return true;
+  return false;
 }
 
 function shouldShowHelp(optsArray) {
+  if (!optsArray || !optsArray.length) return false;
   return (
-    !optsArray ||
-    !optsArray.length ||
-    optsArray.indexOf('-H') ||
-    optsArray.indexOf('--help')
+    optsArray.indexOf('-H') !== -1 ||
+    optsArray.indexOf('-h') !== -1 ||
+    optsArray.indexOf('--help') !== -1
   );
-}
-
-function getArguments() {
-  const argsv = process.argv.slice(2);
-  return argsv;
 }
 
 // function shouldShowTemplates(args) {
@@ -90,24 +79,31 @@ function getArguments() {
 // }
 
 try {
-  // eslint-disable-next-line no-console
-  console.time(TIME_COLOR);
-  const argsv = getArguments();
+  start();
   outputVersion();
 
+  const argsv = args();
   const showHelp = shouldShowHelp(argsv);
-  console.log('showHelp', showHelp);
+  const showUsage = shouldShowUsage(argsv);
+
+  if (showUsage || showHelp) outputUsage();
   if (showHelp) outputHelp();
 
   const templates = getTemplatesList();
-  const firstArgumentIsValid = checkIfArgumentAreValids(argsv, templates);
-  if (!firstArgumentIsValid) outputUsage();
+  console.log('templates', templates);
+
+  // const firstArgumentIsValid = checkIfArgumentAreValids(argsv, templates);
+  // if (!firstArgumentIsValid) outputUsage();
 
   // if (showHelp) exit();
   // const showTemplates = shouldShowTemplates(options);
   // const useAtom = shouldUseAtom(options);
   // kiss(useAtom);
+
+  // eslint-disable-next-line no-console
   // console.timeEnd(TIME_COLOR);
+  // process.exit(0);
+  success();
 } catch (e) {
   if (USE_DEBUG) error(`error >>> ${e}\n`);
   if (USE_TTY) error('\u001b[31m! Unexpected error has occurred\u001b[39m\n');

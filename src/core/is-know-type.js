@@ -1,6 +1,6 @@
 const path = require('path');
 
-module.exports = (arg, oallowed) => {
+const isKnowType = (arg, oallowed) => {
   const isString = arg && typeof arg === 'string';
   if (!isString) return false;
   const isNotEmpty = arg.trim().length > 0;
@@ -12,3 +12,5 @@ module.exports = (arg, oallowed) => {
   if (!isTypeTemplate && !isExtTemplate) return false;
   return arg;
 };
+
+module.exports = isKnowType;
