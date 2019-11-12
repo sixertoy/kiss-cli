@@ -1,16 +1,16 @@
 const colors = require('./colors');
 const fp = require('./fp');
 const home = require('./home');
-const isfile = require('./isfile');
-const isknowtype = require('./isknowtype');
+const checkIsFile = require('./check-is-file');
+const isKnowType = require('./is-know-type');
 const logger = require('./logger');
 const noop = require('./noop');
 
 module.exports = {
   colors,
   home,
-  isfile,
-  isknowtype,
+  checkIsFile,
+  isKnowType,
   noop,
   ...fp,
   ...logger,

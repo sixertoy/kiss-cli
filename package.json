@@ -56,7 +56,6 @@
     "html",
     "task",
     "tasks",
-    "mocha",
     "react",
     "reactjs",
     "amd",
@@ -72,6 +71,7 @@
     "gruntfile",
     "javascript",
     "mocha",
+    "jest",
     "spec",
     "test",
     "tests",
@@ -90,6 +90,7 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-sort-destructure-keys": "^1.3.2",
     "husky": "^3.0.0",
+    "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "prettier-eslint": "^9.0.0",
     "prettier-eslint-cli": "^5.0.0"

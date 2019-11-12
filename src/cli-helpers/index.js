@@ -1,19 +1,18 @@
-const args = require('./args');
+const getArguments = require('./get-arguments');
 const exit = require('./exit');
 const raw = require('./raw');
-const success = require('./success');
-const outputHelp = require('./output-help');
-const outputUsage = require('./output-usage');
-const outputVersion = require('./output-version');
-const start = require('./start');
+const outputAvailablesTypes = require('./output-availables-types');
+const outputHelpAndExit = require('./output-help-and-exit');
+const outputWelcomeMessage = require('./output-welcome-message');
+const checkIsAllowedType = require('./check-is-allowed-type');
 
 module.exports = {
-  args,
+  checkIsAllowedType,
   exit,
-  outputHelp,
-  outputUsage,
-  outputVersion,
+  getArguments,
+  help: () => {},
+  outputAvailablesTypes,
+  outputHelpAndExit,
+  outputWelcomeMessage,
   raw,
-  start,
-  success,
 };

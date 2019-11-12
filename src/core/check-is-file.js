@@ -1,6 +1,6 @@
 const path = require('path');
 
-module.exports = file =>
+const checkIsFile = file =>
   (file &&
     typeof file === 'string' &&
     file.trim().length > 2 &&
@@ -8,3 +8,5 @@ module.exports = file =>
     file.indexOf(path.sep) === 1 &&
     file) ||
   false; // only if is a filepath
+
+module.exports = checkIsFile;

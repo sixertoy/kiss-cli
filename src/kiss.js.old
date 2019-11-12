@@ -47,35 +47,6 @@ const lookupForProjectKissFolder = currentWorkingDir => {
   return found;
 };
 
-// returns an array of filenames, excluding '.', '..'
-const getTemplatesFilesInDirectory = (acc, fpath) =>
-  acc.concat(fs.readdirSync(fpath).map(file => [fpath, file]));
-
-const mapTemplatesFilesToTypes = (acc, arr) => {
-  const obj = templatesToObject(arr);
-  return Object.assign({}, acc, obj);
-};
-
-const userDefinedTemplates = path.join(home(), KISS_DIRNAME);
-const kissRootDefinedTemplates = path.join(KISS_ROOTPATH, KISS_DIRNAME);
-
-// returns an object
-// { [template basename]: template path }
-const getTemplates = currentWorkingDir => {
-  const kissDirectories = [
-    kissRootDefinedTemplates,
-    userDefinedTemplates,
-    lookupForProjectKissFolder(currentWorkingDir),
-  ];
-  // retrieve KISS templates files
-  // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
-  return kissDirectories
-    .filter(excludeNonExistingPath)
-    .reduce(getTemplatesFilesInDirectory, [])
-    .filter(excludeSystemsFiles)
-    .reduce(mapTemplatesFilesToTypes, {});
-};
-
 /* --------------------------------------------------------------------
 
 

@@ -1,5 +1,3 @@
-const { expect } = require('chai');
-
 const isKnowType = require('./../is-know-type');
 
 const ALLOWED = {

@@ -18,43 +18,43 @@
  */
 const path = require('path');
 
-// const kiss = require('./src/kiss');
+const {
+  excludeNonExistingPath,
+  excludeSystemsFiles,
+  getTemplatesFilesInDirectory,
+  mapTemplatesFilesToTypes,
+} = require('./src/domain');
 const { home } = require('./src/core');
 const {
-  args,
-  outputHelp,
-  outputUsage,
-  outputVersion,
-  start,
-  success,
+  checkIsAllowedType,
+  exit,
+  getArguments,
+  outputAvailablesTypes,
+  outputHelpAndExit,
+  outputWelcomeMessage,
 } = require('./src/cli-helpers');
 const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
-const { error } = require('./src/core');
+const { checkIsFile, error } = require('./src/core');
 
 const USE_DEBUG = true;
 const USE_TTY = process.stderr.isTTY;
 
-// returns an object
-// { [template basename]: template path }
 const getTemplatesList = () => {
+  // retrieve KISS templates files
+  // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
   const kissDirectories = [
     path.join(KISS_ROOTPATH, KISS_DIRNAME),
     path.join(home(), KISS_DIRNAME),
     // kiss.lookupForProjectKissFolder(currentWorkingDir),
   ];
-
-  // retrieve KISS templates files
-  // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
-  // return kissDirectories.filter(excludeNonExistingPath);
-  //   .reduce(getTemplatesFilesInDirectory, [])
-  //   .filter(excludeSystemsFiles)
-  //   .reduce(mapTemplatesFilesToTypes, {});
+  const templates = kissDirectories
+    .filter(excludeNonExistingPath)
+    .reduce(getTemplatesFilesInDirectory, [])
+    .filter(excludeSystemsFiles)
+    .reduce(mapTemplatesFilesToTypes, {});
+  // returns an object/map { template-type: template-filepath }
+  return templates;
 };
-
-// function checkIfArgumentAreValids(optsArray) {
-// function checkIfArgumentAreValids() {
-// console.log('optsArray', optsArray);
-// }
 
 function shouldShowUsage(optsArray) {
   if (!optsArray || !optsArray.length) return true;
@@ -73,37 +73,30 @@ function shouldShowHelp(optsArray) {
 // function shouldShowTemplates(args) {
 //   return args.indexOf('--templates') || args.indexOf('-T');
 // }
-//
+
 // function shouldUseAtom(args) {
-//   return args.indexOf('--atom') || args.indexOf('-A');
+//   return args.indexOf('--atom') || args.indexOf('-A') || args.indexOf('-a');
 // }
 
 try {
-  start();
-  outputVersion();
+  outputWelcomeMessage();
 
-  const argsv = args();
-  const showHelp = shouldShowHelp(argsv);
-  const showUsage = shouldShowUsage(argsv);
-
-  if (showUsage || showHelp) outputUsage();
-  if (showHelp) outputHelp();
-
+  const argsv = getArguments();
   const templates = getTemplatesList();
-  console.log('templates', templates);
+  // const useAtom = shouldUseAtom(argsv);
+  const showHelp = shouldShowHelp(argsv) || shouldShowUsage(argsv);
+  if (showHelp) outputHelpAndExit();
 
-  // const firstArgumentIsValid = checkIfArgumentAreValids(argsv, templates);
-  // if (!firstArgumentIsValid) outputUsage();
+  const [firstArgument] = argsv;
+  const isFirstFile = checkIsFile(firstArgument);
+  // const isSecondFile = secondArgument && checkIsFile(secondArgument);
+  const isAllowedType = checkIsAllowedType(firstArgument, templates);
 
-  // if (showHelp) exit();
-  // const showTemplates = shouldShowTemplates(options);
-  // const useAtom = shouldUseAtom(options);
-  // kiss(useAtom);
+  if (!isAllowedType && !isFirstFile) outputAvailablesTypes(templates);
+  // const template = (isAllowedType && templates[firstArgument]) || 'helloworld';
+  // if (isAllowedType && !isSecondFile) outputTemplate(template);
 
-  // eslint-disable-next-line no-console
-  // console.timeEnd(TIME_COLOR);
-  // process.exit(0);
-  success();
+  exit();
 } catch (e) {
   if (USE_DEBUG) error(`error >>> ${e}\n`);
   if (USE_TTY) error('\u001b[31m! Unexpected error has occurred\u001b[39m\n');

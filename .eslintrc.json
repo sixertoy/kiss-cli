@@ -2,8 +2,8 @@
   "extends": ["airbnb-base", "prettier"],
   "plugins": ["sort-destructure-keys"],
   "env": {
-    "mocha": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "rules": {
     "no-undef": [2, { "typeof": true }],

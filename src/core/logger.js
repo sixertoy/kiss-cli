@@ -34,6 +34,11 @@ module.exports = {
     process.stdout.write(colors.green(msg));
   },
 
+  output: msg => {
+    if (!process.stdout.isTTY) return;
+    process.stdout.write(msg);
+  },
+
   warning: msg => {
     const input = `${colors.yellow(`Warning: ${msg}`)}`;
     if (process.stderr.isTTY) process.stderr.write(input);

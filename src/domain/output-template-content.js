@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const { colors } = require('./../core');
 const removeEmptyLinesFromContent = require('./removeEmptyLinesFromContent');
-const { help } = require('./../helpers');
+const { help } = require('./../cli-helpers');
 
 const getMessage = (title, subtitle, content) => `
 ${title}
