@@ -27,14 +27,17 @@ const {
 const { home } = require('./src/core');
 const {
   checkIsAllowedType,
+  checkIsFile,
   exit,
-  getArguments,
+  getCliArguments,
+  getFileTypeByExtension,
   outputAvailablesTypes,
   outputHelpAndExit,
+  outputTemplateContent,
   outputWelcomeMessage,
 } = require('./src/cli-helpers');
 const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
-const { checkIsFile, error } = require('./src/core');
+const { error } = require('./src/core');
 
 const USE_DEBUG = true;
 const USE_TTY = process.stderr.isTTY;
@@ -81,7 +84,7 @@ function shouldShowHelp(optsArray) {
 try {
   outputWelcomeMessage();
 
-  const argsv = getArguments();
+  const argsv = getCliArguments();
   const templates = getTemplatesList();
   // const useAtom = shouldUseAtom(argsv);
   const showHelp = shouldShowHelp(argsv) || shouldShowUsage(argsv);
@@ -89,10 +92,18 @@ try {
 
   const [firstArgument] = argsv;
   const isFirstFile = checkIsFile(firstArgument);
-  // const isSecondFile = secondArgument && checkIsFile(secondArgument);
-  const isAllowedType = checkIsAllowedType(firstArgument, templates);
 
-  if (!isAllowedType && !isFirstFile) outputAvailablesTypes(templates);
+  const firstArgumentType =
+    (isFirstFile && getFileTypeByExtension(firstArgument)) || firstArgument;
+
+  // const isSecondFile = secondArgument && checkIsFile(secondArgument);
+  const isAllowedType = checkIsAllowedType(firstArgumentType, templates);
+
+  if (!isFirstFile) {
+    if (!isAllowedType) outputAvailablesTypes(templates);
+    if (isAllowedType) outputTemplateContent(firstArgumentType, templates);
+  }
+
   // const template = (isAllowedType && templates[firstArgument]) || 'helloworld';
   // if (isAllowedType && !isSecondFile) outputTemplate(template);
 

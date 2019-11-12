@@ -11,7 +11,7 @@ const COLORS = {
 
 const getColor = (msg, code) => `\u001b[${code}m${msg}\u001b[39m`;
 
-module.exports = {
+const colors = {
   blue: msg => getColor(msg, COLORS.BLUE),
   bold: msg => `\u001b[0;1m${msg}\u001b[0;0m`,
   cyan: msg => getColor(msg, COLORS.CYAN),
@@ -24,3 +24,5 @@ module.exports = {
   white: msg => getColor(msg, COLORS.WHITE),
   yellow: msg => getColor(msg, COLORS.YELLOW),
 };
+
+module.exports = colors;

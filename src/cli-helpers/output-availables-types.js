@@ -6,10 +6,8 @@ const getColoredTypesPair = types => key => {
   return `${INDENT}${colors.green(k)}: ${colors.grey(types[key].file)}${NL}`;
 };
 
-const getIndentedMessage = (title, content) => `
-${title}
-${content}
-`;
+const getIndentedMessage = (title, content) =>
+  `${NL}${title}${NL}${content}${NL}`;
 
 const outputAvailableTypes = types => {
   // output all available template types and paths in console
