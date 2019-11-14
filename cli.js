@@ -91,21 +91,27 @@ try {
   if (showHelp) outputHelpAndExit();
 
   const [firstArgument] = argsv;
-  const isFirstFile = checkIsFile(firstArgument);
+  const firstIsFile = checkIsFile(firstArgument);
 
   const firstArgumentType =
-    (isFirstFile && getFileTypeByExtension(firstArgument)) || firstArgument;
+    (firstIsFile && getFileTypeByExtension(firstArgument)) || firstArgument;
 
-  // const isSecondFile = secondArgument && checkIsFile(secondArgument);
+  // const secondIsFile = secondArgument && checkIsFile(secondArgument);
   const isAllowedType = checkIsAllowedType(firstArgumentType, templates);
 
-  if (!isFirstFile) {
+  if (!firstIsFile) {
     if (!isAllowedType) outputAvailablesTypes(templates);
     if (isAllowedType) outputTemplateContent(firstArgumentType, templates);
+    // if (secondIsFile) // writeTemplate
+  }
+
+  if (firstIsFile) {
+    // check if is allowed type -> write templates
+    // else -> show availables templates
   }
 
   // const template = (isAllowedType && templates[firstArgument]) || 'helloworld';
-  // if (isAllowedType && !isSecondFile) outputTemplate(template);
+  // if (isAllowedType && !secondIsFile) outputTemplate(template);
 
   exit();
 } catch (e) {
