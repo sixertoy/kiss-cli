@@ -1,5 +1,5 @@
-const raw = require('./raw');
 const exit = require('./exit');
+const writeFile = require('./write-file');
 const getCliArguments = require('./get-cli-arguments');
 const outputAvailablesTypes = require('./output-availables-types');
 const outputHelp = require('./output-help');
@@ -10,8 +10,10 @@ const isKnowType = require('./is-know-type');
 const outputTemplateContent = require('./output-template-content');
 const getFileTypeByExtension = require('./get-file-type-by-extension');
 const outputTemplateForAtom = require('./output-template-for-atom');
+const checkFileIsAllowedType = require('./check-file-is-allowed-type');
 
 module.exports = {
+  checkFileIsAllowedType,
   checkIsAllowedType,
   checkIsFile,
   exit,
@@ -24,5 +26,5 @@ module.exports = {
   outputTemplateContent,
   outputTemplateForAtom,
   outputWelcomeMessage,
-  raw,
+  writeFile,
 };

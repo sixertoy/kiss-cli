@@ -21,27 +21,27 @@
  */
 const path = require('path');
 
+const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
+const { error, home } = require('./src/core');
 const {
   excludeNonExistingPath,
   excludeSystemsFiles,
   getTemplatesFilesInDirectory,
   mapTemplatesFilesToTypes,
 } = require('./src/domain');
-const { home } = require('./src/core');
 const {
+  checkFileIsAllowedType,
   checkIsAllowedType,
   checkIsFile,
   exit,
   getCliArguments,
-  getFileTypeByExtension,
   outputAvailablesTypes,
   outputHelp,
   outputTemplateContent,
   outputTemplateForAtom,
   outputWelcomeMessage,
+  writeFile,
 } = require('./src/cli-helpers');
-const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
-const { error } = require('./src/core');
 
 const USE_DEBUG = true;
 const USE_TTY = process.stderr.isTTY;
@@ -99,12 +99,14 @@ try {
   const args = getCliArguments();
   const templates = getTemplatesList();
 
+  // NOTE output pour atom
   const useAtom = shouldUseAtom(args);
   if (useAtom) {
     outputTemplateForAtom(args, templates);
     process.exit(0);
   }
 
+  // NOTE affichage du message d'acceuil
   outputWelcomeMessage();
   const showHelp = shouldShowHelp(args);
   if (showHelp) {
@@ -112,37 +114,41 @@ try {
     exit();
   }
 
+  // NOTE affichage du contenu du template
   const showTemplates = shouldShowTemplates(args);
   if (showTemplates) {
     outputAvailablesTypes(templates);
     exit();
   }
 
-  const [firstArgument] = args;
+  const [firstArgument, ...rest] = args;
   const firstIsFile = checkIsFile(firstArgument);
   const firstIsTemplateType = checkIsAllowedType(firstArgument, templates);
-  console.log('firstIsFile', firstIsFile);
-  console.log('firstIsTemplateType', firstIsTemplateType);
 
-  // const firstIsTemplateType = getFileTypeByExtension(firstArgument);
+  // NOTE affiche une erreur si il s'agit pas d'un type de template
+  // ou qu'il n'y aucun fichier a traiter
+  if (!firstIsTemplateType && !firstIsFile) {
+    const msg = `Argument ${firstArgument} is not a valid type`;
+    outputHelp();
+    exit(msg);
+  }
 
-  // console.log('firstIsTemplateType', firstIsTemplateType)
+  const fileIsValidType = checkFileIsAllowedType(firstArgument, templates);
+  if (!firstIsTemplateType && firstIsFile && !fileIsValidType) {
+    const msg = `File ${firstArgument} is not a valid filetype`;
+    outputHelp();
+    exit(msg);
+  }
 
-  //
-  // const secondIsFile = secondArgument && checkIsFile(secondArgument);
+  if (firstIsTemplateType && !rest.length) {
+    outputTemplateContent(firstArgument, templates);
+    exit();
+  }
 
-  // const isAllowedType = checkIsAllowedType(firstArgumentType, templates);
-  // if (!firstIsFile && isAllowedType && !secondIsFile) {
-  //   outputTemplateContent(firstArgumentType, templates);
-  //   exit();
-  // }
-
-  // if (firstIsFile) {
-  // check if is allowed type -> write templates
-  // else -> show availables templates
-  // }
-  // const template = (isAllowedType && templates[firstArgument]) || 'helloworld';
-  // if (isAllowedType && !secondIsFile) outputTemplate(template);
+  args
+    .filter(checkIsFile)
+    .filter(file => checkFileIsAllowedType(file, templates))
+    .forEach(writeFile(templates));
   exit();
 } catch (e) {
   if (USE_DEBUG) error(`error >>> ${e}\n`);
