@@ -12,7 +12,7 @@ function outputWelcomeMessage() {
   console.time(TIME_COLOR);
   info(`${projectName}${WS}v${semver}${NL}`);
   debug(`${description}${NL}`);
-  debug(`${homepage}${NL}`);
+  debug(`Please visit ${homepage} for more${NL}`);
 }
 
 module.exports = outputWelcomeMessage;

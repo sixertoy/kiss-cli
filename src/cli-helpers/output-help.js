@@ -1,4 +1,3 @@
-const exit = require('./exit');
 const { INDENT, NL } = require('./../constants');
 const { colors, log } = require('./../core');
 
@@ -6,16 +5,15 @@ const { colors, log } = require('./../core');
 // ${Constants.INDENT}kiss '<rgb_color>'
 const USAGE = `
 ${colors.bold('Usage:')}
-${INDENT}kiss <type> <./relative/path/to/file>
-${INDENT}kiss <./relative/path/to/file.type>
-${INDENT}kiss --list | -L       List availables templates
+${INDENT}kiss <type> <./path/to/outputfile>
+${INDENT}kiss <./path/to/outputfile.type>
+${INDENT}kiss --list | -T       List availables templates
 ${INDENT}kiss <template_name>   Output template content in console
 `;
 
-function outputHelpAndExit() {
+function outputHelp() {
   log(USAGE);
   log(NL);
-  exit();
 }
 
-module.exports = outputHelpAndExit;
+module.exports = outputHelp;

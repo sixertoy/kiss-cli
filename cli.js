@@ -13,7 +13,10 @@
  * npm i -g kiss-cli
  *
  * Usage:
- * kiss <type> <path/to/outputfile>
+ * kiss --help
+ * kiss --list
+ * kiss <type> <./path/to/outputfile> <...>
+ * kiss <./path/to/outputfile.type> <...>
  *
  */
 const path = require('path');
@@ -32,8 +35,9 @@ const {
   getCliArguments,
   getFileTypeByExtension,
   outputAvailablesTypes,
-  outputHelpAndExit,
+  outputHelp,
   outputTemplateContent,
+  outputTemplateForAtom,
   outputWelcomeMessage,
 } = require('./src/cli-helpers');
 const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
@@ -59,60 +63,79 @@ const getTemplatesList = () => {
   return templates;
 };
 
-function shouldShowUsage(optsArray) {
-  if (!optsArray || !optsArray.length) return true;
-  return false;
-}
-
-function shouldShowHelp(optsArray) {
-  if (!optsArray || !optsArray.length) return false;
+function shouldShowTemplates(args) {
+  if (!args || !args.length) return false;
   return (
-    optsArray.indexOf('-H') !== -1 ||
-    optsArray.indexOf('-h') !== -1 ||
-    optsArray.indexOf('--help') !== -1
+    args.indexOf('-L') !== -1 ||
+    args.indexOf('-l') !== -1 ||
+    args.indexOf('--list') !== -1 ||
+    args.indexOf('-T') !== -1 ||
+    args.indexOf('-t') !== -1 ||
+    args.indexOf('--templates') !== -1
   );
 }
 
-// function shouldShowTemplates(args) {
-//   return args.indexOf('--templates') || args.indexOf('-T');
-// }
+function shouldShowHelp(args) {
+  return (
+    args.indexOf('-H') !== -1 ||
+    args.indexOf('-h') !== -1 ||
+    args.indexOf('--help') !== -1 ||
+    !args ||
+    !args.length
+  );
+}
 
-// function shouldUseAtom(args) {
-//   return args.indexOf('--atom') || args.indexOf('-A') || args.indexOf('-a');
-// }
+function shouldUseAtom(args) {
+  if (!args || !args.length) return false;
+  return (
+    args.indexOf('-A') !== -1 ||
+    args.indexOf('-a') !== -1 ||
+    args.indexOf('--raw') !== -1 ||
+    args.indexOf('--atom') !== -1
+  );
+}
 
 try {
-  outputWelcomeMessage();
-
-  const argsv = getCliArguments();
+  const args = getCliArguments();
   const templates = getTemplatesList();
-  // const useAtom = shouldUseAtom(argsv);
-  const showHelp = shouldShowHelp(argsv) || shouldShowUsage(argsv);
-  if (showHelp) outputHelpAndExit();
 
-  const [firstArgument] = argsv;
+  const useAtom = shouldUseAtom(args);
+  if (useAtom) {
+    outputTemplateForAtom(args, templates);
+    process.exit(0);
+  }
+
+  outputWelcomeMessage();
+  const showHelp = shouldShowHelp(args);
+  if (showHelp) {
+    outputHelp();
+    exit();
+  }
+
+  const showTemplates = shouldShowTemplates(args);
+  if (showTemplates) {
+    outputAvailablesTypes(templates);
+    exit();
+  }
+
+  const [firstArgument, secondArgument] = args;
   const firstIsFile = checkIsFile(firstArgument);
-
+  const secondIsFile = secondArgument && checkIsFile(secondArgument);
   const firstArgumentType =
     (firstIsFile && getFileTypeByExtension(firstArgument)) || firstArgument;
 
-  // const secondIsFile = secondArgument && checkIsFile(secondArgument);
   const isAllowedType = checkIsAllowedType(firstArgumentType, templates);
-
-  if (!firstIsFile) {
-    if (!isAllowedType) outputAvailablesTypes(templates);
-    if (isAllowedType) outputTemplateContent(firstArgumentType, templates);
-    // if (secondIsFile) // writeTemplate
+  if (!firstIsFile && isAllowedType && !secondIsFile) {
+    outputTemplateContent(firstArgumentType, templates);
+    exit();
   }
 
   if (firstIsFile) {
     // check if is allowed type -> write templates
     // else -> show availables templates
   }
-
   // const template = (isAllowedType && templates[firstArgument]) || 'helloworld';
   // if (isAllowedType && !secondIsFile) outputTemplate(template);
-
   exit();
 } catch (e) {
   if (USE_DEBUG) error(`error >>> ${e}\n`);
