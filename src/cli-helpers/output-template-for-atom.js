@@ -1,11 +1,18 @@
 const fs = require('fs');
 
-const { output } = require('./../core');
+const { error } = require('./../core');
 
-function outputTemplateForAtom(args, templates) {
-  const filetype = args[1];
-  const fileContent = fs.readFileSync(templates[filetype].file, 'utf8');
-  output(fileContent);
+function outputTemplateForAtom(type, templates) {
+  try {
+    const { file } = templates[type];
+    const fsoptions = { encoding: 'utf8' };
+    const fileContent = fs.readFileSync(file, fsoptions);
+    process.stdout.write(fileContent);
+  } catch (e) {
+    const { file } = templates[type];
+    error(`Unable to load template ${file}\n`);
+    process.exit(1);
+  }
 }
 
 module.exports = outputTemplateForAtom;

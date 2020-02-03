@@ -96,13 +96,15 @@ function shouldUseAtom(args) {
 }
 
 try {
+  let type = null;
   const args = getCliArguments();
   const templates = getTemplatesList();
 
   // NOTE output pour atom
   const useAtom = shouldUseAtom(args);
   if (useAtom) {
-    outputTemplateForAtom(args, templates);
+    type = args.slice(1, 2).join('');
+    outputTemplateForAtom(type, templates);
     process.exit(0);
   }
 
@@ -145,7 +147,6 @@ try {
     exit();
   }
 
-  let type = null;
   let files = [...args];
   if (firstIsTemplateType) [type, ...files] = args;
   files
