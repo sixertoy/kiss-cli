@@ -1,12 +1,15 @@
 const path = require('path');
 
-const checkIsFile = file =>
-  (file &&
-    typeof file === 'string' &&
-    file.trim().length > 2 &&
-    file.indexOf('.') === 0 &&
-    file.indexOf(path.sep) === 1 &&
-    file) ||
-  false; // only if is a filepath
+const isDot = str => {
+  const base = path.basename(str);
+  return base === '.' || base === '..';
+};
+
+const checkIsFile = file => {
+  const isvalid =
+    file && typeof file === 'string' && file.trim() !== '' && !isDot(file);
+  if (!isvalid) return false;
+  return file;
+};
 
 module.exports = checkIsFile;

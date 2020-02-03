@@ -99,5 +99,8 @@
     "lint": "eslint --fix -c ./.eslintrc.json ./cli.js './src/**/*.js'",
     "test": "jest",
     "prepare": "yarn lint && yarn test"
+  },
+  "dependencies": {
+    "fs-extra": "^8.1.0"
   }
 }

@@ -3,7 +3,6 @@ const isKnowType = require('./../is-know-type');
 const ALLOWED = {
   js: '',
   scss: '',
-  // any from user defined .kiss folder
 };
 
 describe('isKnowType', () => {

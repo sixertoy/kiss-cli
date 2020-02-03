@@ -1,3 +1,5 @@
+const path = require('path');
+
 const checkIsFile = require('./../check-is-file');
 
 describe('checkIsFile', () => {
@@ -10,18 +12,32 @@ describe('checkIsFile', () => {
     expect(checkIsFile(false)).toEqual(false);
     expect(checkIsFile(undefined)).toEqual(false);
   });
+
   it('not a valid filepath', () => {
     expect(checkIsFile('')).toEqual(false);
     expect(checkIsFile('.')).toEqual(false);
     expect(checkIsFile('./')).toEqual(false);
-    expect(checkIsFile('toto')).toEqual(false);
-    expect(checkIsFile('.toto')).toEqual(false);
-    expect(checkIsFile('/toto')).toEqual(false);
-    expect(checkIsFile('/.toto')).toEqual(false);
+    expect(checkIsFile('../')).toEqual(false);
+    expect(checkIsFile('../../')).toEqual(false);
   });
-  it('valid filepath', () => {
-    expect(checkIsFile('./.env')).toEqual('./.env');
-    expect(checkIsFile('./Procfile')).toEqual('./Procfile');
-    expect(checkIsFile('./myfile.js')).toEqual('./myfile.js');
+
+  describe('valid filepath', () => {
+    it('with .env file', () => {
+      const file = './fixtures/.env';
+      const filepath = path.join(__dirname, file);
+      expect(checkIsFile(filepath)).toEqual(filepath);
+    });
+
+    it('with Procfile file', () => {
+      const file = './fixtures/Procfile';
+      const filepath = path.join(__dirname, file);
+      expect(checkIsFile(filepath)).toEqual(filepath);
+    });
+
+    it('with myfile.js file', () => {
+      const file = './fixtures/myfile.js';
+      const filepath = path.join(__dirname, file);
+      expect(checkIsFile(filepath)).toEqual(filepath);
+    });
   });
 });

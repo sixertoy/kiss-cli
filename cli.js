@@ -118,22 +118,29 @@ try {
     exit();
   }
 
-  const [firstArgument, secondArgument] = args;
+  const [firstArgument] = args;
   const firstIsFile = checkIsFile(firstArgument);
-  const secondIsFile = secondArgument && checkIsFile(secondArgument);
-  const firstArgumentType =
-    (firstIsFile && getFileTypeByExtension(firstArgument)) || firstArgument;
+  const firstIsTemplateType = checkIsAllowedType(firstArgument, templates);
+  console.log('firstIsFile', firstIsFile);
+  console.log('firstIsTemplateType', firstIsTemplateType);
 
-  const isAllowedType = checkIsAllowedType(firstArgumentType, templates);
-  if (!firstIsFile && isAllowedType && !secondIsFile) {
-    outputTemplateContent(firstArgumentType, templates);
-    exit();
-  }
+  // const firstIsTemplateType = getFileTypeByExtension(firstArgument);
 
-  if (firstIsFile) {
-    // check if is allowed type -> write templates
-    // else -> show availables templates
-  }
+  // console.log('firstIsTemplateType', firstIsTemplateType)
+
+  //
+  // const secondIsFile = secondArgument && checkIsFile(secondArgument);
+
+  // const isAllowedType = checkIsAllowedType(firstArgumentType, templates);
+  // if (!firstIsFile && isAllowedType && !secondIsFile) {
+  //   outputTemplateContent(firstArgumentType, templates);
+  //   exit();
+  // }
+
+  // if (firstIsFile) {
+  // check if is allowed type -> write templates
+  // else -> show availables templates
+  // }
   // const template = (isAllowedType && templates[firstArgument]) || 'helloworld';
   // if (isAllowedType && !secondIsFile) outputTemplate(template);
   exit();
