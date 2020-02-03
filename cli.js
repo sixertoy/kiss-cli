@@ -145,10 +145,13 @@ try {
     exit();
   }
 
-  args
+  let type = null;
+  let files = [...args];
+  if (firstIsTemplateType) [type, ...files] = args;
+  files
     .filter(checkIsFile)
-    .filter(file => checkFileIsAllowedType(file, templates))
-    .forEach(writeFile(templates));
+    .filter(f => !!firstIsTemplateType || checkFileIsAllowedType(f, templates))
+    .forEach(writeFile(templates, type));
   exit();
 } catch (e) {
   if (USE_DEBUG) error(`error >>> ${e}\n`);
