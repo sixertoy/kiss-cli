@@ -35,6 +35,8 @@ kiss server ./index.js
 
 ## History
 
+- v0.5.0
+  - :rocket: refactor all the things \o/
 - v0.3.9
   - update documentation
 - v0.3.4

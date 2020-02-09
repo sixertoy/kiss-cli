@@ -10,7 +10,9 @@ function outputTemplateForAtom(type, templates) {
     process.stdout.write(fileContent);
   } catch (e) {
     const { file } = templates[type];
-    error(`Unable to load template ${file}\n`);
+    const msg = `Unable to load template ${file}\n`;
+    process.stdout.write(msg);
+    error(msg);
     process.exit(1);
   }
 }

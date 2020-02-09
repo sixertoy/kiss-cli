@@ -21,12 +21,13 @@
  */
 const path = require('path');
 
-const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
+const { CWD, KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
 const { error, home } = require('./src/core');
 const {
   excludeNonExistingPath,
   excludeSystemsFiles,
   getTemplatesFilesInDirectory,
+  lookup,
   mapTemplatesFilesToTypes,
 } = require('./src/domain');
 const {
@@ -46,13 +47,13 @@ const {
 const USE_DEBUG = true;
 const USE_TTY = process.stderr.isTTY;
 
-const getTemplatesList = () => {
+function getTemplatesList(search) {
   // retrieve KISS templates files
   // -> ./.kiss -> ~/.kiss -> ~/.npm/.kiss
   const kissDirectories = [
-    path.join(KISS_ROOTPATH, KISS_DIRNAME),
-    path.join(home(), KISS_DIRNAME),
-    // kiss.lookupForProjectKissFolder(currentWorkingDir),
+    path.join(KISS_ROOTPATH, KISS_DIRNAME), // Kiss Global Folder
+    path.join(home(), KISS_DIRNAME), // Kiss Home Folder
+    lookup(search), // Kiss Project Folder
   ];
   const templates = kissDirectories
     .filter(excludeNonExistingPath)
@@ -61,7 +62,7 @@ const getTemplatesList = () => {
     .reduce(mapTemplatesFilesToTypes, {});
   // returns an object/map { template-type: template-filepath }
   return templates;
-};
+}
 
 function shouldShowTemplates(args) {
   if (!args || !args.length) return false;
@@ -98,10 +99,11 @@ function shouldUseAtom(args) {
 try {
   let type = null;
   const args = getCliArguments();
-  const templates = getTemplatesList();
+  const useAtom = shouldUseAtom(args);
+  const workingPath = (useAtom && args[2]) || CWD;
+  const templates = getTemplatesList(workingPath);
 
   // NOTE output pour atom
-  const useAtom = shouldUseAtom(args);
   if (useAtom) {
     type = args.slice(1, 2).join('');
     outputTemplateForAtom(type, templates);
