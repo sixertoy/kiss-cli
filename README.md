@@ -1,6 +1,6 @@
 # :wrench: KISS
 
-KISS allow to create your own snippets for a context and share these with your project's teammates.
+KISS allow to create your own snippets for a context and share these with your project team mates.
 
 ```bash
 npm install -g kiss-cli
@@ -16,7 +16,7 @@ kiss server ./index.js
 - Templates files must be named `<type>.<extension>`
 - Kiss priorize templates in `(project)/.kiss` **>** `/User/home/.kiss` **>** `(npm_prefix_path)/.kiss`
 
-**You could have need KISS if**
+**You could need KISS if**
 
 - You are a developer
 - You are a developer in a team of developers
