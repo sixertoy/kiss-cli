@@ -98,6 +98,7 @@
   "scripts": {
     "lint": "eslint --fix -c ./.eslintrc.json ./cli.js './src/**/*.js'",
     "test": "jest",
+    "kiss": "node ./cli.js",
     "prepare": "yarn lint && yarn test"
   },
   "dependencies": {

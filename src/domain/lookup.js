@@ -4,7 +4,7 @@ const path = require('path');
 const { KISS_DIRNAME } = require('../constants');
 
 function lookup(search = false) {
-  const parts = search.split(path.sep).filter(v => v);
+  const parts = (search && search.split(path.sep).filter(v => v)) || [];
   let found = false;
   let len = parts.length;
   while (len) {
