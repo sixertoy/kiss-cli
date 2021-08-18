@@ -1,5 +1,5 @@
-const { INDENT, NL } = require('./../constants');
-const { colors, log } = require('./../core');
+const { INDENT, NL } = require("../constants");
+const { colors, log } = require("../core");
 
 // ${Constants.INDENT}kiss <url>
 // ${Constants.INDENT}kiss '<rgb_color>'

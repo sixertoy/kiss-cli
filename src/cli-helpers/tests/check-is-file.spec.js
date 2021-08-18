@@ -1,6 +1,6 @@
 const path = require('path');
 
-const checkIsFile = require('./../check-is-file');
+const checkIsFile = require("../check-is-file");
 
 describe('checkIsFile', () => {
   it('not a valid argument', () => {

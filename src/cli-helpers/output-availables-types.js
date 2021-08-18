@@ -1,5 +1,5 @@
-const { colors, output } = require('./../core');
-const { INDENT, NL } = require('./../constants');
+const { colors, output } = require("../core");
+const { INDENT, NL } = require("../constants");
 
 const getColoredTypesPair = types => key => {
   const k = key.indexOf('_') < 0 ? key : key.split('_')[1];

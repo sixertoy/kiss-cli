@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { error } = require('./../core');
+const { error } = require("../core");
 
 function outputTemplateForAtom(type, templates) {
   try {

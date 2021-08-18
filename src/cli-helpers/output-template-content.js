@@ -1,8 +1,8 @@
 const fs = require('fs');
 
 const { NL } = require('../constants');
-const { colors, output } = require('./../core');
-const removeEmptyLinesFromContent = require('./../domain/removeEmptyLinesFromContent');
+const { colors, output } = require("../core");
+const removeEmptyLinesFromContent = require("../domain/removeEmptyLinesFromContent");
 
 const getMessage = (title, subtitle, content) =>
   `${NL}${title}${NL}${subtitle}${NL}${NL}${content}${NL}${NL}`;

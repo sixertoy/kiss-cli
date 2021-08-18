@@ -1,5 +1,5 @@
-const { TIME_COLOR, WS } = require('./../constants');
-const { error, ok } = require('./../core');
+const { TIME_COLOR, WS } = require("../constants");
+const { error, ok } = require("../core");
 
 function exit(reason) {
   const hasReason = Boolean(reason);

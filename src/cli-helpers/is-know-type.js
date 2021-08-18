@@ -1,4 +1,4 @@
-const { getFileTypeByExtension } = require('./../cli-helpers');
+const { getFileTypeByExtension } = require(".");
 
 const isKnowType = (arg, oallowed) => {
   const isString = arg && typeof arg === 'string';

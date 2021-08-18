@@ -1,0 +1,4 @@
+{
+  "modulePathIgnorePatterns": ["<rootDir>/.kiss"],
+  "coveragePathIgnorePatterns": ["<rootDir>/.kiss"]
+}

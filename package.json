@@ -81,27 +81,23 @@
     "sublime text"
   ],
   "devDependencies": {
-    "eslint": "5.3.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-config-airbnb-base": "13.2.0",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-sort-destructure-keys": "^1.3.2",
-    "husky": "^3.0.0",
-    "jest": "^24.9.0",
-    "prettier": "^1.18.2",
-    "prettier-eslint": "^9.0.0",
-    "prettier-eslint-cli": "^5.0.0"
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-sort-destructure-keys": "^1.3.5",
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "prettier": "^2.1.2"
   },
   "scripts": {
     "lint": "eslint --fix -c ./.eslintrc.json ./cli.js './src/**/*.js'",
     "test": "jest",
     "kiss": "node ./cli.js",
-    "prepare": "yarn lint && yarn test"
+    "prepare": "yarn lint && yarn test",
+    "cleanup": "rm -rf ./node_modules && rm ./yarn.lock"
   },
   "dependencies": {
-    "fs-extra": "^8.1.0"
+    "fs-extra": "^10.0.0"
   }
 }

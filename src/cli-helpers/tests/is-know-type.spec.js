@@ -1,4 +1,4 @@
-const isKnowType = require('./../is-know-type');
+const isKnowType = require("../is-know-type");
 
 const ALLOWED = {
   js: '',
