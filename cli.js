@@ -21,7 +21,7 @@
  */
 const path = require('path');
 
-const { CWD, KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
+const { KISS_DIRNAME, KISS_ROOTPATH } = require('./src/constants');
 const { error, home } = require('./src/core');
 const {
   excludeNonExistingPath,
@@ -100,7 +100,7 @@ try {
   let type = null;
   const args = getCliArguments();
   const useAtom = shouldUseAtom(args);
-  const workingPath = (useAtom && args[2]) || CWD;
+  const workingPath = (useAtom && args[2]) || process.cwd();
   const templates = getTemplatesList(workingPath);
 
   // NOTE output pour atom
