@@ -9,7 +9,7 @@ const checkIsFile = require('./check-is-file');
 const isKnowType = require('./is-know-type');
 const outputTemplateContent = require('./output-template-content');
 const getFileTypeByExtension = require('./get-file-type-by-extension');
-const outputTemplateForAtom = require('./output-template-for-atom');
+const outputRawTemplate = require('./output-raw-template');
 const checkFileIsAllowedType = require('./check-file-is-allowed-type');
 
 module.exports = {
@@ -23,8 +23,8 @@ module.exports = {
   isKnowType,
   outputAvailablesTypes,
   outputHelp,
+  outputRawTemplate,
   outputTemplateContent,
-  outputTemplateForAtom,
   outputWelcomeMessage,
   writeFile,
 };

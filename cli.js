@@ -38,8 +38,8 @@ const {
   getCliArguments,
   outputAvailablesTypes,
   outputHelp,
+  outputRawTemplate,
   outputTemplateContent,
-  outputTemplateForAtom,
   outputWelcomeMessage,
   writeFile,
 } = require('./src/cli-helpers');
@@ -86,27 +86,22 @@ function shouldShowHelp(args) {
   );
 }
 
-function shouldUseAtom(args) {
+function shouldOutputRawContent(args) {
   if (!args || !args.length) return false;
-  return (
-    args.indexOf('-A') !== -1 ||
-    args.indexOf('-a') !== -1 ||
-    args.indexOf('--raw') !== -1 ||
-    args.indexOf('--atom') !== -1
-  );
+  return args.indexOf('-R') !== -1 || args.indexOf('--raw') !== -1;
 }
 
 try {
   let type = null;
   const args = getCliArguments();
-  const useAtom = shouldUseAtom(args);
-  const workingPath = (useAtom && args[2]) || process.cwd();
+  const outputRawContent = shouldOutputRawContent(args);
+  const workingPath = (outputRawContent && args[2]) || process.cwd();
   const templates = getTemplatesList(workingPath);
 
   // NOTE output pour atom
-  if (useAtom) {
+  if (outputRawContent) {
     type = args.slice(1, 2).join('');
-    outputTemplateForAtom(type, templates);
+    outputRawTemplate(type, templates);
     process.exit(0);
   }
 
